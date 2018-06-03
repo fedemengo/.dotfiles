@@ -14,6 +14,7 @@ set shellslash
 set grepprg=grep\ -nH\ $*
 let g:tex_flavor='latex'
 
+"font for MacVim
 set gfn=Ubuntu\ Mono\ derivative\ Powerline:h16 
 
 syntax on
