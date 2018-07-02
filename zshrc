@@ -27,6 +27,7 @@ POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR=""
 POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR=""
 
 # Status
+POWERLEVEL9K_CUSTOM_ERRNO=true
 POWERLEVEL9K_STATUS_OK=true
 POWERLEVEL9K_STATUS_CROSS=true
 POWERLEVEL9K_STATUS_OK_BACKGROUND=EMPTY_BG
@@ -135,14 +136,15 @@ POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(my_todo command_execution_time background_jo
   # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  web_search
+  web-search
   encode64
-	zsh-autosuggestions
+  zsh-autosuggestions
 )
 
 source $ZSH/oh-my-zsh.sh
+source $ZSH/plugins/bd/bd.zsh
 
-  # User configuration
+	# User configuration
 # export MANPATH="/usr/local/man:$MANPATH"
 
   # You may need to manually set your language environment
@@ -247,6 +249,11 @@ bindkey '^[^?' backward-kill-word
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 
+# Using iTerm2:
+#	Add Shift+Space to Hotkey
+#	Shift+Space should send '^[accept' (Esc + "accept")
+bindkey '^[accept' autosuggest-accept
+
 export LS_COLORS="di=34"
 zstyle ':completion:*' menu select
 zstyle ':completion:*' insert-tab false
@@ -271,7 +278,9 @@ echo "$(tput setaf 1)$title $(tput sgr0)"; echo ; echo $todos;
 
 # Directory management
 alias ll="ls -l"
-alias rm="rm -i"
+alias rm="/usr/local/bin/safe-rm"
 alias cp="cp -i"
 alias pi='ssh pi@192.168.1.100'
 alias todo='todo.sh'
+alias vscode='code-insiders'
+
