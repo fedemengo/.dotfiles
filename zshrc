@@ -10,6 +10,23 @@ POWERLEVEL9K_MODE="nerdfont-complete"
 #############################################################
 ############### POWERLEVEL9K CONFIGURATION ##################
 #############################################################
+
+
+###################### REMOVE/EDIT ICONS ####################
+#POWERLEVEL9K_VCS_BOOKMARK_ICON="\uF27B"
+#POWERLEVEL9K_VCS_COMMIT_ICON="\uF221"
+#POWERLEVEL9K_VCS_REMOTE_BRANCH_ICON="\u2192"
+#POWERLEVEL9K_VCS_GIT_GITHUB_ICON="\uF113"
+#POWERLEVEL9K_VCS_GIT_BITBUCKET_ICON="\uF171"
+#POWERLEVEL9K_VCS_SVN_ICON="(svn)"
+
+POWERLEVEL9K_FOLDER_ICON=""
+POWERLEVEL9K_HOME_ICON=""
+POWERLEVEL9K_HOME_SUB_ICON=""
+POWERLEVEL9K_LOCK_ICON=""
+
+POWERLEVEL9K_NETWORK_ICON=""
+
 EMPTY_BG=257
 DEFAULT_FG=0
 
@@ -28,10 +45,10 @@ POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR=""
 
 # Status
 POWERLEVEL9K_CUSTOM_ERRNO=true
-POWERLEVEL9K_STATUS_OK=true
-POWERLEVEL9K_STATUS_CROSS=true
-POWERLEVEL9K_STATUS_OK_BACKGROUND=EMPTY_BG
-POWERLEVEL9K_STATUS_ERROR_BACKGROUND=EMPTY_BG
+POWERLEVEL9K_MY_STATUS_OK=true
+POWERLEVEL9K_MY_STATUS_CROSS=true
+POWERLEVEL9K_MY_STATUS_OK_BACKGROUND=EMPTY_BG
+POWERLEVEL9K_MY_STATUS_ERROR_BACKGROUND=EMPTY_BG
 
 # Dir
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
@@ -85,7 +102,51 @@ POWERLEVEL9K_TIME_BACKGROUND=EMPTY_BG
 POWERLEVEL9K_TIME_FOREGROUND=DEFAULT_FG
 POWERLEVEL9K_TIME_FORMAT='%D{%H:%M}'
 
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(status dir vcs)
+prompt_my_todo() {
+  if $(hash todo.sh 2>&-); then
+    count=$(todo.sh ls | egrep "TODO: [0-9]+ of ([0-9]+) tasks shown" | awk '{ print $4 }')
+    if [[ "$count" = <-> ]]; then
+      "$1_prompt_segment" "$0" "$2" "244" "$DEFAULT_COLOR" "TODO: $count"
+    fi
+  fi
+}
+
+prompt_my_status() {
+  local ec_text
+  local ec_sum
+  local ec
+
+  if [[ $POWERLEVEL9K_STATUS_SHOW_PIPESTATUS == true ]]; then
+    ec_text=$(exit_code_or_status "${RETVALS[1]}")
+    ec_sum=${RETVALS[1]}
+
+    for ec in "${(@)RETVALS[2,-1]}"; do
+      ec_text="${ec_text}|$(exit_code_or_status "$ec")"
+      ec_sum=$(( $ec_sum + $ec ))
+    done
+  else
+    # We use RETVAL instead of the right-most RETVALS item because
+    # PIPE_FAIL may be set.
+    ec_text=$(exit_code_or_status "${RETVAL}")
+    ec_sum=${RETVAL}
+  fi
+
+  if (( ec_sum > 0 )); then
+    if [[ "$POWERLEVEL9K_CUSTOM_ERRNO" == true ]]; then
+      "$1_prompt_segment" "$0_ERROR" "$2" "$DEFAULT_COLOR" "red" "$ec_sum" ''
+    elif [[ "$POWERLEVEL9K_STATUS_CROSS" == false && "$POWERLEVEL9K_STATUS_VERBOSE" == true ]]; then
+      "$1_prompt_segment" "$0_ERROR" "$2" "red" "226" "$ec_text $ec_sum" 'CARRIAGE_RETURN_ICON'
+    else
+      "$1_prompt_segment" "$0_ERROR" "$2" "$DEFAULT_COLOR" "red" "" 'FAIL_ICON'
+    fi
+  elif [[ "$POWERLEVEL9K_CUSTOM_ERRNO" == true ]]; then
+    "$1_prompt_segment" "$0_OK" "$2" "$DEFAULT_COLOR" "green" "$ec_sum" ''
+  elif [[ "$POWERLEVEL9K_STATUS_OK" == true ]] && [[ "$POWERLEVEL9K_STATUS_VERBOSE" == true || "$POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE" == true ]]; then
+    "$1_prompt_segment" "$0_OK" "$2" "$DEFAULT_COLOR" "green" "" 'OK_ICON'
+  fi
+}
+
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(my_status dir vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(my_todo command_execution_time background_jobs ip time)
 
 #############################################################
@@ -159,8 +220,7 @@ export EDITOR='mvim'
   # ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id"
 
-function tab_list_files
-{
+function tab_list_files {
   if [[ $#BUFFER == 0 ]]; then
     BUFFER="ls "
     CURSOR=3
@@ -281,6 +341,6 @@ alias ll="ls -l"
 alias rm="/usr/local/bin/safe-rm"
 alias cp="cp -i"
 alias pi='ssh pi@192.168.1.100'
+alias pifs='sshfs pi@192.168.1.100:/mnt/HDD/ /Volumes/STORAGE -ovolname=STORAGE'
 alias todo='todo.sh'
 alias vscode='code-insiders'
-
