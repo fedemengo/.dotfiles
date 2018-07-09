@@ -1,26 +1,37 @@
+" no compatibility with vi
 set nocompatible
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
 
-Plugin 'VundleVim/Vundle.vim'
-"Plugin 'xuhdev/vim-latex-live-preview'
-"Plugin 'JamshedVesuna/vim-markdown-preview'
-
-call vundle#end()
+" config for netrw
+syntax enable
 filetype plugin indent on
+
+" search down into subfolder
+" tabl-completion for all file-related tasks
+" ** (two star) 
+set path+=**
+
+call plug#begin()
+Plug 'ipod825/vim-netranger'
+call plug#end()
+
+let g:NETRColors = {'dir': 004}
+
+set wildmenu
+
+let g:netrw_banner=0
+let g:netrw_browse_split=4
+let g:netrw_altv=1
+let g:nert_liststyle=3		" tree view
 
 set shellslash
 set grepprg=grep\ -nH\ $*
 let g:tex_flavor='latex'
 
-"font for MacVim
+set backspace=indent,eol,start
 set gfn=Ubuntu\ Mono\ derivative\ Powerline:h16 
 
-syntax on
 colorscheme molokai
 set number
-"set wrapmargin=8
 set autoindent
 set tabstop=4
 set shiftwidth=4
@@ -32,7 +43,6 @@ set title
 set ttyfast
 set esckeys
 set cursorline
-set wildmenu
 set gdefault
 
 set ignorecase
@@ -45,3 +55,7 @@ set scrolloff=10
 let vim_markdown_preview_hotkey='<C-p>'
 let vim_markdown_preview_toggle=2
 let vim_markdown_preview_github=1
+
+let g:loaded_logipat = 1
+
+hi Normal guibg=NONE ctermbg=none 
