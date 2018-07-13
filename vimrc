@@ -14,9 +14,14 @@ call plug#begin()
 Plug 'ipod825/vim-netranger'
 call plug#end()
 
-let g:NETRColors = {'dir': 004}
+" netranger
+let g:NETRColors = {'dir': 039, 'cwd': 009, 'exe': 082}
 
+" command line autocompletion
 set wildmenu
+
+" map esc key
+inoremap jj <Esc>
 
 let g:netrw_banner=0
 let g:netrw_browse_split=4
@@ -28,9 +33,9 @@ set grepprg=grep\ -nH\ $*
 let g:tex_flavor='latex'
 
 set backspace=indent,eol,start
-set gfn=Ubuntu\ Mono\ derivative\ Powerline:h16 
+"set gfn=Ubuntu\ Mono\ derivative\ Powerline:h16 
 
-colorscheme molokai
+colorscheme onedark
 set number
 set autoindent
 set tabstop=4
@@ -41,7 +46,7 @@ set ruler
 set shortmess=atI
 set title
 set ttyfast
-set esckeys
+"set esckeys
 set cursorline
 set gdefault
 
@@ -56,6 +61,8 @@ let vim_markdown_preview_hotkey='<C-p>'
 let vim_markdown_preview_toggle=2
 let vim_markdown_preview_github=1
 
-let g:loaded_logipat = 1
+"let g:loaded_logipat = 1
 
-hi Normal guibg=NONE ctermbg=none 
+
+hi Normal ctermbg=NONE
+
