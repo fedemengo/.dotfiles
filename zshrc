@@ -5,7 +5,7 @@
 export ZSH=$HOME/.oh-my-zsh
 
 ZSH_THEME="powerlevel9k/powerlevel9k"
-POWERLEVEL9K_MODE="nerdfont-complete"
+POWERLEVEL9K_MODE="powerline"
 
 #############################################################
 ############### POWERLEVEL9K CONFIGURATION ##################
@@ -24,10 +24,11 @@ POWERLEVEL9K_FOLDER_ICON=""
 POWERLEVEL9K_HOME_ICON=""
 POWERLEVEL9K_HOME_SUB_ICON=""
 POWERLEVEL9K_LOCK_ICON=""
+POWERLEVEL9K_ETC_ICON=""
 
 POWERLEVEL9K_NETWORK_ICON=""
 
-EMPTY_BG=257
+EMPTY_BG=234
 DEFAULT_FG=0
 
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
@@ -47,19 +48,21 @@ POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR=""
 POWERLEVEL9K_CUSTOM_ERRNO=true
 POWERLEVEL9K_MY_STATUS_OK=true
 POWERLEVEL9K_MY_STATUS_CROSS=true
-POWERLEVEL9K_MY_STATUS_OK_BACKGROUND=EMPTY_BG
-POWERLEVEL9K_MY_STATUS_ERROR_BACKGROUND=EMPTY_BG
+POWERLEVEL9K_MY_STATUS_OK_BACKGROUND=$EMPTY_BG
+POWERLEVEL9K_MY_STATUS_ERROR_BACKGROUND=$EMPTY_BG
 
 # Dir
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
 POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
 
-POWERLEVEL9K_DIR_HOME_FOREGROUND="blue"
-POWERLEVEL9K_DIR_HOME_BACKGROUND=EMPTY_BG
-POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND="blue"
-POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND=EMPTY_BG
-POWERLEVEL9K_DIR_DEFAULT_FOREGROUND="blue"
-POWERLEVEL9K_DIR_DEFAULT_BACKGROUND=EMPTY_BG
+POWERLEVEL9K_DIR_HOME_FOREGROUND="38;5;39"
+POWERLEVEL9K_DIR_HOME_BACKGROUND=$EMPTY_BG
+POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND="38;5;39"
+POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND=$EMPTY_BG
+POWERLEVEL9K_DIR_DEFAULT_FOREGROUND="38;5;39"
+POWERLEVEL9K_DIR_DEFAULT_BACKGROUND=$EMPTY_BG
+POWERLEVEL9K_DIR_ETC_FOREGROUND="38;5;39"
+POWERLEVEL9K_DIR_ETC_BACKGROUND=$EMPTY_BG
 
 # VCS
 
@@ -70,37 +73,38 @@ POWERLEVEL9K_CHANGESET_HASH_LENGTH=7
 POWERLEVEL9K_HIDE_BRANCH_ICON=true
 POWERLEVEL9K_SHOW_CHANGESET=true
 
-POWERLEVEL9K_VCS_CLEAN_FOREGROUND="green"
-POWERLEVEL9K_VCS_CLEAN_BACKGROUND=EMPTY_BG
-POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND="magenta"
-POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND=EMPTY_BG
-POWERLEVEL9K_VCS_MODIFIED_FOREGROUND="yellow"
-POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=EMPTY_BG
+POWERLEVEL9K_VCS_CLEAN_FOREGROUND=041
+POWERLEVEL9K_VCS_CLEAN_BACKGROUND=$EMPTY_BG
+POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND=197
+POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND=$EMPTY_BG
+POWERLEVEL9K_VCS_MODIFIED_FOREGROUND=227
+POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=$EMPTY_BG
 
 
 # TODO
-POWERLEVEL9K_MY_TODO_BACKGROUND=EMPTY_BG
-POWERLEVEL9K_MY_TODO_FOREGROUND=178
+POWERLEVEL9K_MY_TODO_BACKGROUND=$EMPTY_BG
+POWERLEVEL9K_MY_TODO_FOREGROUND=208
 
 # Execution time
 POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=0
-POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND=EMPTY_BG
+POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND=$EMPTY_BG
 POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND="red"
 POWERLEVEL9K_EXECUTION_TIME_ICON="s" #"\u23F1"
 
 # BG
 POWERLEVEL9K_BACKGROUND_JOBS_ICON=""
 POWERLEVEL9K_BACKGROUND_JOBS_FOREGROUND=135
-POWERLEVEL9K_BACKGROUND_JOBS_BACKGROUND=EMPTY_BG
+POWERLEVEL9K_BACKGROUND_JOBS_BACKGROUND=$EMPTY_BG
 
 # IP
-POWERLEVEL9K_IP_BACKGROUND=EMPTY_BG
-POWERLEVEL9K_IP_FOREGROUND=037
+POWERLEVEL9K_IP_BACKGROUND=$EMPTY_BG
+POWERLEVEL9K_IP_FOREGROUND=087
 
 # Time
-POWERLEVEL9K_TIME_BACKGROUND=EMPTY_BG
-POWERLEVEL9K_TIME_FOREGROUND=DEFAULT_FG
+POWERLEVEL9K_TIME_BACKGROUND=$EMPTY_BG
+POWERLEVEL9K_TIME_FOREGROUND="white"
 POWERLEVEL9K_TIME_FORMAT='%D{%H:%M}'
+POWERLEVEL9K_TIME_ICON=""
 
 prompt_my_todo() {
   if $(hash todo.sh 2>&-); then
@@ -111,42 +115,12 @@ prompt_my_todo() {
   fi
 }
 
-prompt_my_status() {
-  local ec_text
-  local ec_sum
-  local ec
-
-  if [[ $POWERLEVEL9K_STATUS_SHOW_PIPESTATUS == true ]]; then
-    ec_text=$(exit_code_or_status "${RETVALS[1]}")
-    ec_sum=${RETVALS[1]}
-
-    for ec in "${(@)RETVALS[2,-1]}"; do
-      ec_text="${ec_text}|$(exit_code_or_status "$ec")"
-      ec_sum=$(( $ec_sum + $ec ))
-    done
-  else
-    # We use RETVAL instead of the right-most RETVALS item because
-    # PIPE_FAIL may be set.
-    ec_text=$(exit_code_or_status "${RETVAL}")
-    ec_sum=${RETVAL}
-  fi
-
-  if (( ec_sum > 0 )); then
-    if [[ "$POWERLEVEL9K_CUSTOM_ERRNO" == true ]]; then
-      "$1_prompt_segment" "$0_ERROR" "$2" "$DEFAULT_COLOR" "red" "$ec_sum" ''
-    elif [[ "$POWERLEVEL9K_STATUS_CROSS" == false && "$POWERLEVEL9K_STATUS_VERBOSE" == true ]]; then
-      "$1_prompt_segment" "$0_ERROR" "$2" "red" "226" "$ec_text $ec_sum" 'CARRIAGE_RETURN_ICON'
-    else
-      "$1_prompt_segment" "$0_ERROR" "$2" "$DEFAULT_COLOR" "red" "" 'FAIL_ICON'
-    fi
-  elif [[ "$POWERLEVEL9K_CUSTOM_ERRNO" == true ]]; then
-    "$1_prompt_segment" "$0_OK" "$2" "$DEFAULT_COLOR" "green" "$ec_sum" ''
-  elif [[ "$POWERLEVEL9K_STATUS_OK" == true ]] && [[ "$POWERLEVEL9K_STATUS_VERBOSE" == true || "$POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE" == true ]]; then
-    "$1_prompt_segment" "$0_OK" "$2" "$DEFAULT_COLOR" "green" "" 'OK_ICON'
-  fi
+function aa_256() {
+	for code ({000..255}) 
+		print -P -- "$code: %F{$code} color%f"
 }
 
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(my_status dir vcs)
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(my_todo command_execution_time background_jobs ip time)
 
 #############################################################
@@ -200,10 +174,10 @@ plugins=(
   web-search
   encode64
   zsh-autosuggestions
+  bd
 )
 
 source $ZSH/oh-my-zsh.sh
-source $ZSH/plugins/bd/bd.zsh
 
 	# User configuration
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -314,7 +288,7 @@ bindkey "^[[1;5D" backward-word
 #	Shift+Space should send '^[accept' (Esc + "accept")
 bindkey '^[accept' autosuggest-accept
 
-export LS_COLORS="di=34"
+export LS_COLORS="di=38;5;38:ex=38;5;82"
 zstyle ':completion:*' menu select
 zstyle ':completion:*' insert-tab false
 zstyle ':completion:*' rehash true
@@ -331,6 +305,9 @@ fi
 
 export GOPATH=$(go env GOPATH)
 export PATH="$PATH:$GOPATH/bin"
+export EDITOR="$(which vim)"
+
+export TERM="xterm-256color"
 
 title=$(todo.sh ls | tail -n 1)
 todos=$(todo.sh ls | head -n $(($(todo.sh ls | wc -l)-2)))
@@ -338,9 +315,10 @@ echo "$(tput setaf 1)$title $(tput sgr0)"; echo ; echo $todos;
 
 # Directory management
 alias ll="ls -l"
-alias rm="/usr/local/bin/safe-rm"
+alias rm="/usr/bin/safe-rm"
 alias cp="cp -i"
 alias pi='ssh pi@192.168.1.100'
 alias pifs='sshfs pi@192.168.1.100:/mnt/HDD/ /Volumes/STORAGE -ovolname=STORAGE'
 alias todo='todo.sh'
 alias vscode='code-insiders'
+
