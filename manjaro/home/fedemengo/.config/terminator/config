@@ -1,0 +1,69 @@
+[global_config]
+  geometry_hinting = False
+  enabled_plugins = ,
+  tab_position = hidden
+  borderless = True
+[keybindings]
+  scaled_zoom = <Shift><Control>u
+  go_up = <Shift>Up
+  next_tab = <Shift>Right
+  split_horiz = <Shift><Control>t
+  move_tab_right = <Shift><Alt>Right
+  prev_tab = <Shift>Left
+  go_down = <Shift>Down
+  move_tab_left = <Shift><Alt>Left
+  go_next = <Shift><Control>o
+  new_tab = <Shift><Control>n
+[profiles]
+  [[default]]
+    use_system_font = False
+    background_darkness = 0.2
+    scrollback_lines = 1000
+    background_type = solid
+    scrollbar_position = hidden
+    foreground_color = "#e2e2e2"
+    font = Bitstream Vera Sans Mono 16
+    background_color = "#1c1c1c"
+    scrollback_infinite = True
+	show_titlebar = False
+  [[root]]
+    use_system_font = False
+    font = Bitstream Vera Sans Mono 16
+    background_color = "#222D31"
+    foreground_color = "#cca938"
+[layouts]
+  [[default]]
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+      profile = default
+    [[[window0]]]
+      type = Window
+      parent = ""
+      profile = None
+  [[starenka]]
+    [[[child0]]]
+      position = 0:19
+      type = Window
+      order = 0
+      parent = ""
+      size = 1276, 777
+    [[[child1]]]
+      labels = None, None
+      type = Notebook
+      order = 0
+      parent = child0
+    [[[terminal3]]]
+      profile = default
+      command = ""
+      type = Terminal
+      order = 1
+      parent = child1
+    [[[terminal2]]]
+      profile = root
+      group = root
+      parent = child1
+      command = startup
+      type = Terminal
+      order = 0
+[plugins]
