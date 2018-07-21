@@ -125,7 +125,7 @@ POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(command_execution_time background_jobs my_todo)
 
 #############################################################
-############### OTHER CONFIGURATION ##################
+###################### OTHER CONFIGURATION ##################
 #############################################################
 
   # Uncomment the following line to use case-sensitive completion.
@@ -176,6 +176,7 @@ plugins=(
   encode64
   zsh-autosuggestions
   bd
+  catimg
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -185,9 +186,6 @@ source $ZSH/oh-my-zsh.sh
 
   # You may need to manually set your language environment
 export LANG=en_US.UTF-8
-
-  # Preferred editor for local and remote sessions
-export EDITOR='mvim'
 
   # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -315,11 +313,11 @@ todos=$(todo.sh ls | head -n $(($(todo.sh ls | wc -l)-2)))
 echo "$(tput setaf 1)$title $(tput sgr0)"; echo ; echo $todos;
 
 # Directory management
-alias ll="ls -l"
+alias ll="ls -ls --block-size=M"
 alias rm="/usr/bin/safe-rm"
 alias cp="cp -i"
 alias pi='ssh pi@192.168.1.100'
-alias pifs='sshfs pi@192.168.1.100:/mnt/HDD/ /Volumes/STORAGE -ovolname=STORAGE'
+alias pifs='sshfs pi@192.168.1.100:/mnt/HDD/ /mnt/HDD'
 alias todo='todo.sh'
 alias vscode='code-insiders'
 
