@@ -15,3 +15,7 @@ My personal collection of configuration dotfiles
 
 ### Install
 Use the following script [install.sh](https://gist.github.com/fedemengo/585648fe0219fdec7e5561b286c961d4)
+
+#### Onedark
+Copy file from `~/.dotfiles/vim/` to `~/.vim/`
+

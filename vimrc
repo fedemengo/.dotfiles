@@ -5,6 +5,11 @@ set nocompatible
 syntax enable
 filetype plugin indent on
 
+" remove warning
+if has('python3')
+	silent! python3 1
+endif
+
 " search down into subfolder
 " tabl-completion for all file-related tasks
 " ** (two star) 

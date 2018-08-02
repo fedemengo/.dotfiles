@@ -314,7 +314,6 @@ echo "$(tput setaf 1)$title $(tput sgr0)"; echo ; echo $todos;
 
 # Directory management
 alias ll="ls -ls --block-size=M"
-alias rm="/usr/bin/safe-rm"
 alias cp="cp -i"
 alias pi='ssh pi@192.168.1.100'
 alias pifs='sshfs pi@192.168.1.100:/mnt/HDD/ /mnt/HDD'
