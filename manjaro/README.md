@@ -11,7 +11,7 @@
 	- In `.zshrc` add `source ~/.dotfiles/zshrc`
 - Install **terminator**
 	- Copy `config` to `~/.config/terminator/`
-- Configure **conky**
+- Configure **conky** (disabled in `~/.i3/config`)
 	- Copy `usr/share/conky` to `/usr/share/`
 
 
