@@ -1,17 +1,34 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Path to your oh-my-zsh installation.
+#############################################################################
+######################## ENVIRONMENT VARIABLES ##############################
+#############################################################################
+
 export TERM="xterm-256color"
 export ZSH=$HOME/.oh-my-zsh
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+export LANG=en_US.UTF-8
+
+export LESS="--tabs=4 --no-init --LONG-PROMPT --ignore-case --quit-if-one-screen --RAW-CONTROL-CHARS"
+export LS_COLORS="di=38;5;38:ex=38;5;82"
+
+export GOPATH=${HOME}/Projects/go
+export PATH="$PATH:$GOPATH/bin"
+
+export EDITOR="$(which vim)"
+
+export TERM="xterm-256color"
+
+title=$(todo.sh ls | tail -n 1)
+todos=$(todo.sh ls | head -n $(($(todo.sh ls | wc -l)-2)))
+echo "$(tput setaf 1)$title $(tput sgr0)"; echo $todos;
 
 ZSH_THEME="powerlevel9k/powerlevel9k"
 POWERLEVEL9K_MODE="powerline"
 
-#############################################################
-############### POWERLEVEL9K CONFIGURATION ##################
-#############################################################
-
+#############################################################################
+####################### POWERLEVEL9K CONFIGURATION ##########################
+#############################################################################
 
 ###################### REMOVE/EDIT ICONS ####################
 #POWERLEVEL9K_VCS_BOOKMARK_ICON="\uF27B"
@@ -33,7 +50,7 @@ EMPTY_BG=234
 DEFAULT_FG=0
 
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
+POWERLEVEL9K_PROMPT_ADD_NEWLINE=false
 
 POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
 POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="\u25B8 "
@@ -66,7 +83,6 @@ POWERLEVEL9K_DIR_ETC_FOREGROUND="38;5;39"
 POWERLEVEL9K_DIR_ETC_BACKGROUND=$EMPTY_BG
 
 # VCS
-
 POWERLEVEL9K_VCS_GIT_ICON=""
 POWERLEVEL9K_VCS_GIT_GITHUB_ICON=""
 POWERLEVEL9K_VCS_COMMIT_ICON="#"
@@ -81,7 +97,6 @@ POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND=$EMPTY_BG
 POWERLEVEL9K_VCS_MODIFIED_FOREGROUND=227
 POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=$EMPTY_BG
 
-
 # TODO
 POWERLEVEL9K_MY_TODO_BACKGROUND=$EMPTY_BG
 POWERLEVEL9K_MY_TODO_FOREGROUND=208
@@ -92,7 +107,7 @@ POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND=$EMPTY_BG
 POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND="red"
 POWERLEVEL9K_EXECUTION_TIME_ICON="s" #"\u23F1"
 
-# BG
+# BG jobs
 POWERLEVEL9K_BACKGROUND_JOBS_ICON=""
 POWERLEVEL9K_BACKGROUND_JOBS_FOREGROUND=135
 POWERLEVEL9K_BACKGROUND_JOBS_BACKGROUND=$EMPTY_BG
@@ -116,7 +131,7 @@ prompt_my_todo() {
   fi
 }
 
-function aa_256() {
+function colors256() {
 	for code ({000..255}) 
 		print -P -- "$code: %F{$code} color%f"
 }
@@ -124,9 +139,9 @@ function aa_256() {
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(command_execution_time background_jobs my_todo)
 
-#############################################################
-###################### OTHER CONFIGURATION ##################
-#############################################################
+#############################################################################
+############################# OTHER CONFIGURATION ###########################
+#############################################################################
 
   # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -170,6 +185,7 @@ POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(command_execution_time background_jobs my_to
   # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
   # Example format: plugins=(rails git textmate ruby lighthouse)
   # Add wisely, as too many plugins slow down shell startup.
+
 plugins=(
   git
   web-search
@@ -181,72 +197,23 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-	# User configuration
-# export MANPATH="/usr/local/man:$MANPATH"
-
-  # You may need to manually set your language environment
-export LANG=en_US.UTF-8
-
-  # Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-  # ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
-
-function tab_list_files {
-  if [[ $#BUFFER == 0 ]]; then
-    BUFFER="ls "
-    CURSOR=3
-    zle list-choices
-    zle backward-kill-word
-  elif [[ $BUFFER =~ ^[[:space:]][[:space:]].*$ ]]; then
-    BUFFER="./"
-    CURSOR=2
-    zle list-choices
-    [ -z ${TAB_LIST_FILES_PREFIX+x} ] && BUFFER="  " CURSOR=2
-  elif [[ $BUFFER =~ ^[[:space:]]*$ ]]; then
-    BUFFER="cd "
-    CURSOR=3
-    zle list-choices
-    [ -z ${TAB_LIST_FILES_PREFIX+x} ] && BUFFER=" " CURSOR=1
-  else
-    BUFFER_=$BUFFER
-    CURSOR_=$CURSOR
-    zle expand-or-complete || zle expand-or-complete || {
-      BUFFER="ls "
-      CURSOR=3
-      zle list-choices
-      BUFFER=$BUFFER_
-      CURSOR=$CURSOR_
-    }
-  fi
-}
-zle -N tab_list_files
-
-if [[ $OSTYPE = (darwin|freebsd)* ]]; then
-	export CLICOLOR="YES" # Equivalent to passing -G to ls.
-	export LSCOLORS="exgxdHdHcxaHaHhBhDeaec"
-
-	[ -d "/opt/local/bin" ] && export PATH="/opt/local/bin:$PATH"
-
-	# Prefer GNU version, since it respects dircolors.
-	if which gls &>/dev/null; then
-		alias ls='() { $(whence -p gls) -Ctr --file-type --color=auto $@ }'
+function tab_list {
+	if [[ $#BUFFER == 0 ]]; then
+		BUFFER="ls "
+		CURSOR=3
+		zle list-choices
+		zle backward-kill-word
 	else
-		alias ls='() { $(whence -p ls) -CFtr $@ }'
+		zle expand-or-complete
 	fi
-else
-	alias ls='() { $(whence -p ls) -Ctr --file-type --color=auto $@ }'
-fi
-
-export LESS="--tabs=4 --no-init --LONG-PROMPT --ignore-case --quit-if-one-screen --RAW-CONTROL-CHARS"
+}
+zle -N tab_list
 
 # History
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
 
-setopt autocd                   # Allow changing directories without `cd`
 setopt append_history           # Dont overwrite history
 setopt extended_history         # Also record time and duration of commands.
 setopt share_history            # Share history between multiple shells
@@ -275,19 +242,13 @@ bindkey "^F" history-incremental-pattern-search-forward
 
 # Do not require a space when attempting to tab-complete.
 bindkey "^i" expand-or-complete-prefix
-bindkey '^I' tab_list_files
+bindkey '^I' tab_list
 
 # Fixes for alt-backspace and arrows keys
 bindkey '^[^?' backward-kill-word
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 
-# Using iTerm2:
-#	Add Shift+Space to Hotkey
-#	Shift+Space should send '^[accept' (Esc + "accept")
-bindkey '^[accept' autosuggest-accept
-
-export LS_COLORS="di=38;5;38:ex=38;5;82"
 zstyle ':completion:*' menu select
 zstyle ':completion:*' insert-tab false
 zstyle ':completion:*' rehash true
@@ -298,21 +259,18 @@ zstyle ":completion:*" matcher-list \
   "l:|=* r:|=*"
 zstyle ":completion:*:default" list-colors ${(s.:.)LS_COLORS}
 
+#############################################################################
+############################# CONFIGURATION #################################
+#############################################################################
+
 if [ $commands[kubectl] ]; then
 	source <(kubectl completion zsh)
 fi
 
-export GOPATH=$(go env GOPATH)
-export PATH="$PATH:$GOPATH/bin"
-export EDITOR="$(which vim)"
+#############################################################################
+############################## ALIASES ######################################
+#############################################################################
 
-export TERM="xterm-256color"
-
-title=$(todo.sh ls | tail -n 1)
-todos=$(todo.sh ls | head -n $(($(todo.sh ls | wc -l)-2)))
-echo "$(tput setaf 1)$title $(tput sgr0)"; echo ; echo $todos;
-
-# Directory management
 alias ll="ls -ls --block-size=M"
 alias cp="cp -i"
 alias pi='ssh pi@192.168.1.100'
