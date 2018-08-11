@@ -15,6 +15,9 @@ export LS_COLORS="di=38;5;38:ex=38;5;82"
 export GOPATH=${HOME}/Projects/go
 export PATH="$PATH:$GOPATH/bin"
 
+RUBY_VERSION="2.5.0"
+export PATH="${PATH}:${HOME}/.gem/ruby/${RUBY_VERSION}/bin"
+
 export EDITOR="$(which vim)"
 
 export TERM="xterm-256color"
@@ -277,4 +280,5 @@ alias pi='ssh pi@192.168.1.100'
 alias pifs='sshfs pi@192.168.1.100:/mnt/HDD/ /mnt/HDD'
 alias todo='todo.sh'
 alias vscode='code-insiders'
+alias rs='repos-stat --no-clean --no-broken'
 
