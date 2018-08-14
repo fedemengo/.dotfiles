@@ -266,6 +266,24 @@ zstyle ":completion:*:default" list-colors ${(s.:.)LS_COLORS}
 ############################# CONFIGURATION #################################
 #############################################################################
 
+connect(){
+	if [[ "$#" -eq "0" ]]
+	then
+		echo "output identifier is required"
+	else
+		xrandr --output "$1" --auto --output eDP1 --auto --right-of "$1"
+	fi
+}
+
+disconnect(){
+	if [[ "$#" -eq "0" ]]
+	then
+		echo "output identifier is required"
+	else
+		xrandr --output "$1" --off
+	fi
+}
+
 if [ $commands[kubectl] ]; then
 	source <(kubectl completion zsh)
 fi
