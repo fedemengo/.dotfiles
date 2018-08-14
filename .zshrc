@@ -20,11 +20,10 @@ export PATH="${PATH}:${HOME}/.gem/ruby/${RUBY_VERSION}/bin"
 
 export EDITOR="$(which vim)"
 
-export TERM="xterm-256color"
 
 title=$(todo.sh ls | tail -n 1)
 todos=$(todo.sh ls | head -n $(($(todo.sh ls | wc -l)-2)))
-echo "$(tput setaf 1)$title $(tput sgr0)"; echo $todos;
+echo "$(tput setaf 197)$title $(tput sgr0)"; echo $todos;
 
 ZSH_THEME="powerlevel9k/powerlevel9k"
 POWERLEVEL9K_MODE="powerline"
@@ -49,7 +48,7 @@ POWERLEVEL9K_ETC_ICON=""
 
 POWERLEVEL9K_NETWORK_ICON=""
 
-EMPTY_BG=234
+EMPTY_BG=232
 DEFAULT_FG=0
 
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
@@ -107,7 +106,7 @@ POWERLEVEL9K_MY_TODO_FOREGROUND=208
 # Execution time
 POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=0
 POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND=$EMPTY_BG
-POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND="red"
+POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND=226
 POWERLEVEL9K_EXECUTION_TIME_ICON="s" #"\u23F1"
 
 # BG jobs
@@ -297,6 +296,5 @@ alias cp="cp -i"
 alias pi='ssh pi@192.168.1.100'
 alias pifs='sshfs pi@192.168.1.100:/mnt/HDD/ /mnt/HDD'
 alias todo='todo.sh'
-alias vscode='code-insiders'
 alias rs='repos-stat --no-clean --no-broken'
 
