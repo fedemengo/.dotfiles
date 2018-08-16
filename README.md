@@ -122,7 +122,6 @@ EndSection
 
 ### Audio
 
-The audio often stops working, this is a possible fix.
 Detect sound card with `cat /proc/asound/cards`. That gives the following output
 
 ```
@@ -138,4 +137,37 @@ and set as default card in `/etc/asound.conf`
 defaults.pcm.card 1
 defaults.ctl.card 1
 ```
+
+To unmute the sound use the keybind `Mod1 + XF86SoundMute` set in `.i3/config`
+
+If the output of `pulseaudio` shows `E: [pulseaudio] main.c: pa_pid_file_create() failed.` try to add **user** to **audio** group with `sudo usermod -aG audio _username_`
+
+#### Tips
+
+Using both `pulseaudio` and `alsamixer`. Show default output device with `pacmd list-sinks | grep -e 'name:' -e 'index:'` 
+
+List all available cards with `aplay -L`
+
+```
+...
+pulse
+    PulseAudio Sound Server
+default
+    Default ALSA Output (currently PulseAudio Sound Server)
+...
+```
+and test if they are working with `speaker-test -D NAME -c 2` where the name could be, in this specific case, "pulse" or "default".
+
+[Alsa](https://wiki.archlinux.org/index.php/Advanced_Linux_Sound_Architecture)
+
+[PulseAudio](https://wiki.archlinux.org/index.php/PulseAudio)
+
+### Keybinds
+
+This could should **xbindkeys**. Now the touch-function keys are set to
+
+- Mod1 + SoundMute: unmute the sound using amixer
+- Search: launch firefox
+- Explorer: launch ranger (NB: to use vim as default editor instead of nano, the only workairound was `sudo rm /usr/bin/nano; ln -s /usr/bin/vim /usr/bin/nano` keep it in mind)
+- Tools: launch morc menu
 

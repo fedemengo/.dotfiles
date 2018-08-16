@@ -3,8 +3,13 @@
 
 #	FEDEMENGO
 bindsym Mod1+f exec firefox
+bindsym XF86Search exec firefox
+
 bindsym Mod1+c exec code
 bindsym Mod1+m exec thunderbird
+
+bindsym Mod1+r exec "terminator -x zsh -c 'ranger'"
+bindsym XF86Explorer exec "terminator -x zsh -c 'ranger'"
 
 # Set mod key (Mod1=<Alt>, Mod4=<Super>)
 set $mod Mod4
@@ -42,6 +47,7 @@ bindsym $mod+Shift+q kill
 bindsym $mod+d exec --no-startup-id dmenu_recency -i -h 25 -nb "#1c1c1c" -sb "#16a085" -fn "Bitstream Vera Sans Mono-15"
 
 # launch categorized menu
+bindsym XF86Tools exec --no-startup-id morc_menu
 #bindsym $mod+z exec --no-startup-id morc_menu
 
 ################################################################################################
@@ -50,10 +56,12 @@ bindsym $mod+d exec --no-startup-id dmenu_recency -i -h 25 -nb "#1c1c1c" -sb "#1
 
 # 	FEDEMENGO (consider killing it when messy)
 exec --no-startup-id volumeicon
-#bindsym $mod+Ctrl+m exec terminal -e 'alsamixer'
+###bindsym $mod+Ctrl+m exec terminal -e 'alsamixer'
 exec --no-startup-id pulseaudio
 #exec --no-startup-id pa-applet
 bindsym $mod+Ctrl+m exec pavucontrol
+#	FEDEMENGO (set the audio back on)
+bindsym Mod1 + XF86AudioMute exec "amixer sset Master unmute; amixer sset Speaker unmute"
 
 ################################################################################################
 
@@ -125,7 +133,8 @@ bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
+#	FEDEMENGO (remove floating toggle)
+#	bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
