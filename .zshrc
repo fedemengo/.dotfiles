@@ -20,6 +20,8 @@ export PATH="${PATH}:${HOME}/.gem/ruby/${RUBY_VERSION}/bin"
 
 export EDITOR="$(which vim)"
 
+# Just for testing algo-and-ds repo
+export PATH="${PATH}:${HOME}/Projects/algorithms-and-data-structures"
 
 title=$(todo.sh ls | tail -n 1)
 todos=$(todo.sh ls | head -n $(($(todo.sh ls | wc -l)-2)))
@@ -27,6 +29,7 @@ echo "$(tput setaf 197)$title $(tput sgr0)"; echo $todos;
 
 ZSH_THEME="powerlevel9k/powerlevel9k"
 POWERLEVEL9K_MODE="powerline"
+ZSH_DISABLE_COMPFIX=true
 
 #############################################################################
 ####################### POWERLEVEL9K CONFIGURATION ##########################
@@ -124,6 +127,10 @@ POWERLEVEL9K_TIME_FOREGROUND="white"
 POWERLEVEL9K_TIME_FORMAT='%D{%H:%M}'
 POWERLEVEL9K_TIME_ICON=""
 
+# User
+POWERLEVEL9K_USER_BACKGROUND=$EMPTY_BG
+POWERLEVEL9K_USER_FOREGROUNG=076
+
 prompt_my_todo() {
   if $(hash todo.sh 2>&-); then
     count=$(todo.sh ls | egrep "TODO: [0-9]+ of ([0-9]+) tasks shown" | awk '{ print $4 }')
@@ -133,12 +140,46 @@ prompt_my_todo() {
   fi
 }
 
+POWERLEVEL9K_USER_TEMPLATE="%n"
+prompt_my_user() {
+  local current_state="DEFAULT"
+  typeset -AH user_state
+  if [[ "$POWERLEVEL9K_ALWAYS_SHOW_USER" == true ]] || [[ "$(whoami)" != "$DEFAULT_USER" ]]; then
+    if [[ $(print -P "%#") == '#' ]]; then
+      user_state=(
+        "STATE"               "ROOT"
+        "CONTENT"             "${POWERLEVEL9K_USER_TEMPLATE}"
+        "BACKGROUND_COLOR"    "${POWERLEVEL9K_USER_BACKGROUND}"
+        "FOREGROUND_COLOR"    "${POWERLEVEL9K_USER_FOREGROUNG}"
+        "VISUAL_IDENTIFIER"   ""
+      )
+    elif sudo -n true 2>/dev/null; then
+      user_state=(
+        "STATE"               "SUDO"
+        "CONTENT"             "${POWERLEVEL9K_USER_TEMPLATE}"
+        "BACKGROUND_COLOR"    "${POWERLEVEL9K_USER_BACKGROUND}"
+        "FOREGROUND_COLOR"    "${POWERLEVEL9K_USER_FOREGROUNG}"
+        "VISUAL_IDENTIFIER"   ""
+      )
+    else
+      user_state=(
+        "STATE"               "DEFAULT"
+        "CONTENT"             "$(whoami)"
+        "BACKGROUND_COLOR"    "${POWERLEVEL9K_USER_BACKGROUND}"
+        "FOREGROUND_COLOR"    "${POWERLEVEL9K_USER_FOREGROUNG}"
+        "VISUAL_IDENTIFIER"   ""
+      )
+    fi
+    "$1_prompt_segment" "${0}_${user_state[STATE]}" "$2" "${user_state[BACKGROUND_COLOR]}" "${user_state[FOREGROUND_COLOR]}" "${user_state[CONTENT]}" "${user_state[VISUAL_IDENTIFIER]}"
+  fi
+}
+
 function colors256() {
 	for code ({000..255}) 
 		print -P -- "$code: %F{$code} color%f"
 }
 
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(my_user dir vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(command_execution_time background_jobs my_todo)
 
 #############################################################################
@@ -281,6 +322,11 @@ disconnect(){
 	else
 		xrandr --output "$1" --off
 	fi
+}
+
+unmute() {
+	amixer sset Master unmute
+	amixer sset Speaker unmute
 }
 
 if [ $commands[kubectl] ]; then
