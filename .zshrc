@@ -12,10 +12,11 @@ export LANG=en_US.UTF-8
 export LESS="--tabs=4 --no-init --LONG-PROMPT --ignore-case --quit-if-one-screen --RAW-CONTROL-CHARS"
 export LS_COLORS="di=38;5;38:ex=38;5;82"
 
-export GOPATH=${HOME}/Projects/go
-export PATH="$PATH:$GOPATH/bin"
+export GOPATH="${HOME}/.go"
+export GOROOT="/usr/lib/go"
+export PATH="$PATH:$GOPATH/bin:$GOROOT/bin"
 
-RUBY_VERSION="2.5.0"
+export RUBY_VERSION="2.5.0"
 export PATH="${PATH}:${HOME}/.gem/ruby/${RUBY_VERSION}/bin"
 
 export EDITOR="$(which vim)"
@@ -24,8 +25,8 @@ export EDITOR="$(which vim)"
 export PATH="${PATH}:${HOME}/Projects/algorithms-and-data-structures"
 
 title=$(todo.sh ls | tail -n 1)
-todos=$(todo.sh ls | head -n $(($(todo.sh ls | wc -l)-2)))
-echo "$(tput setaf 197)$title $(tput sgr0)"; echo $todos;
+todos=$(todo.sh ls | head -n $(($(todo.sh ls | wc -l)-2)) | sort)
+echo "$(tput setaf 197)$title $(tput sgr0)"; echo $todos; echo "";
 
 ZSH_THEME="powerlevel9k/powerlevel9k"
 POWERLEVEL9K_MODE="powerline"
@@ -174,11 +175,6 @@ prompt_my_user() {
   fi
 }
 
-function colors256() {
-	for code ({000..255}) 
-		print -P -- "$code: %F{$code} color%f"
-}
-
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(my_user dir vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(command_execution_time background_jobs my_todo)
 
@@ -306,7 +302,12 @@ zstyle ":completion:*:default" list-colors ${(s.:.)LS_COLORS}
 ############################# CONFIGURATION #################################
 #############################################################################
 
-connect(){
+function colors256() {
+	for code ({000..255}) 
+		print -P -- "$code: %F{$code} color%f"
+}
+
+function connect(){
 	if [[ "$#" -eq "0" ]]
 	then
 		echo "output identifier is required"
@@ -315,7 +316,7 @@ connect(){
 	fi
 }
 
-disconnect(){
+function disconnect(){
 	if [[ "$#" -eq "0" ]]
 	then
 		echo "output identifier is required"
@@ -324,7 +325,7 @@ disconnect(){
 	fi
 }
 
-unmute() {
+function unmute() {
 	amixer sset Master unmute
 	amixer sset Speaker unmute
 }
@@ -332,6 +333,29 @@ unmute() {
 if [ $commands[kubectl] ]; then
 	source <(kubectl completion zsh)
 fi
+
+# # ex - archive extractor
+# # usage: ex <file>
+function ex () {
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1   ;;
+      *.tar.gz)    tar xzf $1   ;;
+      *.bz2)       bunzip2 $1   ;;
+      *.rar)       unrar x $1     ;;
+      *.gz)        gunzip $1    ;;
+      *.tar)       tar xf $1    ;;
+      *.tbz2)      tar xjf $1   ;;
+      *.tgz)       tar xzf $1   ;;
+      *.zip)       unzip $1     ;;
+      *.Z)         uncompress $1;;
+      *.7z)        7z x $1      ;;
+      *)           echo "'$1' cannot be extracted via ex()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
 
 #############################################################################
 ############################## ALIASES ######################################
@@ -343,4 +367,7 @@ alias pi='ssh pi@192.168.1.100'
 alias pifs='sshfs pi@192.168.1.100:/mnt/HDD/ /mnt/HDD'
 alias todo='todo.sh'
 alias rs='repos-stat --no-clean --no-broken'
+alias df='df -h'                          # human-readable sizes
+alias du='du -h'
+alias free='free -m'                      # show sizes in MB
 

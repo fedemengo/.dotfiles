@@ -22,13 +22,14 @@
     background_type = solid
     scrollbar_position = hidden
     foreground_color = "#e2e2e2"
-    font = Bitstream Vera Sans Mono 16
-    background_color = "#1c1c1c"
+    font = Bitstream Vera Sans Mono 15
+   	background_color = "#000000"
+   	#background_color = "#1c1c1c"
     scrollback_infinite = True
 	show_titlebar = False
   [[root]]
     use_system_font = False
-    font = Bitstream Vera Sans Mono 16
+    font = Bitstream Vera Sans Mono 15
     background_color = "#222D31"
     foreground_color = "#cca938"
 [layouts]
