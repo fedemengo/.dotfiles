@@ -1,4 +1,4 @@
-# i3 config file (v4)
+
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 #	FEDEMENGO
@@ -44,7 +44,7 @@ bindsym $mod+Return exec terminator
 bindsym $mod+Shift+q kill
 
 # start program launcher
-bindsym $mod+d exec --no-startup-id dmenu_recency -i -h 25 -nb "#1c1c1c" -sb "#16a085" -fn "Bitstream Vera Sans Mono-15"
+bindsym $mod+d exec --no-startup-id dmenu_recency -i -h 5 -nb "#1c1c1c" -sb "#16a085" -fn "Bitstream Vera Sans Mono-13"
 
 # launch categorized menu
 bindsym XF86Tools exec --no-startup-id morc_menu
@@ -60,8 +60,8 @@ exec --no-startup-id volumeicon
 exec --no-startup-id pulseaudio
 #exec --no-startup-id pa-applet
 bindsym $mod+Ctrl+m exec pavucontrol
-#	FEDEMENGO (set the audio back on)
-bindsym Mod1 + XF86AudioMute exec "amixer sset Master unmute; amixer sset Speaker unmute"
+#	FEDEMENGO
+#bindsym Mod1 + XF86AudioMute exec "amixer sset Master unmute; amixer sset Speaker unmute"
 
 ################################################################################################
 
@@ -393,7 +393,7 @@ bindsym $mod+m bar mode toggle
 #############################
 
 # Set inner/outer gaps
-gaps inner 0
+gaps inner 5
 gaps outer 0
 
 # Additionally, you can issue commands with the following syntax. This is useful to bind keys to changing the gap size.
