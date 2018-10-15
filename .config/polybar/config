@@ -88,10 +88,10 @@ type = internal/fs
 interval = 5
 
 mount-0 = /
-mount-1 = /mnt/HDD
-;mount-2 = /mnt/HDD2
-mount-2 = /mnt/USB
-mount-3 = /mnt/Box
+mount-1 = /mnt/hdd
+;mount-2 = /mnt/hdd2
+mount-2 = /mnt/usb
+mount-3 = /mnt/box
 
 fixed-values = true
 label-mounted = %{F#00ff00}%mountpoint%%{F-}: %free%
