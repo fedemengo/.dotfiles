@@ -3,11 +3,24 @@
 ######################## ENVIRONMENT VARIABLES ##############################
 #############################################################################
 
-export TERM="xterm-256color"
+export TERM="terminator"
 export ZSH=$HOME/.oh-my-zsh
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-export LANG=en_US.UTF-8
+export LANG="en_US.UTF-8"
+export LC_CTYPE="en_US.UTF-8"
+export LC_NUMERIC="en_US.UTF-8"
+export LC_TIME="en_US.UTF-8"
+export LC_COLLATE="en_US.UTF-8"
+export LC_MONETARY="en_US.UTF-8"
+export LC_MESSAGES="en_US.UTF-8"
+export LC_PAPER="en_US.UTF-8"
+export LC_NAME="en_US.UTF-8"
+export LC_ADDRESS="en_US.UTF-8"
+export LC_TELEPHONE="en_US.UTF-8"
+export LC_MEASUREMENT="en_US.UTF-8"
+export LC_IDENTIFICATION="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
 
 export LESS="--tabs=4 --no-init --LONG-PROMPT --ignore-case --quit-if-one-screen --RAW-CONTROL-CHARS"
 export LS_COLORS="di=38;5;38:ex=38;5;82"
@@ -21,8 +34,12 @@ export PATH="${PATH}:${HOME}/.gem/ruby/${RUBY_VERSION}/bin"
 
 export EDITOR="$(which vim)"
 
+# python local stuff
+PYTHON_LOC="${HOME}/.local/bin"
+export PATH="${PATH}:${PYTHON_LOC}"
+
 # Just for testing algo-and-ds repo
-export PATH="${PATH}:${HOME}/Projects/algorithms-and-data-structures"
+export PATH="${PATH}:${HOME}/projects/algorithms-and-data-structures"
 
 title=$(todo.sh ls | tail -n 1)
 todos=$(todo.sh ls | head -n $(($(todo.sh ls | wc -l)-2)) | sort)
@@ -59,7 +76,7 @@ POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 POWERLEVEL9K_PROMPT_ADD_NEWLINE=false
 
 POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
-POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="\u25B8 "
+POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="\U1F892 " # \u25B8 "
 
 POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR=""
 POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR=""
@@ -165,7 +182,7 @@ prompt_my_user() {
     else
       user_state=(
         "STATE"               "DEFAULT"
-        "CONTENT"             "$(whoami)"
+        "CONTENT"             "${POWERLEVEL9K_USER_TEMPLATE}"
         "BACKGROUND_COLOR"    "${POWERLEVEL9K_USER_BACKGROUND}"
         "FOREGROUND_COLOR"    "${POWERLEVEL9K_USER_FOREGROUNG}"
         "VISUAL_IDENTIFIER"   ""
@@ -277,16 +294,11 @@ bindkey "^y" accept-and-hold
 bindkey "^w" backward-kill-word
 bindkey "^u" backward-kill-line
 bindkey "^R" history-incremental-pattern-search-backward
-bindkey "^F" history-incremental-pattern-search-forward
 
 # Do not require a space when attempting to tab-complete.
 bindkey "^i" expand-or-complete-prefix
-bindkey '^I' tab_list
-
-# Fixes for alt-backspace and arrows keys
-bindkey '^[^?' backward-kill-word
-bindkey "^[[1;5C" forward-word
-bindkey "^[[1;5D" backward-word
+bindkey "^I" tab_list
+bindkey "^[[Z" reverse-menu-complete
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*' insert-tab false
@@ -336,7 +348,7 @@ fi
 
 # # ex - archive extractor
 # # usage: ex <file>
-function ex () {
+function ex() {
   if [ -f $1 ] ; then
     case $1 in
       *.tar.bz2)   tar xjf $1   ;;
@@ -364,10 +376,10 @@ function ex () {
 alias ll="ls -ls --block-size=M"
 alias cp="cp -i"
 alias pi='ssh pi@192.168.1.100'
-alias pifs='sshfs pi@192.168.1.100:/mnt/HDD/ /mnt/HDD'
+alias pifs='sshfs pi@192.168.1.100:/mnt/HDD/ /mnt/hdd'
 alias todo='todo.sh'
 alias rs='repos-stat --no-clean --no-broken'
 alias df='df -h'                          # human-readable sizes
-alias du='du -h'
+alias du='du -h --max-depth=1'
 alias free='free -m'                      # show sizes in MB
 
