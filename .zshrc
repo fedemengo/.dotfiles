@@ -373,8 +373,9 @@ function ex() {
 ############################## ALIASES ######################################
 #############################################################################
 
-alias ll="ls -ls --block-size=M"
 alias cp="cp -i"
+alias mv="mv -i"
+alias rm="rm -i"
 alias pi='ssh pi@192.168.1.100'
 alias pifs='sshfs pi@192.168.1.100:/mnt/HDD/ /mnt/hdd'
 alias todo='todo.sh'
@@ -382,4 +383,28 @@ alias rs='repos-stat --no-clean --no-broken'
 alias df='df -h'                          # human-readable sizes
 alias du='du -h --max-depth=1'
 alias free='free -m'                      # show sizes in MB
+
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+alias -g ......='../../../../..'
+
+alias -- -='cd -'
+alias 1='cd -'
+alias 2='cd -2'
+alias 3='cd -3'
+alias 4='cd -4'
+alias 5='cd -5'
+alias 6='cd -6'
+alias 7='cd -7'
+alias 8='cd -8'
+alias 9='cd -9'
+
+alias md='mkdir -p'
+alias rd=rmdir
+alias d='dirs -v | head -10'
+
+# List directory contents
+alias l="ls -ls --block-size=M"
+alias ll='ls -lah'
 

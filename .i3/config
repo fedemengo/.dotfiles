@@ -38,7 +38,7 @@ floating_modifier $mod
 
 # start a terminal
 #bindsym $mod+Return exec terminal
-bindsym $mod+Return exec terminator
+bindsym $mod+Return exec terminator -e "script '${HOME}/.sessions/$(date)'"
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -56,7 +56,7 @@ bindsym XF86Tools exec --no-startup-id morc_menu
 
 # 	FEDEMENGO (consider killing it when messy)
 exec --no-startup-id volumeicon
-###bindsym $mod+Ctrl+m exec terminal -e 'alsamixer'
+#########bindsym $mod+Ctrl+m exec terminal -e 'alsamixer'
 exec --no-startup-id pulseaudio
 #exec --no-startup-id pa-applet
 bindsym $mod+Ctrl+m exec pavucontrol
@@ -309,7 +309,8 @@ exec --no-startup-id xfce4-power-manager
 # 	FEDEMENGO
 #	exec --no-startup-id start_conky_maia
 #	exec --no-startup-id start_conky_green
-exec --no-startup-id xautolock -time 10 -locker blurlock
+#   FEDEMENGO
+# exec --no-startup-id xautolock -time 1 -locker blurlock
 exec_always --no-startup-id ff-theme-util
 exec_always --no-startup-id fix_xcursor
 
@@ -378,7 +379,7 @@ bar {
 }
 
 # hide/unhide i3status bar
-bindsym $mod+m exec "polybar-msg cmd toggle"
+bindsym $mod+Tab exec "polybar-msg cmd toggle"
 
 # Theme colors
 # class                   border  backgr. text    indic.   child_border
@@ -395,7 +396,7 @@ bindsym $mod+m exec "polybar-msg cmd toggle"
 #############################
 
 # Set inner/outer gaps
-gaps inner 5
+gaps inner 3
 gaps outer 0
 
 # Additionally, you can issue commands with the following syntax. This is useful to bind keys to changing the gap size.
