@@ -38,7 +38,8 @@ floating_modifier $mod
 
 # start a terminal
 #bindsym $mod+Return exec terminal
-bindsym $mod+Return exec terminator -e "script '${HOME}/.sessions/$(date)'"
+bindsym $mod+Return exec terminator -e "${HOME}/.i3/shell.sh"
+#bindsym $mod+Return exec terminator -e "script '${HOME}/.sessions/$(date)'"
 
 # kill focused window
 bindsym $mod+Shift+q kill
