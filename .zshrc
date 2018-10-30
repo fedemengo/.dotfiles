@@ -239,15 +239,11 @@ POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(command_execution_time background_jobs my_to
 
   # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
   # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-  # Example format: plugins=(rails git textmate ruby lighthouse)
-  # Add wisely, as too many plugins slow down shell startup.
 
 plugins=(
-  git
   web-search
   encode64
   zsh-autosuggestions
-  bd
   catimg
 )
 
@@ -264,6 +260,12 @@ function tab_list {
 	fi
 }
 zle -N tab_list
+
+function forward-kill-word {
+    zle forward-word
+    zle backward-kill-word
+}
+zle -N forward-kill-word
 
 # History
 HISTFILE=~/.zsh_history
@@ -289,13 +291,14 @@ bindkey "^e" end-of-line
 bindkey "^f" forward-word
 bindkey "^b" backward-word
 bindkey "^k" kill-line
-bindkey "^d" delete-char
 bindkey "^y" accept-and-hold
+bindkey "^ " forward-char
+bindkey "^d" forward-kill-word
 bindkey "^w" backward-kill-word
 bindkey "^u" backward-kill-line
 bindkey "^R" history-incremental-pattern-search-backward
-
-# Do not require a space when attempting to tab-complete.
+bindkey "^[k" up-history
+bindkey "^[j" down-history
 bindkey "^i" expand-or-complete-prefix
 bindkey "^I" tab_list
 bindkey "^[[Z" reverse-menu-complete
@@ -346,8 +349,7 @@ if [ $commands[kubectl] ]; then
 	source <(kubectl completion zsh)
 fi
 
-# # ex - archive extractor
-# # usage: ex <file>
+# # ex - archive extractor # usage: ex <file>
 function ex() {
   if [ -f $1 ] ; then
     case $1 in
@@ -383,6 +385,7 @@ alias rs='repos-stat --no-clean --no-broken'
 alias df='df -h'                          # human-readable sizes
 alias du='du -h --max-depth=1'
 alias free='free -m'                      # show sizes in MB
+alias diff='colordiff'
 
 alias -g ...='../..'
 alias -g ....='../../..'
@@ -401,8 +404,6 @@ alias 8='cd -8'
 alias 9='cd -9'
 
 alias md='mkdir -p'
-alias rd=rmdir
-alias d='dirs -v | head -10'
 
 # List directory contents
 alias l="ls -ls --block-size=M"
