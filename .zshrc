@@ -345,8 +345,18 @@ function unmute() {
 	amixer sset Speaker unmute
 }
 
+function toogle_audio(){
+    amixer sset Master toggle
+}
+
+
 if [ $commands[kubectl] ]; then
 	source <(kubectl completion zsh)
+fi
+
+if [ -z ${SSH_AUTH_SOCK} ]; then
+    eval `ssh-agent -s` &> /dev/null
+    find ${HOME}/.ssh/ -not -name "*.pub" -type f | xargs ssh-add &> /dev/null
 fi
 
 # # ex - archive extractor # usage: ex <file>
@@ -379,7 +389,7 @@ alias cp="cp -i"
 alias mv="mv -i"
 alias rm="rm -i"
 alias pi='ssh pi@192.168.1.100'
-alias pifs='sshfs pi@192.168.1.100:/mnt/HDD/ /mnt/hdd'
+alias pifs='sshfs pi@192.168.1.100:/mnt/hdd/ /mnt/hdd'
 alias todo='todo.sh'
 alias rs='repos-stat --no-clean --no-broken'
 alias df='df -h'                          # human-readable sizes
@@ -408,4 +418,6 @@ alias md='mkdir -p'
 # List directory contents
 alias l="ls -ls --block-size=M"
 alias ll='ls -lah'
+
+#alias chromium='chromium --force-device-scale-factor=1.5'
 

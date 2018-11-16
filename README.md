@@ -6,6 +6,8 @@ Files in `etc/` and `usr/` are not actually located in the home folder. Follow t
 	- `etc/default/grub` to `/etc/default/grub` then run `sudo update-grub`
 	- `etc/ssh/sshd_config` to `/etc/ssh/sshd_config`
 	- `etc/locale.conf` to `/etc/locale.conf` or just set the proper locale
+        - Uncomment the locale to be generate in `/etc/locale.gen`
+        - Generate with `sudo locale-gen`
 	- `usr/share/X11/xorg.conf.d` to `/usr/share/X11/` or just copy the content
 	- `usr/share/conky/` to `/usr/share/` (now disabled in `~/.i3/config/`)
 
@@ -16,10 +18,10 @@ All the other configuration files are in the home folder
 
 ## Shell
 
-- Copy `.vimrc` to `~/.vimrc`
+- Link `.vimrc` to `~/.vimrc`
 - Copy content of `.vim/` to `~/.vim/`
 - Install **Oh-My-Zsh**
-- Copy `.zshrc` to `~/.zshrc`
+- Link `.zshrc` to `~/.zshrc`
 - Install **terminator**
 - Copy `.config/terminator` to `~/.config/terminator/`
 
@@ -29,7 +31,6 @@ All the other configuration files are in the home folder
 ### Additional packages
 - [termtosvg](https://github.com/nbedos/termtosvg)
 - [todo.txt](https://github.com/todotxt/todo.txt-cli)
-- [cheat](https://github.com/chrisallenlane/cheat)
 
 ## Touchscreen
 
@@ -103,7 +104,20 @@ Section "InputClass"
 EndSection
 ```
 
-## Audio
+## Notes
+
+### Audio
+
+Should works with just `alsa` installed. Currently it works with the following packages
+```
+alsa-lib 1.1.7-1
+alsa-plugins 1.1.7-3
+alsa-tools 1.1.7-1
+alsa-utils 1.1.7-1
+zita-alsa-pcmi 0.3.2-1
+```
+
+#### Possible fixes/patches
 
 Detect sound card with `cat /proc/asound/cards`. That gives the following output
 
@@ -132,8 +146,6 @@ To unmute the sound use the keybind `Mod1 + XF86SoundMute` set in `.i3/config`
 
 If the output of `pulseaudio` shows `E: [pulseaudio] main.c: pa_pid_file_create() failed.` try to add **user** to **audio** group with `sudo usermod -aG audio your_user_name`
 
-### Audio tips
-
 Using both `pulseaudio` and `alsamixer`. Get default output device with `pacmd list-sinks | grep -e 'name:' -e 'index:'` 
 
 List all available cards with `aplay -L`
@@ -151,8 +163,6 @@ and test if they are working with `speaker-test -D NAME -c 2` where the name cou
 [Alsa](https://wiki.archlinux.org/index.php/Advanced_Linux_Sound_Architecture)
 
 [PulseAudio](https://wiki.archlinux.org/index.php/PulseAudio)
-
-## Notes
 
 ### Screen resolution
 
