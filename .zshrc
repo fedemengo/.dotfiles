@@ -322,7 +322,7 @@ function colors256() {
 		print -P -- "$code: %F{$code} color%f"
 }
 
-function connect(){
+function connect_HDMI(){
 	if [[ "$#" -eq "0" ]]
 	then
 		echo "output identifier is required"
@@ -331,24 +331,36 @@ function connect(){
 	fi
 }
 
-function disconnect(){
-	if [[ "$#" -eq "0" ]]
-	then
+function disconnect_HDMI(){
+	if [[ "$#" -eq "0" ]]; then
 		echo "output identifier is required"
 	else
 		xrandr --output "$1" --off
 	fi
 }
 
-function unmute() {
-	amixer sset Master unmute
-	amixer sset Speaker unmute
+function connect_VPN() {
+    PID=$(pgrep openvpn)
+    if [ -n "$PID" ]; then
+        echo "VPN already connected PID $PID"
+        return 1
+    else
+        sudo openvpn --daemon --config /etc/openvpn/torguard/TorGuard.USA-LA.ovpn --cd /etc/openvpn/torguard
+        return 0
+    fi
 }
 
-function toogle_audio(){
-    amixer sset Master toggle
+function disconnect_VPN() {
+    PID=$(pgrep openvpn)
+    if [ -z "$PID" ]; then
+        echo "No active VPN connections"
+        return 1
+    else
+        echo "Closing connection..."
+        sudo kill -9 $PID
+        return 0
+    fi
 }
-
 
 if [ $commands[kubectl] ]; then
 	source <(kubectl completion zsh)
