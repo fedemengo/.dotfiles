@@ -106,6 +106,8 @@ EndSection
 
 ## Notes
 
+[Arch on X1 carbon](https://wiki.archlinux.org/index.php/Lenovo_ThinkPad_X1_Carbon_(Gen_2))
+
 ### Audio
 
 Should works with just `alsa` installed. Currently it works with the following packages

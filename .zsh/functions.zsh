@@ -7,6 +7,7 @@ function colors256() {
 function connect_HDMI(){
     if [[ "$#" -eq "0" ]]; then
         echo "output identifier is required"
+        return 1
     else
         xrandr --output "$1" --auto --output eDP1 --auto --right-of "$1"
     fi
@@ -15,6 +16,7 @@ function connect_HDMI(){
 function disconnect_HDMI(){
     if [[ "$#" -eq "0" ]]; then
         echo "output identifier is required"
+        return 1
     else
         xrandr --output "$1" --off
     fi
@@ -26,8 +28,7 @@ function connect_VPN() {
         echo "VPN already connected PID $PID"
         return 1
     else
-        sudo openvpn --daemon --config /etc/openvpn/torguard/TorGuard.USA-LA.ovpn --cd /etc/openvpn/torguard
-        return 0
+        sudo openvpn --daemon --config ${HOME}/.torguard/torguard-PRO/TorGuard.USA-NEW-YORK.ovpn --cd ${HOME}/.torguard
     fi
 }
 
@@ -39,8 +40,12 @@ function disconnect_VPN() {
     else
         echo "Closing connection..."
         sudo kill -9 $PID
-        return 0
     fi
+}
+
+function fix_touchpad() {
+    sudo modprobe -r i2c_i801 
+    sudo modprobe i2c_i801 
 }
 
 if [ -n $commands[kubectl] ]; then
@@ -64,7 +69,7 @@ function ex() {
       *.tar)       tar xf $1    ;;
       *.tbz2)      tar xjf $1   ;;
       *.tgz)       tar xzf $1   ;;
-      *.zip)       unzip $1     ;;
+      *.zip)       unzip $1 -d ${1/%.zip/}     ;;
       *.Z)         uncompress $1;;
       *.7z)        7z x $1      ;;
       *)           echo "'$1' cannot be extracted via ex()" ;;
