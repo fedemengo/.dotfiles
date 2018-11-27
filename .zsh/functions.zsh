@@ -22,13 +22,62 @@ function disconnect_HDMI(){
     fi
 }
 
+function info_VPN() {
+    json=$(curl -u f0a5a396c73fd0: ipinfo.io -H 'Cache-Control: no-cache' 2>/dev/null)
+    IP=$(echo ${json} | jq ".ip")
+    LOC=$(echo ${json} | jq ".city")
+
+    if [ "$1" -eq "1" ]; then
+        printf "Public IP:\t %s\n" ${IP}
+        printf "City:\t\t %s\n" ${LOC}
+    fi
+
+    if [ "$2" != "${IP}" ]; then
+        return 0;
+    else
+        return 1;
+    fi
+}
+
+#VPN_LOCATION="NEW-YORK"
+VPN_LOCATION="LA"
+
+# Before connecting to vpn, change DNS resulution
+# - In file /etc/resolv.conf add 1.1.1.1 and google's 8.8.8.8
+# - Make the file inmutable with "sudo chattr +i /etc/resolv.conf"
+# Done
+
 function connect_VPN() {
     PID=$(pgrep openvpn)
     if [ -n "$PID" ]; then
         echo "VPN already connected PID $PID"
         return 1
     else
-        sudo openvpn --daemon --config ${HOME}/.torguard/torguard-PRO/TorGuard.USA-NEW-YORK.ovpn --cd ${HOME}/.torguard
+        # Get sudo access
+        sudo ls &>/dev/null
+        echo "Current location"
+        IP=$(curl -u f0a5a396c73fd0: ipinfo.io -H 'Cache-Control: no-cache' 2>/dev/null | jq ".ip")
+        info_VPN 1
+        echo ""
+        echo "Connecting to VPN.."
+        sudo openvpn --daemon --config ${HOME}/.torguard/torguard-PRO/TorGuard.USA-${VPN_LOCATION}.ovpn --cd ${HOME}/.torguard
+        if [[ "$?" -eq "0" ]]; then
+            echo "Checking connection.."
+            sleep 1;
+            info_VPN 0 ${IP}
+            while [[ "$?" -eq "1" ]]; do
+                echo "Checking connection.."
+                sleep 1;
+                info_VPN 0 "${IP}"
+            done
+            echo "Connection established"
+            echo ""
+            info_VPN 1
+        else
+            RET=$?
+            echo "Impossible to connect to VPN"
+            return ${RET}
+        fi
     fi
 }
 
@@ -39,13 +88,19 @@ function disconnect_VPN() {
         return 1
     else
         echo "Closing connection..."
-        sudo kill -9 $PID
+        for ps in `pgrep openvpn`;
+        do
+            sudo kill -9 ${ps}
+        done
     fi
 }
 
+#module="psmouse"
+module="i2c_i801"
+
 function fix_touchpad() {
-    sudo modprobe -r i2c_i801 
-    sudo modprobe i2c_i801 
+    sudo modprobe -r ${module}
+    sudo modprobe ${module}
 }
 
 if [ -n $commands[kubectl] ]; then
