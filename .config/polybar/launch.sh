@@ -7,7 +7,11 @@ killall -q polybar
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
 # Launch bar1
-polybar i3bar &
+for monitor in `polybar -m | cut -d: -f1`;
+do
+    MONITOR=${monitor} polybar i3bar &
+    #MONITOR=${monitor} polybar i3bar -c ~/.config/polybar/config &
+done
 
 echo "Bars launched..."
 

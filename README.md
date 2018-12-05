@@ -1,34 +1,34 @@
 # Manjaro dotfiles
 
-Files in `etc/` and `usr/` are not actually located in the home folder. Follow the steps below
+Files in `etc/` and `usr/` are not actually located in the home folder. Clone the repo, then `cd dotfiles` and then follow these steps
 
-- Copy the following file to the specified location
-	- `etc/default/grub` to `/etc/default/grub` then run `sudo update-grub`
-	- `etc/ssh/sshd_config` to `/etc/ssh/sshd_config`
-	- `etc/locale.conf` to `/etc/locale.conf` or just set the proper locale
-        - Uncomment the locale to be generate in `/etc/locale.gen`
-        - Generate with `sudo locale-gen`
-	- `usr/share/X11/xorg.conf.d` to `/usr/share/X11/` or just copy the content
-	- `usr/share/conky/` to `/usr/share/` (now disabled in `~/.i3/config/`)
+- `cp etc/default/grub /etc/default/grub; sudo update-grub`
+- `cp etc/ssh/sshd_config /etc/ssh/sshd_config`
+- `cp etc/locale.conf /etc/locale.conf` or just set the proper locale
+    - Uncomment the locale to be generate in `/etc/locale.gen`
+    - Generate with `sudo locale-gen`
+- `cp -r usr/share/X11/xorg.conf.d /usr/share/X11/` or just copy the content
+- `cp -r usr/share/conky /usr/share/` (now disabled in `~/.i3/config/`)
 
 All the other configuration files are in the home folder
 
-- Copy `.i3/` to `~/.i3/`
-- Copy `.Xresources` to `~/.Xresources/` then run `xrdb ~/.Xresources`
+- `cp -r .i3 ~/` copy i3 configuration files
+- `cp -r .config ~/` copy general config files
+- `cp .Xresources ~/; xrdb ~/.Xresources`
 
 ## Shell
 
-- Link `.vimrc` to `~/.vimrc`
-- Copy content of `.vim/` to `~/.vim/`
-- Install **Oh-My-Zsh**
-- Link `.zshrc` to `~/.zshrc`
-- Install **terminator**
-- Copy `.config/terminator` to `~/.config/terminator/`
+Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator** if necessary, then
 
-### Vim plugins
+- `cp -r .vim ~/.vim/`
+- `ln -s .vimrc ~/.vimrc`
+- `ln -s .zshrc ~/.zshrc`
+- Double check that `~/.config/terminator/config` exists, or `cp .config/terminator ~/.config/`
+
+#### Vim plugins
 - [vim-netranger](https://github.com/ipod825/vim-netranger)
 
-### Additional packages
+#### Additional packages
 - [termtosvg](https://github.com/nbedos/termtosvg)
 - [todo.txt](https://github.com/todotxt/todo.txt-cli)
 
@@ -39,12 +39,11 @@ All the other configuration files are in the home folder
 	- `git clone https://aur.archlinux.org/geis.git` (required `grail`)
 	- `git clone https://aur.archlinux.org/grail.git` (required `frame`)
 	- `git clone https://aur.archlinux.org/frame.git`
-- Copy `touchegg.conf` to `~/.config/touchegg/`
-- Create `~/.xprofile` and add `touchegg &`
-- Add the following line to `~/.xinitrc`
-	- `[ -f ~/.xprofile ] &&  . ~/.xprofile`
+- Double check that `~/.config/touchegg/touchegg.conf` exists, or `cp .config/touchegg ~/.config/`
+- Load **touchegg** with `echo "touchegg &" >> ~/.xprofile`
+- Load `~/.xprofile` from `~/.xinitrc` with `echo "[ -f ~/.xprofile ] &&  . ~/.xprofile" >> ~/.xinitrc`
 
-### touchegg.conf
+### `touchegg.conf`
 
 ```
 <touchégg>
@@ -86,9 +85,9 @@ All the other configuration files are in the home folder
 ## Touchpad
 
 - Install **xf86-input-libinput**
-	- Copy `40-libinput.conf` to `/etc/X11/xorg.conf.d/`
+- `cp 40-libinput.conf /etc/X11/xorg.conf.d/`
 
-### 40-libinput.conf
+### `40-libinput.conf`
 
 ```
 Section "InputClass"
