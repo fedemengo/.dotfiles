@@ -199,13 +199,15 @@ card = intel_backlight
 [module/vpn]
 type = custom/script
 exec = ~/.config/polybar/vpn.sh
-interval = 5
+interval = 10
 format-prefix = "vpn "
 format-prefix-foreground = ${colors.primary}
 format = <label>
 label = "%output%"
 tail = true
-click-left = ~/.config/polybar/toggle-vpn.sh
+click-left = ~/.config/polybar/vpn-info.sh
+click-right = ~/.config/polybar/toggle-vpn.sh
+;double-click-left = ~/.config/polybar/toggle-vpn.sh
 
 [module/cpu]
 type = internal/cpu

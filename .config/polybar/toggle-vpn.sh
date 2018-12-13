@@ -2,7 +2,7 @@
 
 VPN_LOCATION="LA"
 PID=$(pgrep openvpn)
-PASS=`cat ${HOME}/.config/polybar/pwwd`
+PASS=`cat ${HOME}/.config/polybar/__pwwd`
 
 if [ -n "$PID" ]; then
     notify-send -u critical "Disconnecting VPN"

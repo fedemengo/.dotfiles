@@ -1,5 +1,5 @@
 
-export TERM="terminator"
+export TERM="termite"
 export ZSH=$HOME/.oh-my-zsh
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -36,4 +36,6 @@ export PATH="${PATH}:${PYTHON_LOC}"
 
 # Just for testing algo-and-ds repo
 export PATH="${PATH}:${HOME}/projects/algorithms-and-data-structures"
+
+export IP_TOKEN="4c202ad50e5741"
 

@@ -23,11 +23,11 @@ function disconnect_HDMI(){
 }
 
 function info_VPN() {
-    json=$(curl -u f0a5a396c73fd0: ipinfo.io -H 'Cache-Control: no-cache' 2>/dev/null)
+    json=$(curl -u ${IP_TOKEN}: ipinfo.io -H 'Cache-Control: no-cache' 2>/dev/null)
     IP=$(echo ${json} | jq ".ip")
     LOC=$(echo ${json} | jq ".city")
 
-    if [ "$1" -eq "1" ]; then
+    if [[ "$#" -lt "1" ]]; then
         printf "Public IP:\t %s\n" ${IP}
         printf "City:\t\t %s\n" ${LOC}
     fi
@@ -56,23 +56,23 @@ function connect_VPN() {
         # Get sudo access
         sudo ls &>/dev/null
         echo "Current location"
-        IP=$(curl -u f0a5a396c73fd0: ipinfo.io -H 'Cache-Control: no-cache' 2>/dev/null | jq ".ip")
-        info_VPN 1
+        IP=$(curl -u ${IP_TOKEN}: ipinfo.io -H 'Cache-Control: no-cache' 2>/dev/null | jq ".ip")
+        info_VPN
         echo ""
         echo "Connecting to VPN.."
         sudo openvpn --daemon --config ${HOME}/.torguard/torguard-PRO/TorGuard.USA-${VPN_LOCATION}.ovpn --cd ${HOME}/.torguard
         if [[ "$?" -eq "0" ]]; then
             echo "Checking connection.."
             sleep 1;
-            info_VPN 0 ${IP}
+            info_VPN ${IP}
             while [[ "$?" -eq "1" ]]; do
                 echo "Checking connection.."
                 sleep 1;
-                info_VPN 0 "${IP}"
+                info_VPN "${IP}"
             done
             echo "Connection established"
             echo ""
-            info_VPN 1
+            info_VPN
         else
             RET=$?
             echo "Impossible to connect to VPN"

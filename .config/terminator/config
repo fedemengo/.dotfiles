@@ -19,7 +19,8 @@
     use_system_font = False
     background_darkness = 0.2
     scrollback_lines = 1000
-    background_type = solid
+    background_type = transparent
+    #background_type = solid
     scrollbar_position = hidden
     foreground_color = "#e2e2e2"
     font = Ubuntu Mono derivative Powerline 17

@@ -1,4 +1,3 @@
-
 #############################################################################
 ############################# OTHER CONFIGURATION ###########################
 #############################################################################
@@ -63,12 +62,13 @@ function tab_list {
         zle expand-or-complete
     fi
 }
-zle -N tab_list
 
 function forward-kill-word {
     zle forward-word
     zle backward-kill-word
 }
+
+zle -N tab_list
 zle -N forward-kill-word
 
 # History
@@ -111,20 +111,19 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' insert-tab false
 zstyle ':completion:*' rehash true
 # case-insensitive (all), partial-word and then substring completion
-zstyle ":completion:*" matcher-list \
-  "m:{a-zA-Z}={A-Za-z}" \
-  "r:|[._-]=* r:|=*" \
-  "l:|=* r:|=*"
+zstyle ":completion:*" matcher-list "m:{a-zA-Z}={A-Za-z}" "r:|[._-]=* r:|=*" "l:|=* r:|=*"
 zstyle ":completion:*:default" list-colors ${(s.:.)LS_COLORS}
-
 
 #############################################################################
 ############################## ALIASES ######################################
 #############################################################################
 
-alias cp="cp -i"
-alias mv="mv -i"
-alias rm="rm -i"
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+alias md='mkdir -p'
+alias l="ls -ls --block-size=M"
+alias ll='ls -lah'
 alias pi='ssh pi@192.168.1.100'
 alias pifs='sshfs -o allow_other pi@192.168.1.100:/mnt/hdd/ /mnt/hdd'
 alias todo='todo.sh'
@@ -134,10 +133,10 @@ alias du='du -h --max-depth=1'
 alias free='free -m'                      # show sizes in MB
 alias diff='colordiff'
 
-alias -g ...='../..'
-alias -g ....='../../..'
-alias -g .....='../../../..'
-alias -g ......='../../../../..'
+alias ...='../..'
+alias ....='../../..'
+alias .....='../../../..'
+alias ......='../../../../..'
 
 alias -- -='cd -'
 alias 1='cd -'
@@ -149,12 +148,6 @@ alias 6='cd -6'
 alias 7='cd -7'
 alias 8='cd -8'
 alias 9='cd -9'
-
-alias md='mkdir -p'
-
-# List directory contents
-alias l="ls -ls --block-size=M"
-alias ll='ls -lah'
 
 #alias chromium='chromium --force-device-scale-factor=1.5'
 
