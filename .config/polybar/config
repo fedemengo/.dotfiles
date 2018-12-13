@@ -40,7 +40,7 @@ font-0 = fixed:pixelsize=14;2
 ;font-2 = siji:pixelsize=10;1
 
 modules-left = i3
-modules-center = cpu memory temperature battery filesystem
+modules-center = vpn cpu memory temperature battery filesystem
 modules-right =  date wlan
 ;modules-right = filesystem xbacklight alsa pulseaudio xkeyboard memory cpu wlan eth battery temperature date powermenu
 
@@ -194,6 +194,17 @@ bar-empty-foreground = ${colors.foreground-alt}
 inherit = module/xbacklight
 type = internal/backlight
 card = intel_backlight
+
+[module/vpn]
+type = custom/script
+exec = ~/.config/polybar/vpn.sh
+interval = 5
+format-prefix = "vpn "
+format-prefix-foreground = ${colors.primary}
+format = <label>
+label = "%output%"
+tail = true
+click-left = ~/.config/polybar/toggle-vpn.sh
 
 [module/cpu]
 type = internal/cpu
