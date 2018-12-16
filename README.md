@@ -1,4 +1,15 @@
 # Manjaro dotfiles
+## TODO
+
+Write a script to automatically setup the environment
+
+- Download repo
+- Install dependencies (identify deps first)
+- Copy, move, create, link all required files
+- ...
+
+<details>
+<summary><b>Folder structure</b></summary>
 
 Files in `etc/` and `usr/` are not actually located in the home folder. Clone the repo, then `cd dotfiles` and then follow these steps
 
@@ -15,8 +26,12 @@ All the other configuration files are in the home folder
 - `cp -r .i3 ~/` copy i3 configuration files, even better `ln -s DOTFILE_DIR/.i3 ${HOME}/.i3`
 - `cp -r .config ~/` copy general config files
 - `cp .Xresources ~/; xrdb ~/.Xresources`
+</details>
 
 ## Shell
+
+<details>
+<summary><b>Configuration</b></summary>
 
 Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator** if necessary, then
 
@@ -32,8 +47,12 @@ Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator** if necessary, 
 - [termtosvg](https://github.com/nbedos/termtosvg)
 - [todo.txt](https://github.com/todotxt/todo.txt-cli)
 - **xbacklight** - `pacman -Syu xorg-xbacklight`
+</details>
 
 ## Touchscreen
+
+<details>
+<summary><b>Configuration</b></summary>
 
 - Install **touchegg**: dowload the following **AUR** packages and `makepkg -si`
 	- `git clone https://aur.archlinux.org/touchegg.git` (required `geis`)
@@ -45,6 +64,8 @@ Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator** if necessary, 
 - Load `~/.xprofile` from `~/.xinitrc` with `echo "[ -f ~/.xprofile ] &&  . ~/.xprofile" >> ~/.xinitrc`
 
 ### `touchegg.conf`
+<details>
+<summary><b>More</b></summary>
 
 ```
 <touchégg>
@@ -82,8 +103,13 @@ Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator** if necessary, 
   </application>
 </touchégg>
 ```
+</details>
+</details>
 
 ## Touchpad
+
+<details>
+<summary><b>Configuration</b></summary>
 
 - Install **xf86-input-libinput**
 - `cp 40-libinput.conf /etc/X11/xorg.conf.d/`
@@ -103,12 +129,12 @@ Section "InputClass"
         Option "TappingButtonMap" "lrm"
 EndSection
 ```
+</details>
 
 ## Notes
 
-[Arch on X1 carbon](https://wiki.archlinux.org/index.php/Lenovo_ThinkPad_X1_Carbon_(Gen_2))
-
-### Audio
+<details>
+<summary><b>Audio</b></summary>
 
 Should works with just `alsa` installed. Currently it works with the following packages
 ```
@@ -162,11 +188,14 @@ default
 ```
 and test if they are working with `speaker-test -D NAME -c 2` where the name could be, in this specific case, "pulse" or "default".
 
-[Alsa](https://wiki.archlinux.org/index.php/Advanced_Linux_Sound_Architecture)
+- [Alsa](https://wiki.archlinux.org/index.php/Advanced_Linux_Sound_Architecture)
+- [PulseAudio](https://wiki.archlinux.org/index.php/PulseAudio)
 
-[PulseAudio](https://wiki.archlinux.org/index.php/PulseAudio)
+</details>
 
-### Screen resolution
+
+<details>
+<summary><b>Screen resolution</b></summary>
 
 - Generate new resolution
 	- `cvt 2304 1296` - Output: `Modeline "2304x1296_60.00"  251.25  2304 2464 2712 3120  1296 1299 1304 1344 -hsync +vsync`
@@ -178,7 +207,10 @@ and test if they are working with `speaker-test -D NAME -c 2` where the name cou
 - Change resolution
 	- `xrandr -s 2304x1296`
 
-### Keybinds
+</details>
+
+<details>
+<summary><b>Keybinds</b></summary>
 
 This might require **xbindkeys**. Now the touch-function keys are set to
 
@@ -188,3 +220,11 @@ This might require **xbindkeys**. Now the touch-function keys are set to
 - Tools: launch morc menu
 - Display: toogle display brightness
 
+</details>
+
+<details>
+<summary><b>Misc</b></summary>
+
+- [Arch on X1 carbon](https://wiki.archlinux.org/index.php/Lenovo_ThinkPad_X1_Carbon_(Gen_2))
+
+</details>
