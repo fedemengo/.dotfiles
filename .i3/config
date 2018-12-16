@@ -4,12 +4,14 @@
 #	FEDEMENGO
 bindsym Mod1+f exec firefox
 bindsym XF86Search exec firefox
+no_focus [class=".*"]
 
 bindsym Mod1+c exec code
 bindsym Mod1+m exec thunderbird
 
-bindsym Mod1+r exec "terminator -x zsh -c 'ranger'"
-bindsym XF86Explorer exec "terminator -x zsh -c 'ranger'"
+bindsym Mod1+r exec "termite -e 'ranger'"
+bindsym XF86Explorer exec "termite -e 'ranger'"
+bindsym XF86Display exec "${HOME}/.i3/bright.sh"
 
 # Set mod key (Mod1=<Alt>, Mod4=<Super>)
 set $mod Mod4
@@ -38,14 +40,14 @@ floating_modifier $mod
 
 # start a terminal
 #bindsym $mod+Return exec terminal
-bindsym $mod+Return exec terminator -e "${HOME}/.i3/shell.sh"
-#bindsym $mod+Return exec terminator -e "script '${HOME}/.sessions/$(date)'"
+#bindsym $mod+Return exec terminator -e "${HOME}/.i3/shell.sh"
+bindsym $mod+Return exec termite
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # start program launcher
-bindsym $mod+d exec --no-startup-id dmenu_recency -i -h 15 -nb "#1c1c1c" -sb "#00ff00" -fn "Bitstream Vera Sans Mono-16"
+bindsym Mod1+d exec --no-startup-id dmenu_recency -i -h 14 -nb "#1c1c1c" -sb "#00ff00" -fn "Bitstream Vera Sans Mono-14"
 
 # launch categorized menu
 bindsym XF86Tools exec --no-startup-id morc_menu
@@ -253,7 +255,7 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # Set shut down, restart and locking features
-bindsym $mod+0 mode "$mode_system"
+bindsym $mod+Escape mode "$mode_system"
 set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown
 mode "$mode_system" {
     bindsym l exec --no-startup-id i3exit lock, mode "default"
@@ -397,7 +399,7 @@ bindsym $mod+Tab exec "polybar-msg cmd toggle"
 #############################
 
 # Set inner/outer gaps
-gaps inner 3
+gaps inner 2
 gaps outer 0
 
 # Additionally, you can issue commands with the following syntax. This is useful to bind keys to changing the gap size.

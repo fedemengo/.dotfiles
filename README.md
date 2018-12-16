@@ -12,7 +12,7 @@ Files in `etc/` and `usr/` are not actually located in the home folder. Clone th
 
 All the other configuration files are in the home folder
 
-- `cp -r .i3 ~/` copy i3 configuration files
+- `cp -r .i3 ~/` copy i3 configuration files, even better `ln -s DOTFILE_DIR/.i3 ${HOME}/.i3`
 - `cp -r .config ~/` copy general config files
 - `cp .Xresources ~/; xrdb ~/.Xresources`
 
@@ -31,6 +31,7 @@ Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator** if necessary, 
 #### Additional packages
 - [termtosvg](https://github.com/nbedos/termtosvg)
 - [todo.txt](https://github.com/todotxt/todo.txt-cli)
+- **xbacklight** - `pacman -Syu xorg-xbacklight`
 
 ## Touchscreen
 
@@ -185,4 +186,5 @@ This might require **xbindkeys**. Now the touch-function keys are set to
 - Search: launch firefox
 - Explorer: launch ranger (NB: to use vim as default editor instead of nano, the only workaround was `sudo rm /usr/bin/nano; ln -s /usr/bin/vim /usr/bin/nano` keep it in mind)
 - Tools: launch morc menu
+- Display: toogle display brightness
 
