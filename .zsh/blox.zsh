@@ -76,6 +76,8 @@ function blox_block__dir() {
                 n=$((len-LEN))
                 output+=`echo -n "/${dir}" | sed "s/.\{$n\}$//g"`
                 output+=`echo -n -e "\U2026"`
+            else
+                output+=`echo -n "/${dir}"`
             fi
         fi
     done
