@@ -226,5 +226,8 @@ This might require **xbindkeys**. Now the touch-function keys are set to
 <summary><b>Misc</b></summary>
 
 - [Arch on X1 carbon](https://wiki.archlinux.org/index.php/Lenovo_ThinkPad_X1_Carbon_(Gen_2))
+- Install **Postman**
+    - Download the executable and place it in `${HOME}/.app/`
+    - Copy the `postman` executable from `.script` to `/usr/bin`
 
 </details>
