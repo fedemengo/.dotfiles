@@ -33,7 +33,7 @@ All the other configuration files are in the home folder
 <details>
 <summary><b>Configuration</b></summary>
 
-Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator** if necessary, then
+Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator/termite** if necessary, then
 
 - `cp -r .vim ~/.vim/`
 - `ln -s .vimrc ~/.vimrc`
@@ -54,11 +54,7 @@ Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator** if necessary, 
 <details>
 <summary><b>Configuration</b></summary>
 
-- Install **touchegg**: dowload the following **AUR** packages and `makepkg -si`
-	- `git clone https://aur.archlinux.org/touchegg.git` (required `geis`)
-	- `git clone https://aur.archlinux.org/geis.git` (required `grail`)
-	- `git clone https://aur.archlinux.org/grail.git` (required `frame`)
-	- `git clone https://aur.archlinux.org/frame.git`
+- Install **touchegg** with `yay -Syu touchegg`
 - Double check that `~/.config/touchegg/touchegg.conf` exists, or `cp .config/touchegg ~/.config/`
 - Load **touchegg** with `echo "touchegg &" >> ~/.xprofile`
 - Load `~/.xprofile` from `~/.xinitrc` with `echo "[ -f ~/.xprofile ] &&  . ~/.xprofile" >> ~/.xinitrc`
@@ -197,12 +193,10 @@ and test if they are working with `speaker-test -D NAME -c 2` where the name cou
 <details>
 <summary><b>Screen resolution</b></summary>
 
-- Generate new resolution
-	- `cvt 2304 1296` - Output: `Modeline "2304x1296_60.00"  251.25  2304 2464 2712 3120  1296 1299 1304 1344 -hsync +vsync`
-- Create new resolution
-	- `xrandr --newmode "2304x1296_60.00" 251.25 2304 2464 2712 3120 1296 1299 1304 1344 -hsync +vsync`
+- Generate and create new resolution
+	- `xrand --newmode $(cvt 2304 1296 | sed '2 !d;s/Modeline\s//g')`
 - Add resolution to output device
-	- Find connected device `xrandr | grep " connected" | sed 's/ connected.*//'` (eDP1)
+	- Find connected device `xrandr | sed -n -e '/\sconnected/p' | awk -F' ' '{print $1}'` (in my case **eDP1**)
 	- `xrandr --addmode eDP1 2304x1296_60.00`
 - Change resolution
 	- `xrandr -s 2304x1296`
@@ -214,11 +208,10 @@ and test if they are working with `speaker-test -D NAME -c 2` where the name cou
 
 This might require **xbindkeys**. Now the touch-function keys are set to
 
-- Mod1 + SoundMute: unmute the sound using amixer
-- Search: launch firefox
-- Explorer: launch ranger (NB: to use vim as default editor instead of nano, the only workaround was `sudo rm /usr/bin/nano; ln -s /usr/bin/vim /usr/bin/nano` keep it in mind)
-- Tools: launch morc menu
-- Display: toogle display brightness
+- `Search`: launch firefox
+- `Explorer`: launch ranger
+- `Tools`: launch morc menu
+- `Display`: toogle display brightness
 
 </details>
 
@@ -228,6 +221,6 @@ This might require **xbindkeys**. Now the touch-function keys are set to
 - [Arch on X1 carbon](https://wiki.archlinux.org/index.php/Lenovo_ThinkPad_X1_Carbon_(Gen_2))
 - Install **Postman**
     - Download the executable and place it in `${HOME}/.app/`
-    - Copy the `postman` executable from `.script` to `/usr/bin`
+    - Create link `sudo ln -s ${HOME}/.dotfiles/.script/postman /usr/bin/postman`
 
 </details>

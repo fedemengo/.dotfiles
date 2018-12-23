@@ -1,6 +1,8 @@
 
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
+set $TERM termite
+
 #	FEDEMENGO
 bindsym Mod1+f exec firefox
 bindsym XF86Search exec firefox
@@ -9,8 +11,8 @@ no_focus [class=".*"]
 bindsym Mod1+c exec code
 bindsym Mod1+m exec thunderbird
 
-bindsym Mod1+r exec "termite -e 'ranger'"
-bindsym XF86Explorer exec "termite -e 'ranger'"
+bindsym Mod1+r exec "$TERM -e 'ranger'"
+bindsym XF86Explorer exec "$TERM -e 'ranger'"
 bindsym XF86Display exec "${HOME}/.i3/bright.sh"
 
 # Set mod key (Mod1=<Alt>, Mod4=<Super>)
@@ -40,7 +42,7 @@ floating_modifier $mod
 
 # start a terminal
 #bindsym $mod+Return exec terminator -e "${HOME}/.i3/shell.sh"
-bindsym $mod+Return exec "termite"
+bindsym $mod+Return exec "$TERM"
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -72,7 +74,7 @@ bindsym $mod+Ctrl+m exec pavucontrol
 # bindsym XF86MonBrightnessDown exec "xbacklight -dec 10; notify-send 'brightness down'"
 
 # Start Applications
-bindsym $mod+Ctrl+b exec termite -e 'bmenu'
+bindsym $mod+Ctrl+b exec $TERM -e 'bmenu'
 #	FEDEMENGO (removed)
 #	bindsym $mod+F2 exec palemoon
 bindsym $mod+F3 exec pcmanfm
