@@ -6,6 +6,7 @@ LIGHT_GREEN=76
 LIGHT_BLUE=39
 GREEN=2
 YELLOW=11
+ORANGE=202
 
 BLOX_CONF__PROMPT_PREFIX=""
 
@@ -111,6 +112,7 @@ BLOX_BLOCK__GIT_UNTRACKED_COLOR="${BLOX_BLOCK__GIT_UNTRACKED_COLOR:-red}"
 BLOX_BLOCK__GIT_UNTRACKED_SYMBOL="${BLOX_BLOCK__GIT_UNTRACKED_SYMBOL:-?}"
 
 BLOX_BLOCK__GIT_UNPUSHED_COLOR=${LIGHT_BLUE}
+BLOX_BLOCK__GIT_UNPULLED_COLOR=${ORANGE}
 
 # ---------------------------------------------
 # Themes
@@ -148,7 +150,7 @@ function my_status() {
 function my_stashed_status() {
   if $(command git rev-parse --verify refs/stash &> /dev/null); then
     local stash_entry=$(command git stash list | wc -l)
-    echo " %F{${BLOX_BLOCK__GIT_STASHED_COLOR}]%}${BLOX_BLOCK__GIT_STASHED_SYMBOL} {${stash_entry}}%{$reset_color%}"
+    echo " %F{${BLOX_BLOCK__GIT_STASHED_COLOR}]%}${stash_entry}${BLOX_BLOCK__GIT_STASHED_SYMBOL}%{$reset_color%} "
   fi
 }
 
@@ -178,6 +180,35 @@ function my_repo_status() {
     echo ${result}
 }
 
+
+# Echo the appropriate symbol for branch's remote status (pull/push)
+# Need to do 'git fetch' before
+function my_remote_status() {
+
+    local git_local=$(command git rev-parse @ 2> /dev/null)
+    local git_remote=$(command git rev-parse @{u} 2> /dev/null)
+    local git_base=$(command git merge-base @ @{u} 2> /dev/null)
+
+    local unpulled=$(git rev-list --count HEAD..origin/HEAD)
+    [[ "${unpulled}" -eq "0" ]] && unpulled=""
+
+    local unpushed=$(git rev-list --count origin/HEAD..HEAD)
+    [[ "${unpushed}" -eq "0" ]]  && unpushed=""
+
+    # First check that we have a remote
+    if ! [[ ${git_remote} = "" ]]; then
+        if [[ ${git_local} = ${git_remote} ]]; then
+            echo ""
+        elif [[ ${git_local} = ${git_base} ]]; then
+            echo " %F{${BLOX_BLOCK__GIT_UNPULLED_COLOR}]%}${unpulled}$BLOX_BLOCK__GIT_UNPULLED_SYMBOL%{$reset_color%}"
+        elif [[ ${git_remote} = ${git_base} ]]; then
+            echo " %F{${BLOX_BLOCK__GIT_UNPUSHED_COLOR}]%}${unpushed}$BLOX_BLOCK__GIT_UNPUSHED_SYMBOL%{$reset_color%}"
+        else
+            echo " %F{${BLOX_BLOCK__GIT_UNPULLED_COLOR}]%}${unpulled}$BLOX_BLOCK__GIT_UNPULLED_SYMBOL%{$reset_color%}  %F{${BLOX_BLOCK__GIT_UNPUSHED_COLOR}]%}${unpushed}$BLOX_BLOCK__GIT_UNPUSHED_SYMBOL%{$reset_color%}"
+        fi
+    fi
+}
+
 # ---------------------------------------------
 # The block itself
 
@@ -193,7 +224,7 @@ function blox_block__my_git() {
     local branch_name="$(blox_block__git_helper__branch)"
     local branch_status="$(my_status  ${st})"
     local stashed_status="$(my_stashed_status)"
-    local remote_status="$(blox_block__git_helper__remote_status)"
+    local remote_status="$(my_remote_status)"
 
     local result=""
 
