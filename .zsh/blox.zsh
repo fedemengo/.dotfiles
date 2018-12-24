@@ -53,9 +53,9 @@ function blox_block__user_host() {
 	fi
 }
 
-function blox_block__dir() {
-    LEN=${BLOX_BLOCK__DIR_LEN}
-    output="%F{${BLOX_BLOCK__DIR_COLOR}}"
+function blox_block__my_dir() {
+    local LEN=${BLOX_BLOCK__DIR_LEN}
+    local output="%F{${BLOX_BLOCK__DIR_COLOR}}"
 
     DIR=${PWD//${HOME}/\~}
     if [[ "${PWD}" != "${HOME}"* ]]; then
@@ -63,7 +63,7 @@ function blox_block__dir() {
         DIR=${PWD}
     fi
 
-    DIRS=(`echo ${DIR} | tr '/' '\n'`)
+    DIRS=(${(s:/:)${DIR}})
     output+="${DIRS[1]}"
 
     for ((i=2; i<=${#DIRS[@]}; i++))
@@ -77,10 +77,11 @@ function blox_block__dir() {
             # reduce length of previous folder
             if [ ${len} -gt ${LEN} ]; then
                 n=$((len-LEN))
-                output+=`echo -n "/${dir}" | sed "s/.\{$n\}$//g"`
-                output+=`echo -n -e "\U2026"`
+                output+=$(echo -n "/${dir}" | sed "s/.\{$n\}$//g")
+                output+=$(echo -n -e "\U2026")
+            # or use the name if already short enough
             else
-                output+=`echo -n "/${dir}"`
+                output+=$(echo -n "/${dir}")
             fi
         fi
     done
