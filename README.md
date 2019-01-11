@@ -47,6 +47,7 @@ Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator/termite** if nec
 - [termtosvg](https://github.com/nbedos/termtosvg)
 - [todo.txt](https://github.com/todotxt/todo.txt-cli)
 - **xbacklight** - `pacman -Syu xorg-xbacklight`
+- **downgrade** - `sudo pacman -Syu downgrade`
 </details>
 
 ## Touchscreen
@@ -100,6 +101,15 @@ Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator/termite** if nec
 </touchégg>
 ```
 </details>
+</details>
+
+## Fingerprint
+
+<details>
+<summary><b>Configuration</b></summary>
+
+Currenlty using `fingerprint-gui` with `libfprint` (only v. 0.8.2-1 works). In case of upgrade just downgrade with `DOWNGRADE_FROM_ALA=1 downgrade libfprint`
+
 </details>
 
 ## Touchpad

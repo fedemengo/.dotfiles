@@ -189,10 +189,10 @@ function my_remote_status() {
     local git_remote=$(command git rev-parse @{u} 2> /dev/null)
     local git_base=$(command git merge-base @ @{u} 2> /dev/null)
 
-    local unpulled=$(git rev-list --count HEAD..origin/HEAD)
+    local unpulled=$(git rev-list --count HEAD..origin/master)
     [[ "${unpulled}" -eq "0" ]] && unpulled=""
 
-    local unpushed=$(git rev-list --count origin/HEAD..HEAD)
+    local unpushed=$(git rev-list --count origin/master..HEAD)
     [[ "${unpushed}" -eq "0" ]]  && unpushed=""
 
     # First check that we have a remote
