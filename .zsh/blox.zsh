@@ -184,15 +184,15 @@ function my_repo_status() {
 # Echo the appropriate symbol for branch's remote status (pull/push)
 # Need to do 'git fetch' before
 function my_remote_status() {
-
+    local branch=$(command git branch | grep "*" | cut -d ' ' -f 2)
     local git_local=$(command git rev-parse @ 2> /dev/null)
-    local git_remote=$(command git rev-parse @{u} 2> /dev/null)
+    local git_remote=$(command git rev-parse ${branch}@{u} 2> /dev/null)
     local git_base=$(command git merge-base @ @{u} 2> /dev/null)
 
-    local unpulled=$(git rev-list --count HEAD..origin/master)
+    local unpulled=$(git rev-list --count HEAD..origin/${branch} 2>/dev/null)
     [[ "${unpulled}" -eq "0" ]] && unpulled=""
 
-    local unpushed=$(git rev-list --count origin/master..HEAD)
+    local unpushed=$(git rev-list --count origin/${branch}..HEAD 2>/dev/null)
     [[ "${unpushed}" -eq "0" ]]  && unpushed=""
 
     # First check that we have a remote

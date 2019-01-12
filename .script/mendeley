@@ -1,0 +1,4 @@
+#!/bin/sh -e
+
+${HOME}/.app/mendeley/bin/mendeleydesktop &>/dev/null & disown
+

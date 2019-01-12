@@ -32,7 +32,7 @@ function info_VPN() {
         printf "City:\t\t %s\n" ${LOC}
     fi
 
-    if [ "$2" != "${IP}" ]; then
+    if [ "$1" != "${IP}" ]; then
         return 0;
     else
         return 1;
@@ -68,7 +68,7 @@ function connect_VPN() {
             while [[ "$?" -eq "1" ]]; do
                 echo "Checking connection.."
                 sleep 1;
-                info_VPN "${IP}"
+                info_VPN ${IP}
             done
             echo "Connection established"
             echo ""
