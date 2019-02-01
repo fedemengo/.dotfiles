@@ -197,7 +197,7 @@ function my_remote_status() {
 
     # First check that we have a remote
     if ! [[ ${git_remote} = "" ]]; then
-        if [[ ${git_local} = ${git_remote} ]]; then
+        if [[ -z "${unpushed}" ]] && [[ -z "${unpushed}" ]]; then
             echo ""
         elif [[ ${git_local} = ${git_base} ]]; then
             echo " %F{${BLOX_BLOCK__GIT_UNPULLED_COLOR}]%}${unpulled}$BLOX_BLOCK__GIT_UNPULLED_SYMBOL%{$reset_color%}"

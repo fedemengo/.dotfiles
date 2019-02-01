@@ -29,7 +29,7 @@ export GOPATH="${HOME}/.go"
 export GOROOT="/usr/lib/go"
 export PATH="$PATH:$GOPATH/bin:$GOROOT/bin"
 
-export RUBY_VERSION="2.5.0"
+export RUBY_VERSION="2.6.0"
 export PATH="${PATH}:${HOME}/.gem/ruby/${RUBY_VERSION}/bin"
 
 export EDITOR="$(which vim)"
@@ -43,3 +43,10 @@ export PATH="${PATH}:${HOME}/projects/algorithms-and-data-structures"
 
 export IP_TOKEN="4c202ad50e5741"
 
+export FM=${HOME}
+
+export ANDROID_HOME=$HOME/.Android/Sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/platform-tools

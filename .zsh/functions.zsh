@@ -9,7 +9,7 @@ function connect_HDMI(){
         echo "output identifier is required"
         return 1
     else
-        xrandr --output "$1" --auto --output eDP1 --auto --right-of "$1"
+        xrandr --output "$1" --set audio on --auto --output eDP1 --auto --right-of "$1"
     fi
 }
 
@@ -133,4 +133,9 @@ function ex() {
     echo "'$1' is not a valid file"
   fi
 }
+
+#title=$(todo.sh ls | tail -n 1)
+#todos=$(todo.sh ls | head -n $(($(todo.sh ls | wc -l)-2)) | sort)
+#echo "$(tput setaf 197)$title $(tput sgr0)"; echo $todos; echo "";
+
 
