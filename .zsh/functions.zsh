@@ -9,7 +9,7 @@ function connect_HDMI(){
         echo "output identifier is required"
         return 1
     else
-        xrandr --output "$1" --set audio on --auto --output eDP1 --auto --right-of "$1"
+        xrandr --output "$1" --set audio on --auto --output eDP1 --auto --left-of "$1"
     fi
 }
 

@@ -1,0 +1,6 @@
+[options]
+font = Ubuntu Mono derivative Powerline 17
+
+[colors]
+background = rgba(0, 0, 0, 0.8)
+
