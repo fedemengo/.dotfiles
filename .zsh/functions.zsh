@@ -4,12 +4,21 @@ function colors256() {
         print -P -- "$code: %F{$code} color%f"
 }
 
+function restart_polybar() {
+    sh ${HOME}/.config/polybar/launch.sh 1>/dev/null
+}
+
 function connect_HDMI(){
+    position=left
     if [[ "$#" -eq "0" ]]; then
         echo "output identifier is required"
         return 1
     else
-        xrandr --output "$1" --set audio on --auto --output eDP1 --auto --left-of "$1"
+        if [[ "$#" -eq "2" ]]; then
+            position="$2"
+        fi
+        xrandr --output "$1" --set audio on --auto --output eDP1 --auto --${position}-of "$1"
+        restart_polybar
     fi
 }
 
@@ -19,6 +28,7 @@ function disconnect_HDMI(){
         return 1
     else
         xrandr --output "$1" --off
+        restart_polybar
     fi
 }
 
