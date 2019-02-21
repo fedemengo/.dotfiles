@@ -11,7 +11,7 @@ if [ -n "$PID" ]; then
         echo ${PASS} | sudo -S kill -9 ${ps}
     done
 else
-    notify-send -u critical "Connecting to VPN"
+    notify-send -u low "Connecting to VPN"
     echo ${PASS} | sudo -S openvpn --daemon --config ${HOME}/.torguard/torguard-PRO/TorGuard.USA-${VPN_LOCATION}.ovpn --cd ${HOME}/.torguard
 fi
 

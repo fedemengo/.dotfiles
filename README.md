@@ -13,6 +13,13 @@ Write a script to automatically setup the environment
 
 Files in `etc/` and `usr/` are not actually located in the home folder. Clone the repo, then `cd dotfiles` and then follow these steps
 
+- `sudo pacman -Syu`
+- `sudo pacman -S yay zsh termite firefox polybar`
+- `sudo chsh; chsh`
+
+- `sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`
+- `git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions`
+
 - `cp etc/default/grub /etc/default/grub; sudo update-grub`
 - `cp etc/ssh/sshd_config /etc/ssh/sshd_config`
 - `cp etc/locale.conf /etc/locale.conf` or just set the proper locale
@@ -39,6 +46,8 @@ Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator/termite** if nec
 - `ln -s .vimrc ~/.vimrc`
 - `ln -s .zshrc ~/.zshrc`
 - Double check that `~/.config/terminator/config` exists, or `cp .config/terminator ~/.config/`
+
+- In firefox `layout.css.devPixelsPerPx` to `1.4`
 
 #### Vim plugins
 - [vim-netranger](https://github.com/ipod825/vim-netranger)
