@@ -113,7 +113,7 @@ function fix_touchpad() {
     sudo modprobe ${module}
 }
 
-if [ -n $commands[kubectl] ]; then
+if [ -n "$commands[kubectl]" ]; then
     source <(kubectl completion zsh)
 fi
 
@@ -144,8 +144,8 @@ function ex() {
   fi
 }
 
-#title=$(todo.sh ls | tail -n 1)
-#todos=$(todo.sh ls | head -n $(($(todo.sh ls | wc -l)-2)) | sort)
-#echo "$(tput setaf 197)$title $(tput sgr0)"; echo $todos; echo "";
-
-
+if [ -n "$commands[todo.sh]" ]; then
+    title=$(todo.sh ls | tail -n 1)
+    todos=$(todo.sh ls | head -n $(($(todo.sh ls | wc -l)-2)) | sort)
+    echo "$(tput setaf 197)$title $(tput sgr0)"; echo $todos; echo "";
+fi

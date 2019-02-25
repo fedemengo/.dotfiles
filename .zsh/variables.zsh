@@ -45,3 +45,13 @@ export IP_TOKEN="4c202ad50e5741"
 
 export FM=${HOME}
 
+export ANDROID_HOME="$HOME/.Android/Sdk"
+export PATH="$PATH:$ANDROID_HOME/emulator"
+export PATH="$PATH:$ANDROID_HOME/tools"
+export PATH="$PATH:$ANDROID_HOME/tools/bin"
+export PATH="$PATH:$ANDROID_HOME/platform-tools"
+
+export JAVA_HOME="${HOME}/.jdk/jdk1.8.0_201"
+export JDK_HOME="${JAVA_HOME}"
+export JRE_HOME="${JAVA_HOME}/jre"
+
