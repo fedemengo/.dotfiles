@@ -28,6 +28,7 @@ export LS_COLORS="di=38;5;38:ex=38;5;82"
 export GOPATH="${HOME}/.go"
 export GOROOT="/usr/lib/go"
 export PATH="$PATH:$GOPATH/bin:$GOROOT/bin"
+export GO111MODULE=on
 
 export RUBY_VERSION="2.6.0"
 export PATH="${PATH}:${HOME}/.gem/ruby/${RUBY_VERSION}/bin"

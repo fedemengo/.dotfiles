@@ -144,8 +144,13 @@ function ex() {
   fi
 }
 
+function vpns() {
+	for conf in ${HOME}/.torguard/torguard-PRO/*; 
+	do 
+		echo $conf | sed "s|$HOME/.torguard/torguard-PRO/TorGuard.||;s|.ovpn||g"
+	done
+}
+
 #title=$(todo.sh ls | tail -n 1)
 #todos=$(todo.sh ls | head -n $(($(todo.sh ls | wc -l)-2)) | sort)
 #echo "$(tput setaf 197)$title $(tput sgr0)"; echo $todos; echo "";
-
-
