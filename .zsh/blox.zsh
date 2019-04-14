@@ -1,5 +1,6 @@
 
 ZSH_THEME="blox-zsh-theme/blox"
+BLOX_CONF__UNIFIED_PROMPT="true"
 
 # Define some colors
 LIGHT_GREEN=76

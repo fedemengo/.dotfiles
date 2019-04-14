@@ -152,4 +152,4 @@ alias 9='cd -9'
 #alias chromium='chromium --force-device-scale-factor=1.5'
 
 alias gst='git status'
-
+alias zat='zathura'

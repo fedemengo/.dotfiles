@@ -49,9 +49,6 @@ function info_VPN() {
     fi
 }
 
-#VPN_LOCATION="NEW-YORK"
-VPN_LOCATION="LA"
-
 # Before connecting to vpn, change DNS resulution
 # - In file /etc/resolv.conf add 1.1.1.1 and google's 8.8.8.8
 # - Make the file inmutable with "sudo chattr +i /etc/resolv.conf"
@@ -154,5 +151,5 @@ function vpns() {
 if [ -n "$commands[todo.sh]" ]; then
     title=$(todo.sh ls | tail -n 1)
     todos=$(todo.sh ls | head -n $(($(todo.sh ls | wc -l)-2)) | sort)
-    echo "$(tput setaf 197)$title $(tput sgr0)"; echo $todos; echo "";
+    echo "$(tput setaf 197)$title $(tput sgr0)\n$todos\n"
 fi
