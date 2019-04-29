@@ -68,8 +68,15 @@ function forward-kill-word {
     zle backward-kill-word
 }
 
+function pacman {
+	com="sudo pacman -S"
+	BUFFER="${com}${BUFFER}"
+	CURSOR=${#BUFFER}
+}
+
 zle -N tab_list
 zle -N forward-kill-word
+zle -N pacman
 
 # History
 HISTFILE=~/.zsh_history
@@ -106,6 +113,8 @@ bindkey "^[j" down-history
 bindkey "^i" expand-or-complete-prefix
 bindkey "^I" tab_list
 bindkey "^[[Z" reverse-menu-complete
+
+bindkey "^p" pacman
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*' insert-tab false

@@ -1,8 +1,10 @@
 #!/bin/bash
 
+HOME=${HOME:-"/home/fedemengo"}
+TORGUARD="${HOME}/.config/torguard"
 VPN_LOC=${VPN_LOCATION:-"USA-SF"}
 PID=$(pgrep openvpn)
-PASS=$(cat ${HOME}/.config/polybar/__pwwd)
+PASS=$(cat ${TORGUARD}/__pwwd)
 
 if [ -n "$PID" ]; then
     notify-send -u critical "Disconnecting VPN"
@@ -12,6 +14,6 @@ if [ -n "$PID" ]; then
     done
 else
     notify-send -u low "Connecting to VPN"
-    echo ${PASS} | sudo -S openvpn --daemon --config ${HOME}/.torguard/torguard-PRO/TorGuard.${VPN_LOC}.ovpn --cd ${HOME}/.torguard
+    echo ${PASS} | sudo -S openvpn --daemon --config ${TORGUARD}/torguard-PRO/TorGuard.${VPN_LOC}.ovpn --cd ${TORGUARD}
 fi
 

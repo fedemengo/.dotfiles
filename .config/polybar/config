@@ -205,8 +205,8 @@ format-prefix-foreground = ${colors.primary}
 format = <label>
 label = "%output%"
 tail = true
-click-left = ~/.config/polybar/vpn-info.sh
-click-right = ~/.config/polybar/toggle-vpn.sh
+click-left = ~/.config/polybar/ip-info.sh
+click-right = ~/.config/torguard/toggle-vpn.sh
 ;double-click-left = ~/.config/polybar/toggle-vpn.sh
 
 [module/cpu]
