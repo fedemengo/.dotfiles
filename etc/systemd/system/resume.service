@@ -1,0 +1,13 @@
+# executed as root
+# https://wiki.archlinux.org/index.php/Power_management#Suspend.2Fresume_service_files 
+
+[Unit]
+Description=User resume actions
+After=suspend.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/resume.sh
+
+[Install]
+WantedBy=suspend.target

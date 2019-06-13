@@ -103,9 +103,9 @@ function disconnect_VPN() {
 }
 
 #module="psmouse"
-module="i2c_i801"
 
 function fix_touchpad() {
+    module=${MODULE:-"i2c_i801"}
     sudo modprobe -r ${module}
     sudo modprobe ${module}
 }
@@ -146,6 +146,11 @@ function vpns() {
 	do 
 		echo $conf | sed "s|$HOME/.torguard/torguard-PRO/TorGuard.||;s|.ovpn||g"
 	done
+}
+
+function stop_prune() {
+	docker container stop $(docker container ps -aq)
+	docker container prune
 }
 
 if [ -n "$commands[todo.sh]" ]; then

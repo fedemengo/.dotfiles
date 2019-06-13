@@ -173,6 +173,7 @@ set $ws6 6
 set $ws7 7
 set $ws8 8
 set $ws9 9
+set $ws10 10
 
 # switch to workspace
 #always --no-startup-id $HOME/.config/polybar/launch.sh
@@ -186,6 +187,9 @@ bindsym $mod+6 workspace $ws6
 bindsym $mod+7 workspace $ws7
 bindsym $mod+8 workspace $ws8
 bindsym $mod+9 workspace $ws9
+bindsym $mod+z workspace $ws10
+bindsym $mod+x workspace $ws11
+bindsym $mod+c workspace $ws12
 
 # Move focused container to workspace
 bindsym $mod+Ctrl+1 move container to workspace $ws1
@@ -197,6 +201,9 @@ bindsym $mod+Ctrl+6 move container to workspace $ws6
 bindsym $mod+Ctrl+7 move container to workspace $ws7
 bindsym $mod+Ctrl+8 move container to workspace $ws8
 bindsym $mod+Ctrl+9 move container to workspace $ws9
+bindsym $mod+Ctrl+z move container to workspace $ws10
+bindsym $mod+Ctrl+x move container to workspace $ws11
+bindsym $mod+Ctrl+c move container to workspace $ws12
 
 # Move to workspace with focused container
 bindsym $mod+Shift+1 move container to workspace $ws1; workspace $ws1
@@ -208,6 +215,9 @@ bindsym $mod+Shift+6 move container to workspace $ws6; workspace $ws6
 bindsym $mod+Shift+7 move container to workspace $ws7; workspace $ws7
 bindsym $mod+Shift+8 move container to workspace $ws8; workspace $ws8
 bindsym $mod+Shift+9 move container to workspace $ws9; workspace $ws9
+bindsym $mod+Shift+z move container to workspace $ws10; workspace $ws10
+bindsym $mod+Shift+x move container to workspace $ws11; workspace $ws11
+bindsym $mod+Shift+c move container to workspace $ws12; workspace $ws12
 
 # Open applications on specific workspaces
 # assign [class="Thunderbird"] $ws1
@@ -247,7 +257,7 @@ for_window [class="Xfburn"] floating enable
 for_window [urgent=latest] focus
 
 # reload the configuration file
-bindsym $mod+Shift+c reload
+#bindsym $mod+Shift+c reload
 
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart

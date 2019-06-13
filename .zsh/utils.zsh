@@ -68,15 +68,30 @@ function forward-kill-word {
     zle backward-kill-word
 }
 
-function pacman {
+function pacman-util {
 	com="sudo pacman -S"
 	BUFFER="${com}${BUFFER}"
 	CURSOR=${#BUFFER}
 }
 
+function sudo-util {
+	com="sudo "
+	BUFFER="${com}${BUFFER}"
+	CURSOR=${#BUFFER}
+}
+
+
+function home-util {
+	data="${HOME:=/home/fedemengo/}"
+	BUFFER="${BUFFER}${data}"
+	CURSOR=${#BUFFER}
+}
+
 zle -N tab_list
 zle -N forward-kill-word
-zle -N pacman
+zle -N pacman-util
+zle -N sudo-util
+zle -N home-util
 
 # History
 HISTFILE=~/.zsh_history
@@ -114,7 +129,9 @@ bindkey "^i" expand-or-complete-prefix
 bindkey "^I" tab_list
 bindkey "^[[Z" reverse-menu-complete
 
-bindkey "^p" pacman
+bindkey "^p" pacman-util
+bindkey "^s" sudo-util
+bindkey "^f" home-util
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*' insert-tab false
@@ -162,3 +179,4 @@ alias 9='cd -9'
 
 alias gst='git status'
 alias zat='zathura'
+alias p3='python3'
