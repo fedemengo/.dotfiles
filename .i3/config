@@ -9,6 +9,7 @@ bindsym XF86Search exec firefox
 no_focus [class=".*"]
 
 bindsym Mod1+c exec code
+bindsym Mod1+v exec "${HOME}/.config/torguard/toggle-vpn.sh"
 bindsym Mod1+m exec thunderbird
 
 bindsym Mod1+r exec "$TERM -e 'ranger'"
