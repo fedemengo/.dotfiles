@@ -33,6 +33,7 @@ All the other configuration files are in the home folder
 - `cp -r .i3 ~/` copy i3 configuration files, even better `ln -s DOTFILE_DIR/.i3 ${HOME}/.i3`
 - `cp -r .config ~/` copy general config files
 - `cp .Xresources ~/; xrdb ~/.Xresources`
+- `ln -s .xprofile ~/.xprofile` if necessary (`rm -rf ~/.xprofile`)
 </details>
 
 ## Shell

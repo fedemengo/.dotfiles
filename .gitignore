@@ -2,6 +2,7 @@ __*
 
 *.ovpn
 *.crt
+pics/
 
 .mozilla
 !.mozilla/firefox/fedemengo.default/chrome
