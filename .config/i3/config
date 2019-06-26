@@ -14,7 +14,7 @@ bindsym Mod1+m exec thunderbird
 
 bindsym Mod1+r exec "$TERM -e 'ranger'"
 bindsym XF86Explorer exec "$TERM -e 'ranger'"
-bindsym XF86Display exec "${HOME}/.i3/bright.sh"
+bindsym XF86Display exec "${HOME}/.config/i3/bright.sh"
 
 # Set mod key (Mod1=<Alt>, Mod4=<Super>)
 set $mod Mod4
@@ -42,7 +42,7 @@ font xft:URWGothic-Book 11
 floating_modifier $mod
 
 # start a terminal
-#bindsym $mod+Return exec terminator -e "${HOME}/.i3/shell.sh"
+#bindsym $mod+Return exec terminator -e "${HOME}/.config/i3/shell.sh"
 bindsym $mod+Return exec "$TERM"
 
 # kill focused window
@@ -364,7 +364,7 @@ set_from_resource $term_color15    color15
 bar {
 #	mode hide
 	i3bar_command ${HOME}/.config/polybar/launch.sh
-##	status_command i3status --config ~/.i3/status.conf
+##	status_command i3status --config ~/.config/i3/status.conf
 
 ##	position top
 ##	height 25

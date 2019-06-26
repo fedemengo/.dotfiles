@@ -1,4 +1,5 @@
 # Manjaro dotfiles
+
 ## TODO
 
 Write a script to automatically setup the environment
@@ -23,18 +24,17 @@ Files in `etc/` and `usr/` are not actually located in the home folder. Clone th
 - `cp etc/default/grub /etc/default/grub; sudo update-grub`
 - `cp etc/ssh/sshd_config /etc/ssh/sshd_config`
 - `cp etc/locale.conf /etc/locale.conf` or just set the proper locale
-    - Uncomment the locale to be generate in `/etc/locale.gen`
-    - Generate with `sudo locale-gen`
+  - Uncomment the locale to be generate in `/etc/locale.gen`
+  - Generate with `sudo locale-gen`
 - `cp -r usr/share/X11/xorg.conf.d /usr/share/X11/` or just copy the content
-- `cp -r usr/share/conky /usr/share/` (now disabled in `~/.i3/config/`)
+- `cp -r usr/share/conky /usr/share/` (now disabled in `~/.config/i3/config/`)
 
 All the other configuration files are in the home folder
 
-- `cp -r .i3 ~/` copy i3 configuration files, even better `ln -s DOTFILE_DIR/.i3 ${HOME}/.i3`
-- `cp -r .config ~/` copy general config files
+- `cp -r .config ~/` copy general config files and link accordingly (`ln -s DOTFILE_DIR/.config/i3 ${HOME}/.config/i3`)
 - `cp .Xresources ~/; xrdb ~/.Xresources`
 - `ln -s .xprofile ~/.xprofile` if necessary (`rm -rf ~/.xprofile`)
-</details>
+  </details>
 
 ## Shell
 
@@ -51,14 +51,16 @@ Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator/termite** if nec
 - In firefox `layout.css.devPixelsPerPx` to `1.4`
 
 #### Vim plugins
+
 - [vim-netranger](https://github.com/ipod825/vim-netranger)
 
 #### Additional packages
+
 - [termtosvg](https://github.com/nbedos/termtosvg)
 - [todo.txt](https://github.com/todotxt/todo.txt-cli)
 - **xbacklight** - `pacman -Syu xorg-xbacklight`
 - **downgrade** - `sudo pacman -Syu downgrade`
-</details>
+  </details>
 
 ## Touchscreen
 
@@ -68,9 +70,10 @@ Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator/termite** if nec
 - Install **touchegg** with `yay -Syu touchegg`
 - Double check that `~/.config/touchegg/touchegg.conf` exists, or `cp .config/touchegg ~/.config/`
 - Load **touchegg** with `echo "touchegg &" >> ~/.xprofile`
-- Load `~/.xprofile` from `~/.xinitrc` with `echo "[ -f ~/.xprofile ] &&  . ~/.xprofile" >> ~/.xinitrc`
+- Load `~/.xprofile` from `~/.xinitrc` with `echo "[ -f ~/.xprofile ] && . ~/.xprofile" >> ~/.xinitrc`
 
 ### `touchegg.conf`
+
 <details>
 <summary><b>More</b></summary>
 
@@ -110,6 +113,7 @@ Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator/termite** if nec
   </application>
 </touchégg>
 ```
+
 </details>
 </details>
 
@@ -145,6 +149,7 @@ Section "InputClass"
         Option "TappingButtonMap" "lrm"
 EndSection
 ```
+
 </details>
 
 ## Notes
@@ -153,6 +158,7 @@ EndSection
 <summary><b>Audio</b></summary>
 
 Should works with just `alsa` installed. Currently it works with the following packages
+
 ```
 alsa-lib 1.1.7-1
 alsa-plugins 1.1.7-3
@@ -186,11 +192,11 @@ ctl.!default {
 }
 ```
 
-To unmute the sound use the keybind `Mod1 + XF86SoundMute` set in `.i3/config`
+To unmute the sound use the keybind `Mod1 + XF86SoundMute` set in `.config/i3/config`
 
 If the output of `pulseaudio` shows `E: [pulseaudio] main.c: pa_pid_file_create() failed.` try to add **user** to **audio** group with `sudo usermod -aG audio your_user_name`
 
-Using both `pulseaudio` and `alsamixer`. Get default output device with `pacmd list-sinks | grep -e 'name:' -e 'index:'` 
+Using both `pulseaudio` and `alsamixer`. Get default output device with `pacmd list-sinks | grep -e 'name:' -e 'index:'`
 
 List all available cards with `aplay -L`
 
@@ -202,6 +208,7 @@ default
     Default ALSA Output (currently PulseAudio Sound Server)
 ...
 ```
+
 and test if they are working with `speaker-test -D NAME -c 2` where the name could be, in this specific case, "pulse" or "default".
 
 - [Alsa](https://wiki.archlinux.org/index.php/Advanced_Linux_Sound_Architecture)
@@ -209,17 +216,12 @@ and test if they are working with `speaker-test -D NAME -c 2` where the name cou
 
 </details>
 
-
 <details>
 <summary><b>Screen resolution</b></summary>
 
-- Generate and create new resolution
-	- `xrand --newmode $(cvt 2304 1296 | sed '2 !d;s/Modeline\s//g')`
-- Add resolution to output device
-	- Find connected device `xrandr | sed -n -e '/\sconnected/p' | awk -F' ' '{print $1}'` (in my case **eDP1**)
-	- `xrandr --addmode eDP1 2304x1296_60.00`
-- Change resolution
-	- `xrandr -s 2304x1296`
+- Generate and create new resolution - `xrand --newmode $(cvt 2304 1296 | sed '2 !d;s/Modeline\s//g')`
+- Add resolution to output device - Find connected device `xrandr | sed -n -e '/\sconnected/p' | awk -F' ' '{print $1}'` (in my case **eDP1**) - `xrandr --addmode eDP1 2304x1296_60.00`
+- Change resolution - `xrandr -s 2304x1296`
 
 </details>
 
@@ -238,9 +240,9 @@ This might require **xbindkeys**. Now the touch-function keys are set to
 <details>
 <summary><b>Misc</b></summary>
 
-- [Arch on X1 carbon](https://wiki.archlinux.org/index.php/Lenovo_ThinkPad_X1_Carbon_(Gen_2))
+- [Arch on X1 carbon](<https://wiki.archlinux.org/index.php/Lenovo_ThinkPad_X1_Carbon_(Gen_2)>)
 - Install **Postman**
-    - Download the executable and place it in `${HOME}/.app/`
-    - Create link `sudo ln -s ${HOME}/.dotfiles/.script/postman /usr/bin/postman`
+  - Download the executable and place it in `${HOME}/.app/`
+  - Create link `sudo ln -s ${HOME}/.dotfiles/.script/postman /usr/bin/postman`
 
 </details>

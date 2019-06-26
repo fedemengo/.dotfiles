@@ -156,5 +156,5 @@ function stop_prune() {
 if [ -n "$commands[todo.sh]" ]; then
     title=$(todo.sh ls | tail -n 1)
     todos=$(todo.sh ls | head -n $(($(todo.sh ls | wc -l)-2)) | sort)
-    echo "$(tput setaf 197)$title $(tput sgr0)\n$todos\n"
+    #echo "$(tput setaf 197)$title $(tput sgr0)\n$todos\n"
 fi
