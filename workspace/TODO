@@ -1,0 +1,5 @@
+## Sleep Hooks
+
+- /usr/local/bin/resume.sh
+- /etc/systemd/system/resume.service
+

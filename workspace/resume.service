@@ -1,0 +1,11 @@
+[Unit]
+Description=User resume actions
+After=suspend.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/resume.sh
+ExecReload=/usr/local/bin/resume.sh
+
+[Install]
+WantedBy=suspend.target
