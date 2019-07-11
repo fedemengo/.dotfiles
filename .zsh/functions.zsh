@@ -17,7 +17,14 @@ function connect_HDMI(){
         if [[ "$#" -eq "2" ]]; then
             position="$2"
         fi
-        xrandr --output "$1" --set audio on --auto --output eDP1 --auto --${position}-of "$1"
+		pos=""
+		if [[ "$position" == "left" ]]; then
+			pos="right"
+		else
+			pos="left"
+		fi
+
+        xrandr --output "$1" --set audio on --auto --output eDP1 --auto --${pos}-of "$1"
         restart_polybar
     fi
 }

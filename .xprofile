@@ -1,5 +1,5 @@
 touchegg &
 megasync &
-/home/fedemengo/.i3/battery.sh &
-/home/fedemengo/.i3/bg.sh &
+/home/fedemengo/.config/i3/battery.sh &
+/home/fedemengo/.config/i3/bg.sh &
 
