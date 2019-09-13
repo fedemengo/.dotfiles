@@ -80,6 +80,11 @@ function sudo-util {
 	CURSOR=${#BUFFER}
 }
 
+function redo-sudo {
+	cmd=${!!}
+	echo "sudo ${cmd}"
+	sudo $cmd
+}
 
 function home-util {
 	data="${HOME:=/home/fedemengo/}"
@@ -92,6 +97,7 @@ zle -N forward-kill-word
 zle -N pacman-util
 zle -N sudo-util
 zle -N home-util
+zle -N redo-sudo
 
 # History
 HISTFILE=~/.zsh_history
@@ -132,6 +138,7 @@ bindkey "^[[Z" reverse-menu-complete
 bindkey "^p" pacman-util
 bindkey "^s" sudo-util
 bindkey "^f" home-util
+#bindkey "^w" redo-sudo
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*' insert-tab false
@@ -148,7 +155,8 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
 alias md='mkdir -p'
-alias l="ls -ls --block-size=M"
+#alias l="ls -ls --block-size=M"
+alias l="ls -lh"
 alias ll='ls -lah'
 alias pi='ssh pi@192.168.1.100'
 alias pifs='sshfs -o allow_other pi@192.168.1.100:/mnt/hdd/ /mnt/hdd'
