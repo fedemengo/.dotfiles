@@ -1,0 +1,14 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/* about:config > toolkit.legacyUserProfileCustomizations.stylesheets > true */
+/* about:config > layout.css.devPixelsPerPx > 1.3 */
+
+toolbox {
+    font-size: 17px !important;
+}
+
+/*
+.tabbrowser-tab {
+    font-size: 17px !important;
+}
+*/
