@@ -7,33 +7,45 @@ Write a script to automatically setup the environment
 - Download repo
 - Install dependencies (identify deps first)
 - Copy, move, create, link all required files
-- ...
 
 <details>
-<summary><b>Folder structure</b></summary>
+<summary><b>Basic setup</b></summary>
+
+Create basic folder structure
+
+- `for dir in archive classes downloads media/{music,pictures} projects workspace; do mkdir $dir; done`
 
 Files in `etc/` and `usr/` are not actually located in the home folder. Clone the repo, then `cd dotfiles` and then follow these steps
 
 - `sudo pacman -Syu`
 - `sudo pacman -S yay zsh termite firefox polybar`
 - `sudo chsh; chsh`
+- `yay -S polybar code megasync touchegg xbindkeys`
 
 - `sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`
 - `git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions`
+- `git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k`
 
 - `cp etc/default/grub /etc/default/grub; sudo update-grub`
 - `cp etc/ssh/sshd_config /etc/ssh/sshd_config`
 - `cp etc/locale.conf /etc/locale.conf` or just set the proper locale
-  - Uncomment the locale to be generate in `/etc/locale.gen`
+  - Uncomment the locale to be generate (`en_US.UTF-8 UTF-8`) in `/etc/locale.gen`
   - Generate with `sudo locale-gen`
 - `cp -r usr/share/X11/xorg.conf.d /usr/share/X11/` or just copy the content
 - `cp -r usr/share/conky /usr/share/` (now disabled in `~/.config/i3/config/`)
 
 All the other configuration files are in the home folder
 
-- `cp -r .config ~/` copy general config files and link accordingly (`ln -s DOTFILE_DIR/.config/i3 ${HOME}/.config/i3`)
+- YET TO TEST `for file in .dotfiles/.config/*; do ln -s $file .$(basename $file); done`
 - `cp .Xresources ~/; xrdb ~/.Xresources`
+- `echo "[ -f ~/.xprofile ] && . ~/.xprofile" >> ~/.xinitrc`
 - `ln -s .xprofile ~/.xprofile` if necessary (`rm -rf ~/.xprofile`)
+- `ln -s ~/.dotfiles/.dmenurc ~/.dmenurc`
+
+Some stuff to install
+
+- `sudo pacman -S unzip docker docker-compose go davfs2 yarn npm transmission-cli openvpn gdb colordiff ifconfig zathura dpkg httpie openssh`
+- `yay -S dpkg`
   </details>
 
 ## Shell
@@ -46,9 +58,11 @@ Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator/termite** if nec
 - `cp -r .vim ~/.vim/`
 - `ln -s .vimrc ~/.vimrc`
 - `ln -s .zshrc ~/.zshrc`
-- Double check that `~/.config/terminator/config` exists, or `cp .config/terminator ~/.config/`
 
-- In firefox `layout.css.devPixelsPerPx` to `1.4`
+### Install fonts
+
+- `git clone https://github.com/powerline/fonts.git --depth=1`
+- `./fonts/install.sh && rm -rf fonts`
 
 #### Vim plugins
 
@@ -58,8 +72,8 @@ Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator/termite** if nec
 
 - [termtosvg](https://github.com/nbedos/termtosvg)
 - [todo.txt](https://github.com/todotxt/todo.txt-cli)
-- **xbacklight** - `pacman -Syu xorg-xbacklight`
 - **downgrade** - `sudo pacman -Syu downgrade`
+- [Not necessary] **xbacklight** - `pacman -Syu xorg-xbacklight`
   </details>
 
 ## Touchscreen
@@ -67,10 +81,9 @@ Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator/termite** if nec
 <details>
 <summary><b>Configuration</b></summary>
 
-- Install **touchegg** with `yay -Syu touchegg`
-- Double check that `~/.config/touchegg/touchegg.conf` exists, or `cp .config/touchegg ~/.config/`
-- Load **touchegg** with `echo "touchegg &" >> ~/.xprofile`
-- Load `~/.xprofile` from `~/.xinitrc` with `echo "[ -f ~/.xprofile ] && . ~/.xprofile" >> ~/.xinitrc`
+- `yay -Syu touchegg`
+- Double check that `~/.config/touchegg/touchegg.conf` exists, or `ln -s ~/.dotfiles/.config/touchegg ~/.config/`
+- Load **touchegg** with `echo "touchegg &" >> ~/.xprofile` or just load`~/.xprofile` from `~/.xinitrc`
 
 ### `touchegg.conf`
 
@@ -152,12 +165,80 @@ EndSection
 
 </details>
 
+## Audio
+
+<details>
+<summary><b>Configuration</b></summary>
+
+- `sudo usermod -aG audio $(whoami)`
+- `sudo install_pulse`
+- `sudo pacman -S pavucontrol`
+- Add `options snd_hda_intel index=1` to `/etc/modprobe.d/alsa-base.conf`
+- Set default input/output for pulse audio [here](https://wiki.archlinux.org/index.php/PulseAudio/Examples#Set_the_defaulting_output_source)
+- Make sure only one instance of `pulseaudio` is running
+  - Assuming `/usr/lib/systemd/user/pulseaudio.service` is enabled with
+  - `systemctl --user enable pulseaudio`
+  - `systemctl --user start pulseaudio`
+  - Keep `exec --no-startup-id pulseaudio` commented out
+
+No need for `/etc/asound.conf` or put the following configuration 
+
+```
+# Use PulseAudio by default
+pcm.!default {
+  type pulse
+  fallback "sysdefault"
+  hint {
+    show on
+    description "Default ALSA Output (currently PulseAudio Sound Server)"
+  }
+}
+
+ctl.!default {
+  type pulse
+  fallback "sysdefault"
+}
+
+# vim:set ft=alsaconf:
+```
+
+### Audio keybinds
+
+- `xbindkeys -d > ~/.xbindkeysrc`
+
+Add mute/unmute bind
+
+```
+echo "# Mute volume
+"pactl set-sink-mute @DEFAULT_SINK@ toggle"
+   XF86AudioMute
+" >> ~/.xbindkeysrc
+
+```
+
+</details>
+
+## Firefox
+
+<details>
+<summary><b>Configuration</b></summary>
+
+- Edit `about:config`
+  - `layout.css.devPixelsPerPx` to `1.4`
+  - `toolkit.legacyUserProfileCustomizations.stylesheets` to `true`
+- `ln -s .dotfiles/.mozilla/firefox ~/.mozilla/firefox/`
+
+</details>
+
+
+
+
 ## Notes
 
 <details>
 <summary><b>Audio</b></summary>
 
-Should works with just `alsa` installed. Currently it works with the following packages
+Should works with both `pulseaudio` and `alsa` installed
 
 ```
 alsa-lib 1.1.7-1
@@ -178,7 +259,7 @@ Detect sound card with `cat /proc/asound/cards`. That gives the following output
                       HDA Intel PCH at 0xf0534000 irq 44
 ```
 
-and set as default card in `/etc/asound.conf`
+and set as default card in `/etc/asound.conf` **NOT WORKING ANYMORE**
 
 ```
 pcm.!default {
@@ -192,11 +273,19 @@ ctl.!default {
 }
 ```
 
-To unmute the sound use the keybind `Mod1 + XF86SoundMute` set in `.config/i3/config`
+To unmute the sound use the keybind 
 
-If the output of `pulseaudio` shows `E: [pulseaudio] main.c: pa_pid_file_create() failed.` try to add **user** to **audio** group with `sudo usermod -aG audio your_user_name`
+- ~`Mod1 + XF86SoundMute` set in `.config/i3/config`~
+- `"pactl set-sink-mute @DEFAULT_SINK@ toggle"
+   XF86AudioMute`
 
-Using both `pulseaudio` and `alsamixer`. Get default output device with `pacmd list-sinks | grep -e 'name:' -e 'index:'`
+
+If the output of `pulseaudio` shows `E: [pulseaudio] main.c: pa_pid_file_create() failed.` try adding **user** to **audio** group with `sudo usermod -aG audio $(whoami)`
+
+Using both `pulseaudio` and `alsamixer`. 
+
+- Get default output device with `pacmd list-sinks | grep -e 'name:' -e 'index:'`
+- Get default input device with `pacmd list-sources | grep -e 'name:' -e 'index:'`
 
 List all available cards with `aplay -L`
 

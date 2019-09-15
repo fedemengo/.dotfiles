@@ -5,5 +5,7 @@ __*
 pics/
 
 .mozilla
-!.mozilla/firefox/fedemengo.default/chrome
+!.mozilla/firefox/fedemengo.default/chrome/
+
+.vim/.netrwhist
 
