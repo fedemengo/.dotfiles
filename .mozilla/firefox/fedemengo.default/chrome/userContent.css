@@ -1,3 +1,4 @@
+/*
 input:not(.urlbar-input):not(.textbox-input):not(.form-control):not([type='checkbox']):not([type='radio']) {
     -moz-appearance: none !important;
     background-color: white;
@@ -5,10 +6,11 @@ input:not(.urlbar-input):not(.textbox-input):not(.form-control):not([type='check
 }
 
 input[type="radio"] {
-    -ms-transform: scale(1.2); /* IE 9 */
-    -webkit-transform: scale(1.2); /* Chrome, Safari, Opera */
+    -ms-transform: scale(1.2);
+    -webkit-transform: scale(1.2);
     transform: scale(1.2);
 }
+
 
 #downloads-indicator-counter {
     color: white;
@@ -26,3 +28,4 @@ select {
     color: black;
 }
 
+*/
