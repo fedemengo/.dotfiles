@@ -3,7 +3,7 @@ export EDITOR=/usr/bin/vim
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 # fix "xdg-open fork-bomb" export your preferred browser from here
 export BROWSER=/usr/bin/firefox
-export TERMINAL="termite"
+export TERMINAL=/usr/bin/termite
 export ZSH=$HOME/.oh-my-zsh
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -52,7 +52,10 @@ export PATH="$PATH:$ANDROID_HOME/tools"
 export PATH="$PATH:$ANDROID_HOME/tools/bin"
 export PATH="$PATH:$ANDROID_HOME/platform-tools"
 
-export JAVA_HOME="${HOME}/.jdk/jdk1.8.0_201"
+export PATH="${PATH}:${HOME}/.app/android-studio/bin/studio.sh"
+
+export JAVA_HOME="${HOME}/.jdk/jdk-11.0.4"
 export JDK_HOME="${JAVA_HOME}"
 export JRE_HOME="${JAVA_HOME}/jre"
 
+export PATH="${PATH}:${JAVA_HOME}/bin"

@@ -74,6 +74,12 @@ function pacman-util {
 	CURSOR=${#BUFFER}
 }
 
+function yay-util {
+	com="yay -S"
+	BUFFER="${com}${BUFFER}"
+	CURSOR=${#BUFFER}
+}
+
 function sudo-util {
 	com="sudo "
 	BUFFER="${com}${BUFFER}"
@@ -81,9 +87,11 @@ function sudo-util {
 }
 
 function redo-sudo {
-	cmd=${!!}
-	echo "sudo ${cmd}"
-	sudo $cmd
+    #cmd=$(history | tail -1 | cut -d' ' -f4-)
+	cmd=$(cat ~/.zsh_history | tail -1 | cut -d';' -f2)
+	BUFFER="sudo ${cmd}"
+	CURSOR=${#BUFFER}
+	#sudo $cmd
 }
 
 function home-util {
@@ -95,6 +103,7 @@ function home-util {
 zle -N tab_list
 zle -N forward-kill-word
 zle -N pacman-util
+zle -N yay-util
 zle -N sudo-util
 zle -N home-util
 zle -N redo-sudo
@@ -136,9 +145,10 @@ bindkey "^I" tab_list
 bindkey "^[[Z" reverse-menu-complete
 
 bindkey "^p" pacman-util
+bindkey "^y" yay-util
 bindkey "^s" sudo-util
 bindkey "^f" home-util
-#bindkey "^w" redo-sudo
+bindkey "^w" redo-sudo
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*' insert-tab false
@@ -159,7 +169,9 @@ alias md='mkdir -p'
 alias l="ls -lh"
 alias ll='ls -lah'
 alias pi='ssh pi@192.168.1.100'
+alias pi3='ssh pi@192.168.1.101'
 alias pifs='sshfs -o allow_other pi@192.168.1.100:/mnt/hdd/ /mnt/hdd'
+alias upifs='sudo umount /mnt/hdd'
 alias todo='todo.sh'
 alias rs='repos-stat --no-clean --no-broken'
 alias df='df -h'                          # human-readable sizes
@@ -186,5 +198,12 @@ alias 9='cd -9'
 #alias chromium='chromium --force-device-scale-factor=1.5'
 
 alias gst='git status'
-alias zat='zathura'
+alias z='zathura'
 alias p3='python3'
+
+alias gut='git'
+alias got='git'
+alias gi='git'
+alias g='git'
+
+alias ft='fix_touchpad'

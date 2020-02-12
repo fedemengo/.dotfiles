@@ -1,9 +1,10 @@
 
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
-set $TERM termite
+set $TERM /usr/bin/termite
 
 #	FEDEMENGO
+# KEYBINDS
 bindsym Mod1+f exec firefox
 bindsym XF86Search exec firefox
 no_focus [class=".*"]
@@ -31,19 +32,19 @@ hide_edge_borders both
 
 # change borders
 bindsym $mod+u border none
-bindsym $mod+y border pixel 1
+bindsym $mod+y border pixel 5
 bindsym $mod+n border normal
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font xft:URWGothic-Book 11
+font xft:URWGothic-Book 15
 
 # Use Mouse+$mod to drag floating windows
 floating_modifier $mod
 
 # start a terminal
 #bindsym $mod+Return exec terminator -e "${HOME}/.config/i3/shell.sh"
-bindsym $mod+Return exec "$TERM"
+bindsym $mod+Return exec "BROWSER=/usr/bin/firefox $TERM"
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -61,6 +62,7 @@ bindsym XF86Tools exec --no-startup-id morc_menu
 
 # 	FEDEMENGO (consider killing it when messy)
 exec --no-startup-id volumeicon
+exec --no-startup-id /usr/lib/geoclue-2.0/demos/agent
 #########bindsym $mod+Ctrl+m exec terminal -e 'alsamixer'
 #exec --no-startup-id pulseaudio
 #exec --no-startup-id pa-applet
@@ -85,11 +87,11 @@ bindsym $mod+F5 exec TERM -e 'mocp'
 #	bindsym $mod+t exec --no-startup-id pkill compton
 #	bindsym $mod+Ctrl+t exec --no-startup-id compton -b
 bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart dunst'"
-bindsym Print exec --no-startup-id i3-scrot
-bindsym $mod+Print --release exec --no-startup-id i3-scrot -w
-bindsym $mod+Shift+Print --release exec --no-startup-id i3-scrot -s
-bindsym $mod+Shift+t exec xdg-open /usr/share/doc/manjaro/i3_help.pdf
-bindsym $mod+Ctrl+x --release exec --no-startup-id xkill
+bindsym Shift+F1 exec --no-startup-id i3-scrot
+#bindsym $mod+Print --release exec --no-startup-id i3-scrot -w
+#bindsym $mod+Shift+Print --release exec --no-startup-id i3-scrot -s
+#bindsym $mod+Shift+t exec xdg-open /usr/share/doc/manjaro/i3_help.pdf
+#bindsym $mod+Ctrl+x --release exec --no-startup-id xkill
 
 # focus_follows_mouse no
 
@@ -139,7 +141,7 @@ bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
 #	FEDEMENGO (remove floating toggle)
-#	bindsym $mod+Shift+space floating toggle
+bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
@@ -227,32 +229,35 @@ bindsym $mod+Shift+c move container to workspace $ws12; workspace $ws12
 # assign [class="Skype"] $ws5
 
 # Open specific applications in floating mode
-for_window [title="alsamixer"] floating enable border pixel 1
-for_window [class="calamares"] floating enable border normal
-for_window [class="Clipgrab"] floating enable
-for_window [title="File Transfer*"] floating enable
-for_window [class="Galculator"] floating enable border pixel 1
-for_window [class="GParted"] floating enable border normal
-for_window [title="i3_help"] floating enable sticky enable border normal
-for_window [class="Lightdm-settings"] floating enable
-for_window [class="Lxappearance"] floating enable sticky enable border normal
-for_window [class="Manjaro-hello"] floating enable
-for_window [class="Manjaro Settings Manager"] floating enable border normal
-for_window [title="MuseScore: Play Panel"] floating enable
-for_window [class="Nitrogen"] floating enable sticky enable border normal
-for_window [class="Oblogout"] fullscreen enable
-for_window [class="octopi"] floating enable
-for_window [title="About Pale Moon"] floating enable
-for_window [class="Pamac-manager"] floating enable
-for_window [class="Pavucontrol"] floating enable
-for_window [class="qt5ct"] floating enable sticky enable border normal
-for_window [class="Qtconfig-qt4"] floating enable sticky enable border normal
-for_window [class="Simple-scan"] floating enable border normal
-for_window [class="(?i)System-config-printer.py"] floating enable border normal
-for_window [class="Skype"] floating enable border normal
-for_window [class="Timeset-gui"] floating enable border normal
-for_window [class="(?i)virtualbox"] floating enable border normal
-for_window [class="Xfburn"] floating enable
+# FEDEMENGO: Disable all floating windows
+#for_window [title="alsamixer"] floating enable border pixel 1
+#for_window [class="calamares"] floating enable border normal
+#for_window [class="Clipgrab"] floating enable
+#for_window [title="File Transfer*"] floating enable
+#for_window [class="Galculator"] floating enable border pixel 1
+#for_window [class="GParted"] floating enable border normal
+#for_window [title="i3_help"] floating enable sticky enable border normal
+#for_window [class="Lightdm-settings"] floating enable
+#for_window [class="Lxappearance"] floating enable sticky enable border normal
+#for_window [class="Manjaro-hello"] floating enable
+#for_window [class="Manjaro Settings Manager"] floating enable border normal
+#for_window [title="MuseScore: Play Panel"] floating enable
+#for_window [class="Nitrogen"] floating enable sticky enable border normal
+#for_window [class="Oblogout"] fullscreen enable
+#for_window [class="octopi"] floating enable
+#for_window [title="About Pale Moon"] floating enable
+#for_window [class="Pamac-manager"] floating enable
+#for_window [class="Pavucontrol"] floating enable
+#for_window [class="qt5ct"] floating enable sticky enable border normal
+#for_window [class="Qtconfig-qt4"] floating enable sticky enable border normal
+#for_window [class="Simple-scan"] floating enable border normal
+#for_window [class="(?i)System-config-printer.py"] floating enable border normal
+#for_window [class="Skype"] floating enable border normal
+#for_window [class="Timeset-gui"] floating enable border normal
+#for_window [class="(?i)virtualbox"] floating enable border normal
+#for_window [class="Xfburn"] floating enable
+for_window [class="Skype"] floating disabled
+for_window [class="Firefox"] floating disabled
 
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus
@@ -287,7 +292,7 @@ mode "$mode_system" {
 bindsym $mod+r mode "resize"
 mode "resize" {
 # These bindings trigger as soon as you enter the resize mode
-       bindsym h resize shrink width 5 px or 5 ppt
+        bindsym h resize shrink width 5 px or 5 ppt
         bindsym j resize grow height 5 px or 5 ppt
         bindsym k resize shrink height 5 px or 5 ppt
         bindsym l resize grow width 5 px or 5 ppt
@@ -362,7 +367,7 @@ set_from_resource $term_color15    color15
 
 # Start i3bar to display a workspace bar (plus the system information i3status if available)
 bar {
-#	mode hide
+	mode hide
 	i3bar_command ${HOME}/.config/polybar/launch.sh
 ##	status_command i3status --config ~/.config/i3/status.conf
 
@@ -462,3 +467,4 @@ mode "$mode_gaps_outer" {
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
+

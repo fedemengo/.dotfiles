@@ -3,12 +3,19 @@
 /* about:config > toolkit.legacyUserProfileCustomizations.stylesheets > true */
 /* about:config > layout.css.devPixelsPerPx > 1.3 */
 
+
 :root,
 toolbox,
 menupopup,
 menu {
-    font-size: 17px !important;
+    font-size: 18px !important;
+	/* background-color: black !important; */
 }
+
+toolbar {
+	background-color: black !important;
+}
+
 
 /*
 .tabbrowser-tab {

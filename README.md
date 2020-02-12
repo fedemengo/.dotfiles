@@ -73,7 +73,7 @@ Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator/termite** if nec
 - [termtosvg](https://github.com/nbedos/termtosvg)
 - [todo.txt](https://github.com/todotxt/todo.txt-cli)
 - **downgrade** - `sudo pacman -Syu downgrade`
-- [Not necessary] **xbacklight** - `pacman -Syu xorg-xbacklight`
+- **xbacklight** - `pacman -Syu xorg-xbacklight`
   </details>
 
 ## Touchscreen

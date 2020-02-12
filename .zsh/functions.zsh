@@ -148,6 +148,15 @@ function ex() {
   fi
 }
 
+function mc() {
+	name="${1%%.*}"
+	mcs $1 && mono "${name}.exe"
+}
+
+function dns() {
+	sudo chattr -i /etc/resolv.conf && sudo vim /etc/resolv.conf && sudo chattr +i /etc/resolv.conf
+}
+
 function vpns() {
 	for conf in ${HOME}/.torguard/torguard-PRO/*; 
 	do 
