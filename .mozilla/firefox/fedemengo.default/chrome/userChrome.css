@@ -16,6 +16,15 @@ toolbar {
 	background-color: black !important;
 }
 
+vbox.tab-background[selected="true"] {
+	background-color: black !important;
+	background-image: none !important;
+}
+
+vbox.tab-background:not([selected="true"]) {
+	background-color: #333333 !important;
+	background-image: none !important;
+}
 
 /*
 .tabbrowser-tab {
