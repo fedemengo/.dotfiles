@@ -148,6 +148,21 @@ function ex() {
   fi
 }
 
+function i() {
+    if [[ "$#" -ne "1" ]]; then
+		echo "Usage i EXT"
+		echo ""
+		echo "Example: i mp3"
+		exit 1;
+	fi
+	ext="$1"
+	for f in *.${ext}; do 
+		d=$(mediainfo $f | grep -m 1 Duration | cut -d':' -f2 | tr -s ' ');
+		echo $f $d; 
+	done
+
+}
+
 function mc() {
 	name="${1%%.*}"
 	mcs $1 && mono "${name}.exe"

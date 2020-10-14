@@ -258,6 +258,7 @@ bindsym $mod+Shift+c move container to workspace $ws12; workspace $ws12
 #for_window [class="Xfburn"] floating enable
 for_window [class="Skype"] floating disabled
 for_window [class="Firefox"] floating disabled
+for_window [class="i3-frame"] floating disabled
 
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus

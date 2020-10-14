@@ -5,7 +5,7 @@ export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 export BROWSER=/usr/bin/firefox
 export TERMINAL=/usr/bin/termite
 export ZSH=$HOME/.oh-my-zsh
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/.app/MatLab/bin
 
 export LANG="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF-8"
@@ -30,8 +30,11 @@ export GOROOT="/usr/lib/go"
 export PATH="$PATH:$GOPATH/bin:$GOROOT/bin"
 export GO111MODULE=on
 
-export RUBY_VERSION="2.6.0"
-export PATH="${PATH}:${HOME}/.gem/ruby/${RUBY_VERSION}/bin"
+export RUBYOPT="-W:no-deprecated"
+export RUBY_VERSION="ruby-2.7.1"
+export PATH="${PATH}:${HOME}/.rvm/rubies/${RUBY_VERSION}/bin"
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
 
 export EDITOR="$(which vim)"
 
