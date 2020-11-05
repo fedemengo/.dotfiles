@@ -81,6 +81,22 @@ Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator/termite** if nec
 <details>
 <summary><b>Configuration</b></summary>
 
+#### [EDIT 05/11/2020] 
+
+`touchegg-1.1.1.1` is not available anymore and the new version doesn't support DRAG (2 fingers gestures). So it's necessary to downgrade to 1.1.1.1 to keep the old configuration
+
+- Add **arcanis** repo to `/etc/pacman.conf`
+
+```
+[arcanisrepo]
+Server = http://repo.arcanis.me/repo/$arch
+```
+- Update packages database `pacman -Syyu`
+- Install using pacman `pacman -S touchegg`
+- Remove **arcanis** and update again
+
+#### [BEFORE 27/09/2020]
+
 - `yay -Syu touchegg`
 - Double check that `~/.config/touchegg/touchegg.conf` exists, or `ln -s ~/.dotfiles/.config/touchegg ~/.config/`
 - Load **touchegg** with `echo "touchegg &" >> ~/.xprofile` or just load`~/.xprofile` from `~/.xinitrc`
