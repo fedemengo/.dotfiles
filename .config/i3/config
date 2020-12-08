@@ -20,6 +20,8 @@ bindsym XF86Display exec "${HOME}/.config/i3/bright.sh"
 # Set mod key (Mod1=<Alt>, Mod4=<Super>)
 set $mod Mod4
 
+
+bindsym $mod+b exec "${HOME}/.config/i3/dm.sh"
 # set default desktop layout (default is tiling)
 # workspace_layout tabbed <stacking|tabbed>
 
@@ -123,8 +125,8 @@ bindsym $mod+Shift+Right move right
 
 # workspace back and forth (with/without active container)
 workspace_auto_back_and_forth yes
-bindsym $mod+b workspace back_and_forth
-bindsym $mod+Shift+b move container to workspace back_and_forth; workspace back_and_forth
+bindsym $mod+a workspace back_and_forth
+bindsym $mod+Shift+a move container to workspace back_and_forth; workspace back_and_forth
 
 # split orientation
 bindsym $mod+o split h;exec notify-send 'tile horizontally'
@@ -141,7 +143,7 @@ bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
 #	FEDEMENGO (remove floating toggle)
-bindsym $mod+Shift+space floating toggle
+bindsym $/mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
@@ -150,7 +152,7 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+Shift+s sticky toggle
 
 # focus the parent container
-bindsym $mod+a focus parent
+bindsym $mod+Shift+b focus parent
 
 # move the currently focused window to the scratchpad
 bindsym $mod+Shift+minus move scratchpad

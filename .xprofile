@@ -1,6 +1,5 @@
 touchegg &
 # megasync &
-redshift -l manual -t 5500:4000 &
 
 /home/fedemengo/.config/i3/battery.sh &
 /home/fedemengo/.config/i3/bg.sh &
