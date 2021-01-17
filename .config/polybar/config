@@ -3,7 +3,8 @@ background = #000
 background-alt = #444
 foreground = #dfdfdf
 foreground-alt = #555
-primary = #00ff00
+primary = #ff33ff
+;primary = #00ff00
 secondary = #e60053
 alert = #bd2c40
 
@@ -41,7 +42,7 @@ font-0 = fixed:pixelsize=14;2
 
 modules-left = i3
 modules-center = vpn cpu memory temperature battery filesystem
-modules-right =  date wlan
+modules-right = wlan date
 ;modules-right = filesystem xbacklight alsa pulseaudio xkeyboard memory cpu wlan eth battery temperature date powermenu
 
 tray-position = right
@@ -98,7 +99,7 @@ mount-3 = /mnt/usb
 mount-4 = /mnt/box
 
 fixed-values = true
-label-mounted = %{F#00ff00}%mountpoint%%{F-}: %free%
+label-mounted = %{F#ff33ff}%mountpoint%%{F-}: %free%
 label-unmounted = 
 ;label-unmounted = %mountpoint%
 label-unmounted-foreground = ${colors.foreground-alt}
@@ -232,9 +233,9 @@ type = internal/network
 interface = wlp3s0
 interval = 3.0
 
-format-connected = <ramp-signal> <label-connected>
+format-connected = <label-connected>
 ;format-connected-underline = #9f78e1
-label-connected = %{F#00ff00}%local_ip%%{F-} %{F#00ff00}d%{F-}: %downspeed% %{F#00ff00}u%{F-}: %upspeed%
+label-connected = %local_ip%  %{F#ff33ff}d%{F-}: %downspeed:7% %{F#ff33ff}u%{F-}: %upspeed:7%
 
 ;format-disconnected =
 format-disconnected = <label-disconnected>
@@ -326,7 +327,7 @@ label-discharging = %time% - %percentage%%
 ;format-discharging-underline = #ffff00
 
 format-full-prefix = "pow "
-format-full-prefix-foreground = ${colors.foreground-alt}
+format-full-prefix-foreground = ${colors.primary}
 format-full-underline = #40ff00
 
 ramp-capacity-0 = 

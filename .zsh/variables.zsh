@@ -31,10 +31,10 @@ export PATH="$PATH:$GOPATH/bin:$GOROOT/bin"
 export GO111MODULE=on
 
 export RUBYOPT="-W:no-deprecated"
-export RUBY_VERSION="ruby-2.7.1"
-export PATH="${PATH}:${HOME}/.rvm/rubies/${RUBY_VERSION}/bin"
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
+#export RUBY_VERSION="ruby-2.7.1"
+#export PATH="${PATH}:${HOME}/.rvm/rubies/${RUBY_VERSION}/bin"
+## Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+#export PATH="$PATH:$HOME/.rvm/bin"
 
 export EDITOR="$(which vim)"
 

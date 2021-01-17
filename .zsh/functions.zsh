@@ -9,23 +9,54 @@ function restart_polybar() {
 }
 
 function connect_HDMI(){
-    position=left
     if [[ "$#" -eq "0" ]]; then
         echo "output identifier is required"
+        echo
+        echo "Usage:"
+        echo "      connect_HDMI outID [position=up] [resolution=1920x1080] [scale=2x2]"
+        echo
         return 1
     else
-        if [[ "$#" -eq "2" ]]; then
-            position="$2"
-        fi
-		pos=""
-		if [[ "$position" == "left" ]]; then
-			pos="right"
-		else
-			pos="left"
-		fi
+        position="${2:-"up"}"
+        res="${3:-"1920x1080"}"
+        scale="${4:-"1.5x1.5"}"
+        w=$(echo $res | cut -d'x' -f1)
+        sw=$(echo $scale | cut -d'x' -f1)
 
-        xrandr --output "$1" --set audio on --auto --output eDP1 --auto --${pos}-of "$1"
-        restart_polybar
+        h=$(echo $res | cut -d'x' -f2)
+        sh=$(echo $scale | cut -d'x' -f2)
+        
+        ((dw = w * sw))
+        ((dh = h * sh))
+
+        ww=$(printf '%d\n' "$dw")
+        hh=$(printf '%d\n' "$dh")
+
+        echo $ww $hh
+
+		case "$position" in
+            "right")
+		        pos1="${ww}x0"
+                pos2="0x0"
+                ;;
+			"left")
+                pos1="0x0"
+                pos2="${ww}x0"
+				;;
+			"up")
+                pos1="0x0"
+                pos2="0x${hh}"
+				;;
+			"down")
+                pos1="0x${hh}"
+                pos2="0x0"
+				;;
+		esac
+
+        xrandr --output HDMI2 --auto --pos "$pos1" --scale 1.5x1.5 --output eDP1 --auto --pos "$pos2"
+        restart_polybar;
+
+        #xrandr --output "$1" --set audio on --mode "${res}" --pos "${pos1}" --scale "${scale}" --output eDP1 --auto --pos "${pos2}";
     fi
 }
 

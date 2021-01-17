@@ -52,7 +52,7 @@ bindsym $mod+Return exec "BROWSER=/usr/bin/firefox $TERM"
 bindsym $mod+Shift+q kill
 
 # start program launcher
-bindsym Mod1+d exec --no-startup-id dmenu_recency -i -h 14 -nb "#1c1c1c" -sb "#00ff00" -fn "Bitstream Vera Sans Mono-14"
+bindsym Mod1+d exec --no-startup-id dmenu_recency -i -h 20 -nb "#1c1c1c" -sb "#ff33ff" -fn "Bitstream Vera Sans Mono-17"
 
 # launch categorized menu
 bindsym XF86Tools exec --no-startup-id morc_menu
