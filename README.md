@@ -59,6 +59,12 @@ Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator/termite** if nec
 - `ln -s .vimrc ~/.vimrc`
 - `ln -s .zshrc ~/.zshrc`
 
+### Binaries
+
+Symlink user binaries
+
+- `for f in $(find bin -type f); do cp "$f" "${HOME}/.local/$f"; done`
+
 ### Install fonts
 
 - `git clone https://github.com/powerline/fonts.git --depth=1`

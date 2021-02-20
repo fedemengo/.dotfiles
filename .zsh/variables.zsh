@@ -62,3 +62,6 @@ export JDK_HOME="${JAVA_HOME}"
 export JRE_HOME="${JAVA_HOME}/jre"
 
 export PATH="${PATH}:${JAVA_HOME}/bin"
+
+# rust stuff	
+export PATH="${PATH}:${HOME}/.cargo/bin"

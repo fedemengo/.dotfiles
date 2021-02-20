@@ -94,9 +94,9 @@ function redo-sudo {
 	#sudo $cmd
 }
 
-function home-util {
-	data="${HOME:=/home/fedemengo/}"
-	BUFFER="${BUFFER}${data}"
+function home {
+	data="${HOME:=/home/fedemengo}"
+	BUFFER="${BUFFER}${data}/"
 	CURSOR=${#BUFFER}
 }
 
@@ -105,9 +105,8 @@ zle -N forward-kill-word
 zle -N pacman-util
 zle -N yay-util
 zle -N sudo-util
-zle -N home-util
 zle -N redo-sudo
-
+zle -N home
 # History
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
@@ -147,8 +146,8 @@ bindkey "^[[Z" reverse-menu-complete
 bindkey "^p" pacman-util
 bindkey "^y" yay-util
 bindkey "^s" sudo-util
-bindkey "^f" home-util
 bindkey "^w" redo-sudo
+bindkey "^h" home
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*' insert-tab false
@@ -172,8 +171,9 @@ alias pi='ssh pi@192.168.178.100'
 alias pi3='ssh pi@192.168.178.101'
 alias ubu='ssh fedemengo@192.168.178.116'
 alias pifs='sshfs -o allow_other pi@192.168.178.100:/mnt/hdd/ /mnt/hdd'
-alias pifs3='sshfs -o allow_other pi@192.168.178.101:/mnt/hdd/ /mnt/hdd'
-alias upifs='sudo umount /mnt/hdd'
+alias pifs3='rclone mount --daemon pi3::STORAGE/ /mnt/hdd'
+#alias pifs3='sshfs -o allow_other pi@192.168.178.101:/mnt/hdd/ /mnt/hdd'
+alias upifs='fusermount -u /mnt/hdd'
 alias todo='todo.sh'
 alias rs='repos-stat --no-clean --no-broken'
 alias df='df -h'                          # human-readable sizes
@@ -210,3 +210,4 @@ alias g='git'
 
 alias ft='fix_touchpad'
 alias rename='perl-rename'
+alias mplayer='mplayer -osdlevel 3 -osd-fractions 1'

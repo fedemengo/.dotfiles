@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [[ "$#" -eq "0" ]]
+then
+	echo "output identifier is required"
+	exit 1
+else
+	xrandr --output "$1" --off
+	exec ${HOME}/.config/polybar/launch.sh 2>/dev/null 1>&2
+fi
+

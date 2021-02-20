@@ -1,6 +1,7 @@
 
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
+#set $TERM /usr/local/bin/st
 set $TERM /usr/bin/termite
 
 #	FEDEMENGO
@@ -20,6 +21,11 @@ bindsym XF86Display exec "${HOME}/.config/i3/bright.sh"
 # Set mod key (Mod1=<Alt>, Mod4=<Super>)
 set $mod Mod4
 
+#resize windows, keeping a 16/9 ratio
+set $RW 100
+set $RH 57
+bindsym $mod+Ctrl+Up resize grow height $RH px; resize grow width $RW px
+bindsym $mod+Ctrl+Down resize shrink height $RH px; resize shrink width $RW px
 
 bindsym $mod+b exec "${HOME}/.config/i3/dm.sh"
 # set default desktop layout (default is tiling)
@@ -46,13 +52,14 @@ floating_modifier $mod
 
 # start a terminal
 #bindsym $mod+Return exec terminator -e "${HOME}/.config/i3/shell.sh"
-bindsym $mod+Return exec "BROWSER=/usr/bin/firefox $TERM"
+bindsym $mod+Return exec "BROWSER=/usr/bin/firefox $TERM -d `xcwd`"
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # start program launcher
-bindsym Mod1+d exec --no-startup-id dmenu_recency -i -h 20 -nb "#1c1c1c" -sb "#ff33ff" -fn "Bitstream Vera Sans Mono-17"
+bindsym Mod1+d exec --no-startup-id dmenu_recency # config in $HOME/.dmenurc 
+# -i -h 30 -nb "#1c1c1c" -sb "#ff33ff" -fn "Fixed-14"
 
 # launch categorized menu
 bindsym XF86Tools exec --no-startup-id morc_menu
@@ -83,9 +90,7 @@ bindsym $mod+Ctrl+b exec $TERM -e 'bmenu'
 #	FEDEMENGO (removed)
 #	bindsym $mod+F2 exec palemoon
 bindsym $mod+F3 exec pcmanfm
-# bindsym $mod+F3 exec ranger
-bindsym $mod+Shift+F3 exec gksu pcmanfm
-bindsym $mod+F5 exec TERM -e 'mocp'
+
 #	bindsym $mod+t exec --no-startup-id pkill compton
 #	bindsym $mod+Ctrl+t exec --no-startup-id compton -b
 bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart dunst'"
@@ -143,7 +148,7 @@ bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
 #	FEDEMENGO (remove floating toggle)
-bindsym $/mod+Shift+space floating toggle
+bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
@@ -259,7 +264,7 @@ bindsym $mod+Shift+c move container to workspace $ws12; workspace $ws12
 #for_window [class="(?i)virtualbox"] floating enable border normal
 #for_window [class="Xfburn"] floating enable
 for_window [class="Skype"] floating disabled
-for_window [class="Firefox"] floating disabled
+for_window [class="firefox"] floating disabled
 for_window [class="i3-frame"] floating disabled
 
 # switch to workspace with urgent window automatically
