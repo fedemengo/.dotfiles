@@ -29,3 +29,17 @@ select {
 }
 
 */
+
+
+#toolbarViewer {
+	background-color: rgb(50, 50, 50);
+}
+
+#viewerContainer > #viewer {
+	background-color: rgb(50, 50, 50);
+}
+
+#viewerContainer > #viewer > .page > .canvasWrapper > canvas {
+    filter: grayscale(100%);
+    filter: invert(100%);
+}
