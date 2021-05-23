@@ -165,11 +165,11 @@ alias mv='mv -i'
 alias rm='rm -i'
 alias md='mkdir -p'
 #alias l="ls -ls --block-size=M"
-alias l="ls -lh"
-alias ll='ls -lah'
-alias pi='ssh pi@192.168.178.100'
-alias pi3='ssh pi@192.168.178.101'
-alias ubu='ssh fedemengo@192.168.178.116'
+alias l="ls -oh --sort=extension"
+alias ll='ls -oah --sort=extension'
+alias pi='ssh pi@192.168.178.100 2>/dev/null'
+alias pi3='ssh pi@192.168.178.101 2>/dev/null'
+alias ubu='ssh fedemengo@192.168.178.121'
 alias pifs='sshfs -o allow_other pi@192.168.178.100:/mnt/hdd/ /mnt/hdd'
 alias pifs3='rclone mount --daemon pi3::STORAGE/ /mnt/hdd'
 #alias pifs3='sshfs -o allow_other pi@192.168.178.101:/mnt/hdd/ /mnt/hdd'
@@ -200,7 +200,6 @@ alias 9='cd -9'
 #alias chromium='chromium --force-device-scale-factor=1.5'
 
 alias gst='git status'
-alias z='zathura'
 alias p3='python3'
 
 alias gut='git'
@@ -208,6 +207,5 @@ alias got='git'
 alias gi='git'
 alias g='git'
 
-alias ft='fix_touchpad'
 alias rename='perl-rename'
 alias mplayer='mplayer -osdlevel 3 -osd-fractions 1'

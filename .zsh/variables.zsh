@@ -2,6 +2,7 @@ export QT_QPA_PLATFORMTHEME="qt5ct"
 export EDITOR=/usr/bin/vim
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 # fix "xdg-open fork-bomb" export your preferred browser from here
+export MONITOR="eDP1"
 export BROWSER=/usr/bin/firefox
 export TERMINAL=/usr/bin/termite
 export ZSH=$HOME/.oh-my-zsh
@@ -31,10 +32,10 @@ export PATH="$PATH:$GOPATH/bin:$GOROOT/bin"
 export GO111MODULE=on
 
 export RUBYOPT="-W:no-deprecated"
-#export RUBY_VERSION="ruby-2.7.1"
-#export PATH="${PATH}:${HOME}/.rvm/rubies/${RUBY_VERSION}/bin"
+export RUBY_VERSION="ruby-2.7.1"
+export PATH="${PATH}:${HOME}/.rvm/rubies/${RUBY_VERSION}/bin:${HOME}/.gem/${RUBY_VERSION}/bin"
 ## Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-#export PATH="$PATH:$HOME/.rvm/bin"
+export PATH="$PATH:$HOME/.rvm/bin:${HOME}/.gem/ruby/2.7.0/bin"
 
 export EDITOR="$(which vim)"
 
@@ -63,5 +64,6 @@ export JRE_HOME="${JAVA_HOME}/jre"
 
 export PATH="${PATH}:${JAVA_HOME}/bin"
 
-# rust stuff	
 export PATH="${PATH}:${HOME}/.cargo/bin"
+
+export PATH="${PATH}:${HOME}/.npm-global/bin"

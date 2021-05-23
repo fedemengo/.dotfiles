@@ -1,8 +1,12 @@
 #!/usr/bin/sh
 
+#./auto-hide
+
 spawn() {
     (MONITOR="$1" polybar i3bar &>/dev/null) & disown
 }
+
+source ${HOME}/.config/polybar/polybar-env.sh
 
 # Terminate and wait until the processes have been shut down
 while pgrep -u $UID -x polybar >/dev/null; do killall -q polybar; sleep 0.3; done

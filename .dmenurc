@@ -12,7 +12,7 @@ DMENU_NB="#000000"
 DMENU_NF="#F9FAF9"
 
 ## background colour for selected menu-items
-DMENU_SB="#ff33ff"
+DMENU_SB="${THEME_COLOR:-#ff33ff}"
 
 ## textcolour for selected menu-items
 DMENU_SF="#000000"
@@ -23,4 +23,4 @@ TERMINAL_CMD="terminal -e"
 HEIGHT=30
 
 ## export our variables
-DMENU_OPTIONS="-h $HEIGHT -fn $DMENU_FN -nb $DMENU_NB -nf $DMENU_NF -sf $DMENU_SF -sb $DMENU_SB"
+DMENU_OPTIONS="-h $HEIGHT -fn $DMENU_FN -nb $DMENU_NB -nf $DMENU_NF -sf $DMENU_SF -sb $DMENU_SB -b"

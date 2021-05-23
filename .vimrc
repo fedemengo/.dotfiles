@@ -29,6 +29,7 @@ set hlsearch
 set incsearch
 set scrolloff=10
 set backspace=indent,eol,start
+set relativenumber
 
 colorscheme onedark
 

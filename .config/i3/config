@@ -33,15 +33,19 @@ bindsym $mod+b exec "${HOME}/.config/i3/dm.sh"
 
 # Configure border style <normal|1pixel|pixel xx|none|pixel>
 new_window none
-new_float normal
+new_float normal 10
 
 # Hide borders
 hide_edge_borders both
 
 # change borders
 bindsym $mod+u border none
-bindsym $mod+y border pixel 5
-bindsym $mod+n border normal
+#bindsym $mod+y border pixel 5
+#bindsym $mod+n border normal
+
+bindsym $mod+d workspace next
+bindsym $mod+Tab workspace back_and_forth
+bindsym $mod+a workspace prev
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -58,11 +62,11 @@ bindsym $mod+Return exec "BROWSER=/usr/bin/firefox $TERM -d `xcwd`"
 bindsym $mod+Shift+q kill
 
 # start program launcher
-bindsym Mod1+d exec --no-startup-id dmenu_recency # config in $HOME/.dmenurc 
+bindsym Mod1+d exec --no-startup-id (source $HOME/.config/polybar/polybar-env.sh && dmenu_recency) # config in $HOME/.dmenurc 
 # -i -h 30 -nb "#1c1c1c" -sb "#ff33ff" -fn "Fixed-14"
 
 # launch categorized menu
-bindsym XF86Tools exec --no-startup-id morc_menu
+# bindsym XF86Tools exec --no-startup-id morc_menu
 #bindsym $mod+z exec --no-startup-id morc_menu
 
 ################################################################################################
@@ -86,8 +90,6 @@ bindsym $mod+Ctrl+m exec pavucontrol
 # bindsym XF86MonBrightnessDown exec "xbacklight -dec 10; notify-send 'brightness down'"
 
 # Start Applications
-bindsym $mod+Ctrl+b exec $TERM -e 'bmenu'
-#	FEDEMENGO (removed)
 #	bindsym $mod+F2 exec palemoon
 bindsym $mod+F3 exec pcmanfm
 
@@ -100,7 +102,7 @@ bindsym Shift+F1 exec --no-startup-id i3-scrot
 #bindsym $mod+Shift+t exec xdg-open /usr/share/doc/manjaro/i3_help.pdf
 #bindsym $mod+Ctrl+x --release exec --no-startup-id xkill
 
-# focus_follows_mouse no
+#focus_follows_mouse no
 
 # change focus
 #	FEDEMENGO (vim like)
@@ -130,19 +132,18 @@ bindsym $mod+Shift+Right move right
 
 # workspace back and forth (with/without active container)
 workspace_auto_back_and_forth yes
-bindsym $mod+a workspace back_and_forth
 bindsym $mod+Shift+a move container to workspace back_and_forth; workspace back_and_forth
 
 # split orientation
-bindsym $mod+o split h;exec notify-send 'tile horizontally'
+bindsym $mod+Shift+v split h;exec notify-send 'tile horizontally'
 bindsym $mod+v split v;exec notify-send 'tile vertically'
-bindsym $mod+q split toggle
+#bindsym $mod+q split toggle; exec notify-send 'tile direction inverted'
 
 # toggle fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
+bindsym $mod+y layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
@@ -151,13 +152,13 @@ bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+#bindsym $mod+space focus mode_toggle
 
 # toggle sticky
 bindsym $mod+Shift+s sticky toggle
 
 # focus the parent container
-bindsym $mod+Shift+b focus parent
+#bindsym $mod+Shift+b focus parent
 
 # move the currently focused window to the scratchpad
 bindsym $mod+Shift+minus move scratchpad
@@ -188,18 +189,18 @@ set $ws10 10
 # switch to workspace
 #always --no-startup-id $HOME/.config/polybar/launch.sh
 
-bindsym $mod+1 workspace $ws1
-bindsym $mod+2 workspace $ws2
-bindsym $mod+3 workspace $ws3
-bindsym $mod+4 workspace $ws4
-bindsym $mod+5 workspace $ws5
-bindsym $mod+6 workspace $ws6
-bindsym $mod+7 workspace $ws7
-bindsym $mod+8 workspace $ws8
-bindsym $mod+9 workspace $ws9
-bindsym $mod+z workspace $ws10
-bindsym $mod+x workspace $ws11
-bindsym $mod+c workspace $ws12
+bindsym $mod+1 workspace $ws1; exec notify-send `i3-msg -t get_workspaces | jq '.[] | select(.focused == true) | .num'`
+bindsym $mod+2 workspace $ws2; exec notify-send `i3-msg -t get_workspaces | jq '.[] | select(.focused == true) | .num'`
+bindsym $mod+3 workspace $ws3; exec notify-send `i3-msg -t get_workspaces | jq '.[] | select(.focused == true) | .num'`
+bindsym $mod+4 workspace $ws4; exec notify-send `i3-msg -t get_workspaces | jq '.[] | select(.focused == true) | .num'`
+bindsym $mod+5 workspace $ws5; exec notify-send `i3-msg -t get_workspaces | jq '.[] | select(.focused == true) | .num'`
+bindsym $mod+6 workspace $ws6; exec notify-send `i3-msg -t get_workspaces | jq '.[] | select(.focused == true) | .num'`
+bindsym $mod+7 workspace $ws7; exec notify-send `i3-msg -t get_workspaces | jq '.[] | select(.focused == true) | .num'`
+bindsym $mod+8 workspace $ws8; exec notify-send `i3-msg -t get_workspaces | jq '.[] | select(.focused == true) | .num'`
+bindsym $mod+9 workspace $ws9; exec notify-send `i3-msg -t get_workspaces | jq '.[] | select(.focused == true) | .num'`
+bindsym $mod+i workspace $ws10; exec notify-send `i3-msg -t get_workspaces | jq '.[] | select(.focused == true) | .num'`
+bindsym $mod+o workspace $ws11; exec notify-send `i3-msg -t get_workspaces | jq '.[] | select(.focused == true) | .num'`
+bindsym $mod+p workspace $ws12; exec notify-send `i3-msg -t get_workspaces | jq '.[] | select(.focused == true) | .num'`
 
 # Move focused container to workspace
 bindsym $mod+Ctrl+1 move container to workspace $ws1
@@ -211,9 +212,9 @@ bindsym $mod+Ctrl+6 move container to workspace $ws6
 bindsym $mod+Ctrl+7 move container to workspace $ws7
 bindsym $mod+Ctrl+8 move container to workspace $ws8
 bindsym $mod+Ctrl+9 move container to workspace $ws9
-bindsym $mod+Ctrl+z move container to workspace $ws10
-bindsym $mod+Ctrl+x move container to workspace $ws11
-bindsym $mod+Ctrl+c move container to workspace $ws12
+bindsym $mod+Ctrl+i move container to workspace $ws10
+bindsym $mod+Ctrl+o move container to workspace $ws11
+bindsym $mod+Ctrl+p move container to workspace $ws12
 
 # Move to workspace with focused container
 bindsym $mod+Shift+1 move container to workspace $ws1; workspace $ws1
@@ -225,9 +226,9 @@ bindsym $mod+Shift+6 move container to workspace $ws6; workspace $ws6
 bindsym $mod+Shift+7 move container to workspace $ws7; workspace $ws7
 bindsym $mod+Shift+8 move container to workspace $ws8; workspace $ws8
 bindsym $mod+Shift+9 move container to workspace $ws9; workspace $ws9
-bindsym $mod+Shift+z move container to workspace $ws10; workspace $ws10
-bindsym $mod+Shift+x move container to workspace $ws11; workspace $ws11
-bindsym $mod+Shift+c move container to workspace $ws12; workspace $ws12
+bindsym $mod+Shift+i move container to workspace $ws10; workspace $ws10
+bindsym $mod+Shift+o move container to workspace $ws11; workspace $ws11
+bindsym $mod+Shift+p move container to workspace $ws12; workspace $ws12
 
 # Open applications on specific workspaces
 # assign [class="Thunderbird"] $ws1
@@ -375,11 +376,15 @@ set_from_resource $term_color15    color15
 
 # Start i3bar to display a workspace bar (plus the system information i3status if available)
 bar {
-	mode hide
+	#mode hide
+	#hidden_state hide
+	position bottom
+	#separator_symbol " - "
 	i3bar_command ${HOME}/.config/polybar/launch.sh
-##	status_command i3status --config ~/.config/i3/status.conf
+	#status_command i3status --config ~/.config/i3/status.conf
+	#status_command SCRIPT_DIR=${HOME}/.config/i3blocks i3blocks
+	
 
-##	position top
 ##	height 25
 ##	font pango: Bitstream Vera Sans Mono 22px
 # please set your primary output first. Example: 'xrandr --output eDP1 --primary'
@@ -391,23 +396,30 @@ bar {
 #   font xft:URWGothic-Book 11
 ###	strip_workspace_numbers yes
 
-###    colors {
+	colors {
         #background #1c1c1c
    #    background #000000
    #    statusline #F9FAF9
    #    separator  #454947
 
 #                      border  backgr. text
-   #    focused_workspace  #F9FAF9 #16a085 #292F34
+   		focused_workspace  #F9FAF9 #00ff00 #292F34
    #    active_workspace   #595B5B #353836 #FDF6E3
    #    inactive_workspace #595B5B #1c1c1c #EEE8D5
    #    binding_mode       #16a085 #2C2C2C #F9FAF9
    #    urgent_workspace   #16a085 #FDF6E3 #E5201D
-   #}
+	}
 }
 
 # hide/unhide i3status bar
-bindsym $mod+Tab exec "polybar-msg cmd toggle"
+#bindsym $mod exec "polybar-msg cmd show"
+#bindsym --release $mod exec "polybar-msg cmd hide"
+
+bindcode 133 exec "polybar-msg cmd show"
+bindcode --release 133 exec "polybar-msg cmd hide"
+
+#bindcode 133 exec "killall auto-hide; polybar-msg cmd show; $HOME/.config/polybar/auto-hide"
+#bindcode --release 133 exec "polybar-msg cmd hide"
 
 # Theme colors
 # class                   border  backgr. text    indic.   child_border
@@ -424,7 +436,7 @@ bindsym $mod+Tab exec "polybar-msg cmd toggle"
 #############################
 
 # Set inner/outer gaps
-gaps inner 2
+gaps inner 0
 gaps outer 0
 
 # Additionally, you can issue commands with the following syntax. This is useful to bind keys to changing the gap size.

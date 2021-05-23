@@ -8,8 +8,8 @@ gm="1.0:1.0:1.0"
 echo .${gamma}.
 if [[ "$gamma" == *"$gm" ]];
 then
-	gmma="1:0.71:0.62"
-	brg="0.6"
+	gmma="1:0.85:0.85"
+	brg="0.7"
 else
 	gmma="1:1:1"
 	brg="1"

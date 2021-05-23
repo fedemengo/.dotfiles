@@ -75,14 +75,6 @@ function disconnect_VPN() {
     fi
 }
 
-#module="psmouse"
-
-function fix_touchpad() {
-    module=${MODULE:-"i2c_i801"}
-    sudo modprobe -r ${module}
-    sudo modprobe ${module}
-}
-
 if [ -n "$commands[kubectl]" ]; then
     source <(kubectl completion zsh)
 fi
@@ -119,7 +111,7 @@ function i() {
 		echo "Usage i EXT"
 		echo ""
 		echo "Example: i mp3"
-		exit 1;
+		return 1;
 	fi
 	ext="$1"
 	for f in *.${ext}; do 
@@ -148,6 +140,10 @@ function vpns() {
 function stop_prune() {
 	docker container stop $(docker container ps -aq)
 	docker container prune
+}
+
+function z() {
+	zathura "$@" 2>/dev/null 1>&2 & disown
 }
 
 if [ -n "$commands[todo.sh]" ]; then

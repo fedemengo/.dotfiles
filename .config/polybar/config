@@ -3,7 +3,8 @@ background = #000
 background-alt = #444
 foreground = #dfdfdf
 foreground-alt = #555
-primary = #ff33ff
+primary = ${env:THEME_COLOR:#00ff00}
+;primary = #ff33ff
 ;primary = #00ff00
 secondary = #e60053
 alert = #bd2c40
@@ -19,7 +20,7 @@ height = 30
 ;radius = 5.0
 fixed-center = true
 
-separator = " - "
+separator = "|"
 
 background = ${colors.background}
 foreground = ${colors.foreground}
@@ -27,8 +28,10 @@ foreground = ${colors.foreground}
 line-size = 3
 line-color = #f00
 
-border-size = 0
-border-color = #00000000
+;border-size = 0
+;border-color = #00000000
+border-top-size = 1
+border-top-color = ${colors.primary}
 
 padding-left = 0
 padding-right = 2
@@ -36,13 +39,14 @@ padding-right = 2
 module-margin-left = 1
 module-margin-right = 2
 
-font-0 = fixed:pixelsize=14;2
+font-0 = fixed:pixelsize=15;0
+#font-0 = Material Icons: style=Regular: pixelsize=13; 2
 ;font-0 = unifont:fontformat=truetype:size=14:antialias=false;0
 ;font-2 = siji:pixelsize=10;1
 
 modules-left = i3
-modules-center = vpn cpu memory temperature battery filesystem
-modules-right = wlan date
+modules-center = wlan vpn cpu memory temperature battery filesystem
+modules-right = date pulseaudio-control system-bluetooth-bluetoothctl
 ;modules-right = filesystem xbacklight alsa pulseaudio xkeyboard memory cpu wlan eth battery temperature date powermenu
 
 tray-position = right
@@ -67,6 +71,8 @@ cursor-click = pointer
 cursor-scroll = ns-resize
 
 enable-ipc = true
+
+bottom = true
 
 [module/xwindow]
 type = internal/xwindow
@@ -99,7 +105,7 @@ mount-3 = /mnt/usb
 mount-4 = /mnt/box
 
 fixed-values = true
-label-mounted = %{F#ff33ff}%mountpoint%%{F-}: %free%
+label-mounted = ${env:POLYBAR_FS}
 label-unmounted = 
 ;label-unmounted = %mountpoint%
 label-unmounted-foreground = ${colors.foreground-alt}
@@ -108,7 +114,7 @@ label-unmounted-foreground = ${colors.foreground-alt}
 type = internal/bspwm
 
 label-focused = %index%
-label-focused-background = ${colors.background-alt}
+label-focused-background = ${colors.primary}
 label-focused-underline= ${colors.primary}
 label-focused-padding = 2
 
@@ -142,6 +148,7 @@ label-mode-background = ${colors.primary}
 
 ; focused = Active workspace on focused monitor
 label-focused = %index%
+label-focused-foreground = #000
 label-focused-background = ${module/bspwm.label-focused-background}
 label-focused-underline = ${module/bspwm.label-focused-underline}
 label-focused-padding = ${module/bspwm.label-focused-padding}
@@ -152,7 +159,8 @@ label-unfocused-padding = ${module/bspwm.label-occupied-padding}
 
 ; visible = Active workspace on unfocused monitor
 label-visible = %index%
-label-visible-background = ${self.label-focused-background}
+#label-visible-foreground = ${self.label-focused-foreground}
+#label-visible-background = ${self.label-focused-background}
 label-visible-underline = ${self.label-focused-underline}
 label-visible-padding = ${self.label-focused-padding}
 
@@ -215,7 +223,7 @@ click-right = ~/.config/torguard/toggle-vpn.sh
 [module/cpu]
 type = internal/cpu
 interval = 2
-format-prefix = "cpu "
+format-prefix = "cpu "
 format-prefix-foreground = ${colors.primary}
 ;format-underline = #f90000
 label = %percentage:2%%
@@ -223,7 +231,7 @@ label = %percentage:2%%
 [module/memory]
 type = internal/memory
 interval = 2
-format-prefix = "mem "
+format-prefix = "mem "
 format-prefix-foreground = ${colors.primary}
 ;format-underline = #4bffdc
 label = %percentage_used%%
@@ -235,7 +243,10 @@ interval = 3.0
 
 format-connected = <label-connected>
 ;format-connected-underline = #9f78e1
-label-connected = %local_ip%  %{F#ff33ff}d%{F-}: %downspeed:7% %{F#ff33ff}u%{F-}: %upspeed:7%
+;label-connected = %{F$THEME_COLOR}dl%{F-}: %downspeed:7% %{F#ff33ff}ul%{F-}: %upspeed:7%  %{F#ff33ff}@%{F-} %local_ip%
+label-connected = ${env:POLYBAR_NETWORK}
+
+click-left = ~/.config/polybar/ip-info.sh
 
 ;format-disconnected =
 format-disconnected = <label-disconnected>
@@ -254,10 +265,10 @@ ramp-signal-foreground = ${colors.foreground-alt}
 type = internal/date
 interval = 5
 
-date = "%a %m.%d"
-date-alt = " %d-%m-%Y"
+date = ${env:POLYBAR_DATE}
+date-alt = %d-%m-%Y
 
-time = %I:%M %p
+time = %H:%M
 time-alt = %H:%M:%S
 
 format-prefix = 
@@ -369,6 +380,7 @@ ramp-1 = 
 ramp-2 = 
 ramp-foreground = ${colors.foreground-alt}
 
+
 [settings]
 screenchange-reload = true
 ;compositing-background = xor
@@ -379,5 +391,34 @@ screenchange-reload = true
 [global/wm]
 margin-top = 5
 margin-bottom = 5
+
+[module/pulseaudio-control]
+type = custom/script
+tail = true
+format-underline = ${colors.cyan}
+label-padding = 2
+label-foreground = ${colors.foreground}
+
+# Icons mixed from Font Awesome 5 and Material Icons
+# You can copy-paste your options for each possible action, which is more
+# trouble-free but repetitive, or apply only the relevant ones (for example
+# --sink-blacklist is only needed for next-sink).
+#exec = pulseaudio-control --icons-volume " , " --icon-muted " " --sink-nicknames-from "device.description" --sink-nickname "alsa_output.pci-0000_00_1b.0.analog-stereo:  Speakers" --sink-nickname "bluez_sink.74_45_CE_2A_C8_C2.a2dp_sink:  Headphones" listen
+
+exec = pulseaudio-control --sink-nicknames-from "device.description" --sink-nickname "alsa_output.pci-0000_00_1b.0.analog-stereo: Speakers" --sink-nickname "bluez_sink.74_45_CE_2A_C8_C2.a2dp_sink: Headphones" listen
+click-middle = exec pavucontrol &
+click-left = pulseaudio-control togmute
+click-right = pulseaudio-control --sink-blacklist "alsa_output.pci-0000_01_00.1.hdmi-stereo-extra2" next-sink && (killall volumeicon; exec volumeicon)
+scroll-down = pulseaudio-control --volume-max 130 up
+scroll-up = pulseaudio-control --volume-max 130 down
+
+[module/system-bluetooth-bluetoothctl]
+type = custom/script
+format-prefix = "blt "
+format-prefix-foreground = ${colors.primary}
+exec = ~/.config/polybar/system-bluetooth-bluetoothctl.sh
+tail = true
+click-left = timeout 5 ~/.config/polybar/system-bluetooth-bluetoothctl.sh --toggle &
+click-right = timeout 5 ~/.config/polybar/system-bluetooth-bluetoothctl.sh --force &
 
 ; vim:ft=dosini
