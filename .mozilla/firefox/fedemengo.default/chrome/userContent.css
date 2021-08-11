@@ -30,6 +30,9 @@ select {
 
 */
 
+#numPages {
+	color: white;
+}
 
 #toolbarViewer {
 	background-color: rgb(50, 50, 50);
@@ -40,6 +43,6 @@ select {
 }
 
 #viewerContainer > #viewer > .page > .canvasWrapper > canvas {
-    filter: grayscale(100%);
-    filter: invert(100%);
+    filter: grayscale(90%);
+    filter: invert(90%);
 }

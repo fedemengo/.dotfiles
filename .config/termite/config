@@ -3,5 +3,5 @@ font = Ubuntu Mono derivative Powerline 17
 scrollback_lines = 10000
 
 [colors]
-background = rgba(0, 0, 0, 0.8)
+background = rgba(0, 0, 0, 0.1)
 

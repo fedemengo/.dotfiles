@@ -17,13 +17,29 @@ toolbar {
 }
 
 vbox.tab-background[selected="true"] {
-	background-color: black !important;
+	background-color: #00ff00 !important;
+	color: black !important;
 	background-image: none !important;
 }
 
 vbox.tab-background:not([selected="true"]) {
 	background-color: #333333 !important;
+	color: white !important;
 	background-image: none !important;
+}
+
+vbox.tab-label-container > label:not([selected="true"]) {
+	color: white !important;
+}
+
+vbox.tab-label-container > label[selected="true"] {
+	color: black !important;
+}
+
+hbox[selected="true"] > image.tab-close-button {
+	background-color: #333333 !important;
+	padding-inline-start: 2 !important;
+	width: 24px !important;
 }
 
 /*
