@@ -21,6 +21,7 @@ set title
 set ttyfast " scroll fast
 set cursorline
 set ignorecase
+set smartcase
 set hlsearch
 set incsearch
 set scrolloff=20
@@ -30,7 +31,6 @@ set linebreak
 set list
 set spell
 set spellcapcheck=
-set completeopt+=noinsert
 set splitbelow splitright
 filetype plugin indent on
 
@@ -67,14 +67,18 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'hrsh7th/nvim-cmp'
     Plug 'hrsh7th/vim-vsnip'
     Plug 'hrsh7th/vim-vsnip-integ'
+    Plug 'L3MON4D3/LuaSnip'
 " probably useless
     " learn vim
     Plug 'ThePrimeagen/vim-be-good'
     "git sheit
     Plug 'tpope/vim-fugitive'
     Plug 'rbong/vim-flog'
+    Plug 'tpope/vim-rhubarb'
     "probably cool if I learn how to use
     Plug 'wbthomason/packer.nvim'
+    " dude
+    Plug 'easymotion/vim-easymotion'
 call plug#end()
 " ------------------ PLUGINS END -------------------
 
@@ -95,17 +99,19 @@ let g:tagbar_width=50
 let g:loaded_ruby_provider = 0
 let g:loaded_node_provider = 0
 let g:loaded_perl_provider = 0
+let g:go_def_mapping_enabled=0
 " --------------- GLOBAL CONFIG END ----------------
 
 " ---------------- LUA CONFIG START ----------------
 lua <<EOF
+vim.opt.completeopt={"menu", "menuone", "noselect", "noinsert"}
 -- https://github.com/hrsh7th/nvim-cmp#setup
 local cmp = require "cmp"
 
 cmp.setup({
     snippet = {
         expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+            require('luasnip').lsp_expand(args.body)
         end
     },
     window = {},
@@ -118,10 +124,13 @@ cmp.setup({
     }),
     sources = cmp.config.sources({
         {name = "nvim_lsp"},
-        {name = "vsnip"} -- For vsnip users.
+        {name = "luasnip"},
     },{
         {name = "buffer"}
-    })
+    }),
+    experimental = {
+      ghost_text = true
+    }
 })
 
 -- Set configuration for specific filetype.
@@ -156,6 +165,14 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 
 require "lspconfig".gopls.setup {
+    on_attach = function()
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, {buffer = 0})
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer = 0})
+        vim.keymap.set("n", "gT", vim.lsp.buf.type_definition, {buffer = 0})
+        vim.keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", {buffer = 0})
+        vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, {buffer = 0})
+        vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, {buffer = 0})
+    end,
     capabilities = capabilities
 }
 
@@ -241,13 +258,10 @@ nnoremap <silent>ff           <cmd>lua require('telescope.builtin').find_files()
 nnoremap <silent>fg           <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <silent>fs           <cmd>lua require('telescope.builtin').grep_string()<cr>
 nnoremap <silent>fb           <cmd>lua require('telescope.builtin').buffers()<cr>
-nnoremap <silent>gd           <cmd>lua require('telescope.builtin').lsp_definition()<CR>
-nnoremap <silent>gi           <cmd>lua require('telescope.builtin').lsp_implementation()<CR>
 nnoremap <silent>gr           <cmd>lua require('telescope.builtin').lsp_references()<CR>
 nnoremap <silent>ge           <cmd>lua require('telescope.builtin').diagnostics()<CR>
 nnoremap <silent><leader>c    <cmd>lua require('telescope.builtin').command_history()<cr>
 
-nnoremap <silent>K            <cmd>lua vim.lsp.buf.hover()<CR> "document symbol
 nnoremap <silent><leader>rn   <cmd>lua vim.lsp.buf.rename()<CR>
 nnoremap <silent> <leader>a   <cmd>lua vim.lsp.buf.code_action()<CR>
 xmap <silent> <leader>a       <cmd>lua vim.lsp.buf.range_code_action()<CR>
