@@ -79,9 +79,10 @@ if [ -n "$commands[kubectl]" ]; then
     source <(kubectl completion zsh)
 fi
 
+# if no socket, init agent
 if [ -z ${SSH_AUTH_SOCK} ]; then
     eval `ssh-agent -s` &> /dev/null
-    find ${HOME}/.ssh/ -not -name "*.pub" -type f | xargs ssh-add &> /dev/null
+	find ${HOME}/.ssh/ -not -name "*.pub" -type f | xargs ssh-add &> /dev/null
 fi
 
 # # ex - archive extractor # usage: ex <file>
@@ -144,6 +145,14 @@ function stop_prune() {
 
 function z() {
 	zathura "$@" 2>/dev/null 1>&2 & disown
+}
+
+function zshaddhistory() {
+	echo "${1%%$'\n'}|${PWD}   " >> ~/.zsh_history_ext
+}
+
+function jog() {
+    grep -v "jog" ~/.zsh_history_ext | grep -a --color=never "${PWD}   " | cut -f1 -d"|" | tail | fzf
 }
 
 if [ -n "$commands[todo.sh]" ]; then

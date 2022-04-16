@@ -36,6 +36,11 @@
   # stamp shown in the history command output.
   # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 # HIST_STAMPS="mm/dd/yyyy"
+setopt HIST_IGNORE_ALL_DUPS  # do not put duplicated command into history list
+setopt HIST_SAVE_NO_DUPS  # do not save duplicated command
+setopt HIST_REDUCE_BLANKS  # remove unnecessary blanks
+setopt INC_APPEND_HISTORY_TIME  # append command to history file immediately after execution
+setopt EXTENDED_HISTORY  # record command start time
 
   # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
@@ -43,14 +48,27 @@
   # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
   # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 
+#zsh-vim-mode
+VIM_MODE_VICMD_KEY="jk"
+
 plugins=(
   web-search
   encode64
-  zsh-autosuggestions
   catimg
+  docker
+  docker-compose
+  kubectl
+  kubectx
+  zsh-autosuggestions
+  zsh-vim-mode
 )
 
 source $ZSH/oh-my-zsh.sh
+
+HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
+if [ -f "$HB_CNF_HANDLER" ]; then
+	source "$HB_CNF_HANDLER";
+fi
 
 function tab_list {
     if [[ $#BUFFER == 0 ]]; then
@@ -133,7 +151,7 @@ bindkey "^b" backward-word
 bindkey "^k" kill-line
 bindkey "^y" accept-and-hold
 bindkey "^ " forward-char
-bindkey "^d" forward-kill-word
+# bindkey "^d" forward-kill-word
 bindkey "^w" backward-kill-word
 bindkey "^u" backward-kill-line
 bindkey "^R" history-incremental-pattern-search-backward
@@ -143,8 +161,10 @@ bindkey "^i" expand-or-complete-prefix
 bindkey "^I" tab_list
 bindkey "^[[Z" reverse-menu-complete
 
-bindkey "^p" pacman-util
-bindkey "^y" yay-util
+# disable on macOS 
+# bindkey "^p" pacman-util
+# bindkey "^y" yay-util
+
 bindkey "^s" sudo-util
 bindkey "^w" redo-sudo
 bindkey "^h" home
@@ -165,8 +185,8 @@ alias mv='mv -i'
 alias rm='rm -i'
 alias md='mkdir -p'
 #alias l="ls -ls --block-size=M"
-alias l="ls -oh --sort=extension"
-alias ll='ls -oah --sort=extension'
+alias l="ls -oh -X --group-directories-first"
+alias ll='ls -oah -X --group-directories-first'
 alias pi='ssh pi@192.168.178.100 2>/dev/null'
 alias pi3='ssh pi@192.168.178.101 2>/dev/null'
 alias ubu='ssh fedemengo@192.168.178.121'
@@ -174,8 +194,6 @@ alias pifs='sshfs -o allow_other pi@192.168.178.100:/mnt/hdd/ /mnt/hdd'
 alias pifs3='rclone mount --daemon pi3::STORAGE/ /mnt/hdd'
 #alias pifs3='sshfs -o allow_other pi@192.168.178.101:/mnt/hdd/ /mnt/hdd'
 alias upifs='fusermount -u /mnt/hdd'
-alias todo='todo.sh'
-alias rs='repos-stat --no-clean --no-broken'
 alias df='df -h'                          # human-readable sizes
 alias du='du -h --max-depth=1'
 alias free='free -m'                      # show sizes in MB
@@ -197,8 +215,6 @@ alias 7='cd -7'
 alias 8='cd -8'
 alias 9='cd -9'
 
-#alias chromium='chromium --force-device-scale-factor=1.5'
-
 alias gst='git status'
 alias p3='python3'
 
@@ -208,4 +224,13 @@ alias gi='git'
 alias g='git'
 
 alias rename='perl-rename'
-alias mplayer='mplayer -osdlevel 3 -osd-fractions 1'
+alias h='history -t "%d.%m.%y-%H:%M:%S"'
+
+alias n='nvim'
+alias vim='/usr/local/bin/nvim'
+
+alias vrc='vim $HOME/.nvimrc'
+alias zrc='vim $HOME/.dotfiles/.zshrc'
+alias zd='vim $HOME/.dotfiles/.zsh'
+
+alias k='kubectl'
