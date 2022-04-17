@@ -2,8 +2,6 @@ colorscheme PaperColor
 
 " search subdirs
 set path+=**
-" no compatibility with vi
-set nocompatible
 " command line autocompletion
 set wildmode=longest,list,full
 set wildmenu
@@ -18,20 +16,22 @@ set showcmd
 set ruler
 set shortmess=atI
 set title
-set ttyfast " scroll fast
 set cursorline
 set ignorecase
 set smartcase
 set hlsearch
 set incsearch
-set scrolloff=20
+set scrolloff=999
 set backspace=indent,eol,start
 set expandtab
 set linebreak
 set list
 set spell
+set spell spelllang=en_us
 set spellcapcheck=
 set splitbelow splitright
+set noerrorbells
+set noswapfile
 filetype plugin indent on
 
 if !isdirectory($HOME.'/.nvim/undo-dir')
@@ -50,10 +50,12 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'nvim-telescope/telescope.nvim'
     Plug 'nvim-lua/plenary.nvim'
     Plug 'numkil/ag.nvim'
+    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 " navigation and co
     Plug 'preservim/tagbar'
     Plug 'preservim/nerdtree'
     Plug 'jeffkreeftmeijer/vim-numbertoggle'
+    Plug 'karb94/neoscroll.nvim'
 " go
     Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " lsp magic
@@ -68,6 +70,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'hrsh7th/vim-vsnip'
     Plug 'hrsh7th/vim-vsnip-integ'
     Plug 'L3MON4D3/LuaSnip'
+" misc
 " probably useless
     " learn vim
     Plug 'ThePrimeagen/vim-be-good'
@@ -94,20 +97,33 @@ let g:PaperColor_Theme_Options = {
   \ }
 
 let g:go_fmt_command = "goimports"
-"let g:deoplete#enable_at_startup = 1
 let g:tagbar_width=50
 let g:loaded_ruby_provider = 0
 let g:loaded_node_provider = 0
 let g:loaded_perl_provider = 0
 let g:go_def_mapping_enabled=0
+let NERDTreeShowHidden=1
 " --------------- GLOBAL CONFIG END ----------------
 
 " ---------------- LUA CONFIG START ----------------
 lua <<EOF
+-- https://github.com/nvim-telescope/telescope-fzf-native.nvim#telescope-setup-and-configuration
+require('telescope').setup {
+  extensions = {
+    fzf = {
+      fuzzy = true,                    -- false will only do exact matching
+      override_generic_sorter = true,  -- override the generic sorter
+      override_file_sorter = true,     -- override the file sorter
+      case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+                                       -- the default case_mode is "smart_case"
+    }
+  }
+}
+require('telescope').load_extension('fzf')
+
 vim.opt.completeopt={"menu", "menuone", "noselect", "noinsert"}
 -- https://github.com/hrsh7th/nvim-cmp#setup
 local cmp = require "cmp"
-
 cmp.setup({
     snippet = {
         expand = function(args)
@@ -116,8 +132,8 @@ cmp.setup({
     },
     window = {},
     mapping = cmp.mapping.preset.insert({
-        ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-        ["<C-f>"] = cmp.mapping.scroll_docs(4),
+        -- ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+        -- ["<C-f>"] = cmp.mapping.scroll_docs(4),
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<C-e>"] = cmp.mapping.abort(),
         ["<CR>"] = cmp.mapping.confirm({select = true}) -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
@@ -132,7 +148,6 @@ cmp.setup({
       ghost_text = true
     }
 })
-
 -- Set configuration for specific filetype.
 cmp.setup.filetype("gitcommit", {
     sources = cmp.config.sources({
@@ -141,7 +156,6 @@ cmp.setup.filetype("gitcommit", {
         {name = "buffer"}
     })
 })
-
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline("/", {
     mapping = cmp.mapping.preset.cmdline(),
@@ -188,8 +202,42 @@ require "nvim-treesitter.configs".setup {
         additional_vim_regex_highlighting = false
     }
 }
+
+-- https://github.com/karb94/neoscroll.nvim
+require('neoscroll').setup({
+    -- Set any options as needed
+})
+local t = {}
+t['<C-u>'] = {'scroll', {'-vim.wo.scroll', 'true', '250'}}
+t['<C-d>'] = {'scroll', { 'vim.wo.scroll', 'true', '250'}}
+t['<C-y>'] = {'scroll', {'-0.10', 'false', '100'}}
+t['<C-e>'] = {'scroll', { '0.10', 'false', '100'}}
+
+require('neoscroll.config').set_mappings(t)
 EOF
 " ----------------- LUA CONFIG END -----------------
+" --------------- FUNCS CONFIG START ---------------
+hi clear SpellBad
+hi clear SpellCap
+hi clear SpellRare
+hi clear SpellLocal
+
+function! ToggleSpell()
+    if !exists("g:showingSpell")
+        let g:showingSpell=0
+      endif
+
+    if g:showingSpell==0
+        execute "hi SpellBad cterm=underline ctermfg=red"
+        let g:showingSpell=1
+   else
+        execute "hi clear SpellBad"
+        let g:showingSpell=0
+   endif
+endfunction
+map <C-S> :call ToggleSpell()<CR>
+
+" ---------------- FUNCS CONFIG END ----------------
 
 let mapleader = ","
 " quick escape with jk
@@ -203,6 +251,12 @@ autocmd BufWritePre * :%s/\s\+$//e
 autocmd! BufWritePost $VIMRC source $VIMRC | echom "config sourced"
 autocmd! BufWritePost $HOME/.dotfiles/.config/nvim/init.vim source $VIMRC | echom "config sourced"
 map <leader>vrc :tabe $VIMRC
+
+" command line
+cnoremap <C-A> <C-B>
+cnoremap <C-D> <C-Right><C-W><Del>
+cnoremap <C-W> <C-Right>
+cnoremap <C-B> <C-Left>
 
 " quick movement between split windows CTRL + {h, j, k, l}
 nnoremap <C-h> <C-w>h
