@@ -31,6 +31,9 @@ set spellcapcheck=
 set splitbelow splitright
 set noerrorbells
 set noswapfile
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+set nofoldenable
 filetype plugin indent on
 
 if !isdirectory($HOME.'/.nvim/undo-dir')
@@ -278,11 +281,11 @@ function! ToggleSpell()
         let g:showingSpell=0
    endif
 endfunction
-map <C-S> :call ToggleSpell()<CR>
+map <leader>sp :call ToggleSpell()<CR>
 
 " ---------------- FUNCS CONFIG END ----------------
 
-let mapleader = ","
+let mapleader = ";"
 " quick escape with jk
 inoremap jk <Esc>
 tnoremap jk <C-\><C-n>
@@ -295,7 +298,7 @@ autocmd BufWritePre * :%s/\s\+$//e
 " autosource configuration file on write for vimrc and plugins
 autocmd! BufWritePost $VIMRC source $VIMRC | echom "config sourced"
 autocmd! BufWritePost $HOME/.dotfiles/.config/nvim/init.vim source $VIMRC | echom "config sourced"
-map <leader>vrc :tabe $VIMRC
+map <leader>vrc :tabe $VIMRC<CR>
 
 " command line
 cnoremap <C-A> <C-B>
@@ -306,7 +309,7 @@ cnoremap <C-B> <C-Left>
 cabbrev tb tabnew
 
 nnoremap <C-N> :tabnew<CR>
-nnoremap <C-G> :vsplit<CR>
+nnoremap <C-S> :vsplit<CR>
 
 " quick movement between split windows CTRL + {h, j, k, l}
 nnoremap <C-h> <C-w>h
@@ -344,6 +347,7 @@ nmap <leader>Y "+Y
 nnoremap <leader>p "+p
 vnoremap <leader>p "+r
 nmap <leader>P "+P
+xnoremap <leader>p "_dP
 
 " accept popup menu entry with Enter without new line
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
