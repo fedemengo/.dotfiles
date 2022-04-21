@@ -144,9 +144,11 @@ cmp.setup({
         end,
     },
     mapping = {
+        ['<C-N>'] = cmp.mapping(cmp.mapping.select_next_item()),
+        ['<C-P>'] = cmp.mapping(cmp.mapping.select_prev_item()),
         ["<C-Space>"] = cmp.mapping.complete(),
-        ["<C-e>"] = cmp.mapping.abort(),
-        ["<CR>"] = cmp.mapping.confirm({select = true}) -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ["<C-E>"] = cmp.mapping.abort(),
+        ["<CR>"] = cmp.mapping.confirm({select = true}), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     },
     sources = {
         {name = "nvim_lsp"},
