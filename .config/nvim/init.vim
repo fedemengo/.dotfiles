@@ -1,4 +1,8 @@
+" note: weird charactes are generally Option + SYMBOL (on macOs)
+" when moving to linux those mapping should be replaced with Alt
+
 colorscheme PaperColor
+set background=dark
 
 " search subdirs
 set path+=**
@@ -83,6 +87,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'tpope/vim-fugitive'
     Plug 'rbong/vim-flog'
     Plug 'tpope/vim-rhubarb'
+    Plug 'tveskag/nvim-blame-line'
     "probably cool if I learn how to use
     Plug 'wbthomason/packer.nvim'
     " dude
@@ -91,16 +96,6 @@ call plug#end()
 " ------------------ PLUGINS END -------------------
 
 " -------------- GLOBAL CONFIG START ---------------
-let g:PaperColor_Theme_Options = {
-  \   'theme': {
-  \     'default.dark': {
-  \       'override' : {
-  \         'spellbad' : ['#1c1c1c', '234'],
-  \       }
-  \     }
-  \   }
-  \ }
-
 let g:go_fmt_command = "goimports"
 let g:tagbar_width=50
 let g:loaded_ruby_provider = 0
@@ -283,7 +278,19 @@ function! ToggleSpell()
         let g:showingSpell=0
    endif
 endfunction
-map <leader>sp :call ToggleSpell()<CR>
+map ß :call ToggleSpell()<CR>
+
+let s:toggle_theme_default = 1
+function! ToggleTheme()
+    if s:toggle_theme_default
+        set background=light
+        let s:toggle_theme_default = 0
+    else
+        set background=dark
+        let s:toggle_theme_default = 1
+    endif
+endfunction
+map † :call ToggleTheme()<CR>
 
 " ---------------- FUNCS CONFIG END ----------------
 
@@ -291,8 +298,9 @@ let mapleader = ";"
 " quick escape with jk
 inoremap jk <Esc>
 tnoremap jk <C-\><C-n>
-" copy buffer path to clipboard
-noremap <leader>fp :!echo % \| pbcopy<CR><CR>
+
+" copy curost buffer path and line to clipboard
+noremap <silent><leader>fp :let @+=expand("%") . ':' . line(".")<CR>
 
 " delete empty space from the end of lines on every save
 autocmd BufWritePre * :%s/\s\+$//e
@@ -302,6 +310,9 @@ autocmd! BufWritePost $VIMRC source $VIMRC | echom "config sourced"
 autocmd! BufWritePost $HOME/.dotfiles/.config/nvim/init.vim source $VIMRC | echom "config sourced"
 map <leader>vrc :tabe $VIMRC<CR>
 
+nnoremap <silent>∫ :ToggleBlameLine<CR>
+map <Leader> <Plug>(easymotion-prefix)
+
 " command line
 cnoremap <C-A> <C-B>
 cnoremap <C-D> <C-Right><C-W><Del>
@@ -309,9 +320,19 @@ cnoremap <C-W> <C-Right>
 cnoremap <C-B> <C-Left>
 
 cabbrev tb tabnew
-
 nnoremap <C-N> :tabnew<CR>
 nnoremap <C-S> :vsplit<CR>
+
+" move between tags, mac sheit
+nnoremap ¡ 1gt
+nnoremap ™ 2gt
+nnoremap £ 3gt
+nnoremap ¢ 4gt
+nnoremap ∞ 5gt
+nnoremap § 6gt
+nnoremap ¶ 7gt
+nnoremap • 8gt
+nnoremap ª 9gt
 
 " quick movement between split windows CTRL + {h, j, k, l}
 nnoremap <C-h> <C-w>h
