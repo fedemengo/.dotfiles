@@ -8,6 +8,8 @@ Write a script to automatically setup the environment
 - Install dependencies (identify deps first)
 - Copy, move, create, link all required files
 
+Also, the script to setup dotfiles should account for different OSes
+
 <details>
 <summary><b>Basic setup</b></summary>
 
@@ -87,7 +89,7 @@ Symlink user binaries
 <details>
 <summary><b>Configuration</b></summary>
 
-#### [EDIT 05/11/2020] 
+#### [EDIT 05/11/2020]
 
 `touchegg-1.1.1.1` is not available anymore and the new version doesn't support DRAG (2 fingers gestures). So it's necessary to downgrade to 1.1.1.1 to keep the old configuration
 
@@ -203,7 +205,7 @@ EndSection
   - `systemctl --user start pulseaudio`
   - Keep `exec --no-startup-id pulseaudio` commented out
 
-No need for `/etc/asound.conf` or put the following configuration 
+No need for `/etc/asound.conf` or put the following configuration
 
 ```
 # Use PulseAudio by default
@@ -295,7 +297,7 @@ ctl.!default {
 }
 ```
 
-To unmute the sound use the keybind 
+To unmute the sound use the keybind
 
 - ~`Mod1 + XF86SoundMute` set in `.config/i3/config`~
 - `"pactl set-sink-mute @DEFAULT_SINK@ toggle"
@@ -304,7 +306,7 @@ To unmute the sound use the keybind
 
 If the output of `pulseaudio` shows `E: [pulseaudio] main.c: pa_pid_file_create() failed.` try adding **user** to **audio** group with `sudo usermod -aG audio $(whoami)`
 
-Using both `pulseaudio` and `alsamixer`. 
+Using both `pulseaudio` and `alsamixer`.
 
 - Get default output device with `pacmd list-sinks | grep -e 'name:' -e 'index:'`
 - Get default input device with `pacmd list-sources | grep -e 'name:' -e 'index:'`
