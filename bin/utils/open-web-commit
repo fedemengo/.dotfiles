@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+#git@github.com:org/repo.git
+#ssh://git@github.com/org/repo
+#https://gitlab.com/org/repo.git
+
+parse_remote() {
+    local remote="$1"
+
+    case $remote in
+        *@*)
+            remote=$(echo $remote | cut -d'@' -f2 | tr ':' '/')
+            ;;
+        *)
+            remote=$(echo $remote | awk -F "//" '{ print $2 }')
+            ;;
+    esac
+
+    echo "$remote" | sed 's/\.git$//g'
+}
+
+get_url() {
+    local remote="$1"
+    local commit="$2"
+    local remote_url
+
+    case $remote in
+        *gitlab*)
+            ;;
+        *github*)
+            remote_url="https://$remote/commit/$commit"
+            ;;
+    esac
+
+    echo "$remote_url"
+}
+
+file_path="$1"
+file_name="$2"
+file_line="$3"
+
+if ! git -C "$file_path" status >/dev/null 2>&1
+then
+    #echo "$file_path is not a git repository"
+    exit 1
+fi
+
+commit=$(git -C "$file_path" blame "$file_name" -L $file_line,$file_line | cut -d' ' -f1)
+
+if [ "$commit" == "00000000" ]
+then
+    #echo "$file_path/$file_line:$file_line was never committed to a git repository"
+    exit 2
+fi
+
+remote=$(git -C "$file_path" remote -v | grep push | tr \\t ' ' | tr -s ' ' | cut -d' ' -f2)
+
+clean_remote=$(parse_remote "$remote")
+
+url=$(get_url "$clean_remote" "$commit")
+
+$BROWSER "$url"
+

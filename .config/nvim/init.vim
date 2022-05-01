@@ -206,7 +206,7 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 
 lsp_conf = require("lspconfig")
-local servers = { "gopls", "clangd" }
+local servers = { "gopls", "clangd", "vimls", "bashls" }
 for _, lsp in pairs(servers) do
     lsp_conf[lsp].setup {
         on_attach = function(client, bufrn)
@@ -319,6 +319,22 @@ function! ToggleTheme()
 endfunction
 map † :call ToggleTheme()<CR>
 
+function! CommitOnWeb()
+    let l:path = expand("%:h")
+    let l:file = expand("%:t")
+    let l:line = line(".")
+    silent execute '!open-web-commit' shellescape(l:path) shellescape(l:file) shellescape(l:line)
+    let l:err = v:shell_error
+    redraw
+    if l:err == 1
+        echo l:path . " is not a git directory"
+    elseif l:err == 2
+        echo l:path . "/" . l:file . ":" . l:line . " was never commited"
+    else
+        "ok
+    end
+endfunction
+map <silent><leader>cu :call CommitOnWeb()<CR>
 " ---------------- FUNCS CONFIG END ----------------
 
 let mapleader = ";"
