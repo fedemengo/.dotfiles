@@ -166,10 +166,10 @@ cmp.setup({
         end,
     },
     mapping = {
-        ['<C-N>'] = cmp.mapping(cmp.mapping.select_next_item()),
-        ['<C-P>'] = cmp.mapping(cmp.mapping.select_prev_item()),
+        ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item()),
+        ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item()),
         ["<C-Space>"] = cmp.mapping.complete(),
-        ["<C-E>"] = cmp.mapping.abort(),
+        ["<C-e>"] = cmp.mapping.abort(),
         ["<CR>"] = cmp.mapping.confirm({select = true}), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     },
     sources = {
@@ -219,11 +219,8 @@ for _, lsp in pairs(servers) do
             vim.keymap.set("n", "K", vim.lsp.buf.hover, {buffer = 0})
             vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer = 0})
             vim.keymap.set("n", "gT", vim.lsp.buf.type_definition, {buffer = 0})
-            vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, {buffer = 0})
             vim.keymap.set("n", "[d", vim.diagnostic.goto_next, {buffer = 0})
             vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, {buffer = 0})
-
-            --vim.keymap.set("i", "<C-S>", vim.lsp.buf.signature_help, {buffer = 0})
         end,
         capabilities = capabilities
     }
@@ -327,6 +324,7 @@ endfunction
 " option + t
 noremap † :call ToggleTheme()<CR>
 
+if executable("open-web-commit")
 function! CommitOnWeb()
     let l:path = expand("%:h")
     let l:file = expand("%:t")
@@ -343,10 +341,11 @@ function! CommitOnWeb()
     end
 endfunction
 noremap <silent><leader>cu :call CommitOnWeb()<CR>
+endif
 " ---------------- FUNCS CONFIG END ----------------
 
 " quick escape with jk
-inoremap jk <Esc>
+inoremap jk <ESC>
 tnoremap jk <C-\><C-n>
 
 " copy cursor buffer path and line to clipboard
@@ -379,15 +378,15 @@ nnoremap <silent>∫ :ToggleBlameLine<CR>
 map <leader><leader> <Plug>(easymotion-prefix)
 
 " command line
-cnoremap <C-A> <C-B>
-cnoremap <C-D> <C-Right><C-W><Del>
-cnoremap <C-W> <C-Right>
-cnoremap <C-B> <C-Left>
+cnoremap <C-a> <C-b>
+cnoremap <C-d> <C-Right><C-w><Del>
+cnoremap <C-w> <C-Right>
+cnoremap <C-b> <C-Left>
 
 cabbrev tb tabnew
-nnoremap <C-N> :tabnew<CR>:Dashboard<CR>
+nnoremap <C-n> :tabnew<CR>:Dashboard<CR>
 nnoremap ˜ :tabnew<CR>
-nnoremap <C-S> :vsplit<CR>
+nnoremap <C-s> :vsplit<CR>
 
 " move between tags, mac sheit
 nnoremap ¡ 1gt
@@ -430,8 +429,8 @@ imap <right> <nop>
 " move text up/down in visual mode
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
-vnoremap <C-J> :m '>+10<CR>gv=gv
-vnoremap <C-K> :m '<-11<CR>gv=gv
+vnoremap <C-j> :m '>+10<CR>gv=gv
+vnoremap <C-k> :m '<-11<CR>gv=gv
 
 " yank/paste to/from clipboard
 nnoremap <leader>y "+y
@@ -453,13 +452,13 @@ noremap <leader>nn :NERDTreeToggle<CR>
 " quickly go to prev buffer
 "map <C-b> :b#<CR>
 
-nnoremap <silent>gh           <cmd>lua require('telescope.builtin').help_tags()<cr>
+nnoremap <silent>gh           <cmd>lua require('telescope.builtin').help_tags()<CR>
 
-nnoremap <silent>ff           <cmd>lua require('telescope.builtin').find_files()<cr>
-nnoremap <silent>fg           <cmd>lua require('telescope.builtin').live_grep()<cr>
-nnoremap <silent>fs           <cmd>lua require('telescope.builtin').grep_string()<cr>
-nnoremap <silent>fb           <cmd>lua require('telescope.builtin').buffers()<cr>
-nnoremap <silent>fc           <cmd>lua require('telescope.builtin').command_history()<cr>
+nnoremap <silent>ff           <cmd>lua require('telescope.builtin').find_files()<CR>
+nnoremap <silent>fg           <cmd>lua require('telescope.builtin').live_grep()<CR>
+nnoremap <silent>fs           <cmd>lua require('telescope.builtin').grep_string()<CR>
+nnoremap <silent>fb           <cmd>lua require('telescope.builtin').buffers()<CR>
+nnoremap <silent>fc           <cmd>lua require('telescope.builtin').command_history()<CR>
 nnoremap <silent>gr           <cmd>lua require('telescope.builtin').lsp_references()<CR>
 nnoremap <silent>gi           <cmd>lua require('telescope.builtin').lsp_implementations()<CR>
 nnoremap <silent>ge           <cmd>lua require('telescope.builtin').diagnostics()<CR>
@@ -477,10 +476,10 @@ autocmd BufEnter *.go nmap <leader>tt <Plug>(go-test-func)
 autocmd BufEnter *.go nmap <leader>tc  <Plug>(go-coverage-toggle)
 
 " utils
-vnoremap <leader>e64 c<c-r>=system('base64', @")<cr><esc>
-vnoremap <leader>d64 c<c-r>=system('base64 --decode', @")<cr><esc>
+vnoremap <leader>e64 c<C-r>=system('base64', @")<CR><ESC>
+vnoremap <leader>d64 c<C-r>=system('base64 --decode', @")<CR><ESC>
 " allow gf to open non-existent files
-map gf :edit <cfile><cr>
+map gf :edit <cfile><CR>
 " reselect visual selection after indenting
 vnoremap < <gv
 vnoremap > >gv

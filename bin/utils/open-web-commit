@@ -48,7 +48,7 @@ then
     exit 1
 fi
 
-commit=$(git -C "$file_path" blame "$file_name" -L $file_line,$file_line | cut -d' ' -f1)
+commit=$(git -C "$file_path" blame "$file_name" -L $file_line,$file_line -l | cut -d' ' -f1)
 
 if [ "$commit" == "00000000" ]
 then
@@ -59,7 +59,6 @@ then
     commit=${commit:1:${#commit}}
 fi
 
-commit=$(git -C "$file_path" rev-parse $commit)
 remote=$(git -C "$file_path" remote -v | grep push | tr \\t ' ' | tr -s ' ' | cut -d' ' -f2)
 
 clean_remote=$(parse_remote "$remote")
