@@ -23,7 +23,7 @@ set ignorecase
 set smartcase
 set hlsearch
 set incsearch
-set scrolloff=999
+set scrolloff=15
 set backspace=indent,eol,start
 set expandtab
 set tabstop=4
@@ -80,6 +80,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 " misc
     Plug 'nvim-lualine/lualine.nvim'
     Plug 'kyazdani42/nvim-web-devicons'
+    Plug 'glepnir/dashboard-nvim'
 " probably useless
     " learn vim
     Plug 'ThePrimeagen/vim-be-good'
@@ -97,12 +98,14 @@ call plug#end()
 
 " -------------- GLOBAL CONFIG START ---------------
 let g:go_fmt_command = "goimports"
-let g:tagbar_width=50
+let g:tagbar_width = 50
 let g:loaded_ruby_provider = 0
 let g:loaded_node_provider = 0
 let g:loaded_perl_provider = 0
-let g:go_def_mapping_enabled=0
-let NERDTreeShowHidden=1
+let g:go_def_mapping_enabled = 0
+let g:dashboard_default_executive = 'telescope'
+let g:dashboard_custom_header = ['','','','','','','','','','','']
+let NERDTreeShowHidden = 1
 " --------------- GLOBAL CONFIG END ----------------
 
 " ---------------- LUA CONFIG START ----------------
@@ -114,6 +117,24 @@ require('telescope').setup {
         layout_config = {
             width = 0.95,
             height = 0.95,
+            preview_height = 0.7,
+        },
+    },
+    pickers = {
+        find_files = {
+            mappings = {
+                -- not working - HELP
+                n = {
+                    ["cd"] = function(prompt_bufnr)
+                        local selection = require("telescope.actions.state")
+                        print(vim.inspect(selection))
+                        --local dir = vim.fn.fnamemodify(selection.path, ":p:h")
+                        --require("telescope.actions").close(prompt_bufnr)
+                        -- Depending on what you want put `cd`, `lcd`, `tcd`
+                        --vim.cmd(string.format("silent lcd %s", dir))
+                    end
+                }
+            }
         },
     },
     extensions = {
@@ -184,21 +205,27 @@ cmp.setup.cmdline(":", {
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 
-require "lspconfig".gopls.setup {
-    on_attach = function()
-        vim.keymap.set("n", "K", vim.lsp.buf.hover, {buffer = 0})
-        vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer = 0})
-        vim.keymap.set("n", "gT", vim.lsp.buf.type_definition, {buffer = 0})
-        vim.keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", {buffer = 0})
-        vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, {buffer = 0})
-        vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, {buffer = 0})
-    end,
-    capabilities = capabilities
-}
+lsp_conf = require("lspconfig")
+local servers = { "gopls", "clangd" }
+for _, lsp in pairs(servers) do
+    lsp_conf[lsp].setup {
+        on_attach = function(client, bufrn)
+            vim.keymap.set("n", "K", vim.lsp.buf.hover, {buffer = 0})
+            vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer = 0})
+            vim.keymap.set("n", "gT", vim.lsp.buf.type_definition, {buffer = 0})
+            vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, {buffer = 0})
+            vim.keymap.set("n", "[d", vim.diagnostic.goto_next, {buffer = 0})
+            vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, {buffer = 0})
+
+            --vim.keymap.set("i", "<C-S>", vim.lsp.buf.signature_help, {buffer = 0})
+        end,
+        capabilities = capabilities
+    }
+end
 
 -- https://github.com/nvim-treesitter/nvim-treesitter#modules
 require "nvim-treesitter.configs".setup {
-    ensure_installed = {"go"},
+    ensure_installed = {"go", "cpp"},
     sync_install = false,
     indent = {
         enable = true
@@ -302,16 +329,31 @@ tnoremap jk <C-\><C-n>
 " copy curost buffer path and line to clipboard
 noremap <silent><leader>fp :let @+=expand("%") . ':' . line(".")<CR>
 
+nmap <Leader>ss :<C-u>SessionSave<CR>
+nmap <Leader>sl :<C-u>SessionLoad<CR>
+
+" ---------- [ Autocommands ] ----------
 " delete empty space from the end of lines on every save
 autocmd BufWritePre * :%s/\s\+$//e
+
+" Automatic toggling between 'hybrid' and absolute line numbers
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && mode() != "i" | set rnu   | endif
+  autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu                  | set nornu | endif
+augroup END
 
 " autosource configuration file on write for vimrc and plugins
 autocmd! BufWritePost $VIMRC source $VIMRC | echom "config sourced"
 autocmd! BufWritePost $HOME/.dotfiles/.config/nvim/init.vim source $VIMRC | echom "config sourced"
+" ---------- [ Autocommands ] ----------
+
 map <leader>vrc :tabe $VIMRC<CR>
 
+command! -nargs=1 PR G pr <args>
+nnoremap <silent><leader>gb :G blame<CR>
 nnoremap <silent>∫ :ToggleBlameLine<CR>
-map <Leader> <Plug>(easymotion-prefix)
+map <leader><leader> <Plug>(easymotion-prefix)
 
 " command line
 cnoremap <C-A> <C-B>
@@ -320,7 +362,8 @@ cnoremap <C-W> <C-Right>
 cnoremap <C-B> <C-Left>
 
 cabbrev tb tabnew
-nnoremap <C-N> :tabnew<CR>
+nnoremap <C-N> :tabnew<CR>:Dashboard<CR>
+nnoremap ˜ :tabnew<CR>
 nnoremap <C-S> :vsplit<CR>
 
 " move between tags, mac sheit
@@ -344,6 +387,10 @@ noremap <silent> <C-r>h :vertical resize +5<CR>
 noremap <silent> <C-r>l :vertical resize -5<CR>
 noremap <silent> <C-r>j :resize +5<CR>
 noremap <silent> <C-r>k :resize -5<CR>
+
+" Go to the start and end of the line easier
+noremap H ^
+noremap L $
 
 " disable Arrow keys in Normal mode
 map <up> <nop>
@@ -381,7 +428,7 @@ nmap <leader>m :TagbarToggle<CR>
 " nerdtree
 noremap <leader>nn :NERDTreeToggle<CR>
 " quickly go to prev buffer
-map <C-b> :b#<CR>
+"map <C-b> :b#<CR>
 
 nnoremap <silent>gh           <cmd>lua require('telescope.builtin').help_tags()<cr>
 
@@ -389,14 +436,14 @@ nnoremap <silent>ff           <cmd>lua require('telescope.builtin').find_files()
 nnoremap <silent>fg           <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <silent>fs           <cmd>lua require('telescope.builtin').grep_string()<cr>
 nnoremap <silent>fb           <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <silent>fc           <cmd>lua require('telescope.builtin').command_history()<cr>
 nnoremap <silent>gr           <cmd>lua require('telescope.builtin').lsp_references()<CR>
-"nnoremap <silent>pd           :LspPeekDefinition<CR>
+nnoremap <silent>gi           <cmd>lua require('telescope.builtin').lsp_implementations()<CR>
 nnoremap <silent>ge           <cmd>lua require('telescope.builtin').diagnostics()<CR>
-nnoremap <silent><leader>c    <cmd>lua require('telescope.builtin').command_history()<cr>
 
 nnoremap <silent><leader>rn   <cmd>lua vim.lsp.buf.rename()<CR>
-nnoremap <silent> <leader>a   <cmd>lua vim.lsp.buf.code_action()<CR>
-xmap <silent> <leader>a       <cmd>lua vim.lsp.buf.range_code_action()<CR>
+nnoremap <silent><leader>ca   <cmd>lua vim.lsp.buf.code_action()<CR>
+xmap     <silent><leader>ca   <cmd>lua vim.lsp.buf.range_code_action()<CR>
 
 " ## GO
 " vim-go, load workspace when opening go file in GOPATH
@@ -418,3 +465,4 @@ vnoremap > >gv
 " http://ddrscott.github.io/blog/2016/yank-without-jank/
 vnoremap y myy`y
 vnoremap Y myY`y
+
