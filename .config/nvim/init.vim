@@ -334,7 +334,7 @@ function! CommitOnWeb()
         "ok
     end
 endfunction
-map <silent><leader>cu :call CommitOnWeb()<CR>
+noremap <silent><leader>cu :call CommitOnWeb()<CR>
 " ---------------- FUNCS CONFIG END ----------------
 
 let mapleader = ";"

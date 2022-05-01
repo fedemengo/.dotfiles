@@ -26,9 +26,12 @@ get_url() {
 
     case $remote in
         *gitlab*)
+            remote_url="https://$remote/-/commit/$commit"
+            echo $remote_url > $HOME/gitlaburl
             ;;
         *github*)
             remote_url="https://$remote/commit/$commit"
+            echo $remote_url > $HOME/githuburl
             ;;
     esac
 
@@ -51,8 +54,12 @@ if [ "$commit" == "00000000" ]
 then
     #echo "$file_path/$file_line:$file_line was never committed to a git repository"
     exit 2
+elif [ "${commit:0:1}" == "^" ]
+then
+    commit=${commit:1:${#commit}}
 fi
 
+commit=$(git -C "$file_path" rev-parse $commit)
 remote=$(git -C "$file_path" remote -v | grep push | tr \\t ' ' | tr -s ' ' | cut -d' ' -f2)
 
 clean_remote=$(parse_remote "$remote")
