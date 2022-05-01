@@ -23,22 +23,3 @@ source $MYZSH/functions.zsh 2>/dev/null
 
 #[[ -n $TMUX ]] && export TERM="xterm-256color"
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/federico.mengozzi/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/federico.mengozzi/opt/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/federico.mengozzi/opt/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/federico.mengozzi/opt/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-
-eval $(thefuck --alias)
-export PATH="/usr/local/opt/llvm/bin:$PATH"
-export PATH="/usr/local/opt/binutils/bin:$PATH"

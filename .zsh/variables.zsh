@@ -2,9 +2,17 @@ export QT_QPA_PLATFORMTHEME="qt5ct"
 export EDITOR="$(which nvim)"
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 # fix "xdg-open fork-bomb" export your preferred browser from here
-export BROWSER=/usr/bin/firefox
+#export BROWSER=/usr/bin/firefox
+export BROWSER=open
 export ZSH=$HOME/.oh-my-zsh
-export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/.app/MatLab/bin
+export LESS="--tabs=4 --no-init --LONG-PROMPT --ignore-case --quit-if-one-screen --RAW-CONTROL-CHARS"
+export PAGER=$LESS
+export LS_COLORS="di=38;5;38:ex=38;5;82"
+
+PATH=$PATH:$HOME/bin:/usr/local/bin
+PATH=$PATH:$HOME/.app/MatLab/bin
+PATH=$PATH:$HOME/.dotfiles/bin
+PATH=$PATH:$HOME/.dotfiles/bin/utils
 
 export LANG="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF-8"
@@ -21,15 +29,14 @@ export LC_MEASUREMENT="en_US.UTF-8"
 export LC_IDENTIFICATION="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 
-export LESS="--tabs=4 --no-init --LONG-PROMPT --ignore-case --quit-if-one-screen --RAW-CONTROL-CHARS"
-export LS_COLORS="di=38;5;38:ex=38;5;82"
-
+# go
+export GO111MODULE=on
 export GOPATH="${HOME}/.go"
 #export GOROOT="/usr/lib/go"
 export GOROOT="/usr/local/go"
-export PATH="$PATH:$GOPATH/bin:$GOROOT/bin"
-export GO111MODULE=on
+PATH="$PATH:$GOPATH/bin:$GOROOT/bin"
 
+# ruby
 #export RUBYOPT="-W:no-deprecated"
 #export RUBY_VERSION="ruby-2.7.1"
 #export PATH="${PATH}:${HOME}/.rvm/rubies/${RUBY_VERSION}/bin:${HOME}/.gem/${RUBY_VERSION}/bin"
@@ -37,25 +44,44 @@ export GO111MODULE=on
 #export PATH="$PATH:$HOME/.rvm/bin:${HOME}/.gem/ruby/2.7.0/bin"
 export GEM_HOME="$HOME/.gem"
 
-# python local stuff
-PYTHON_LOC="${HOME}/.local/bin"
-export PATH="${PATH}:${PYTHON_LOC}"
-
-# Just for testing algo-and-ds repo
-#export PATH="${PATH}:${HOME}/projects/algorithms-and-data-structures"
-
-export IP_TOKEN="4c202ad50e5741"
-
-export FM=${HOME}
-export VIMRC=${HOME}/.config/nvim/init.vim
-
+# java
 export JAVA_HOME="${HOME}/.jdk/jdk-11.0.4"
 export JDK_HOME="${JAVA_HOME}"
 export JRE_HOME="${JAVA_HOME}/jre"
-export PATH="${PATH}:${JAVA_HOME}/bin"
+PATH="${PATH}:${JAVA_HOME}/bin"
 
-export PATH="${PATH}:${HOME}/.cargo/bin"
+# rust
+PATH="${PATH}:${HOME}/.cargo/bin"
 
-export PATH="${PATH}:${HOME}/.npm-global/bin"
-export PATH="${PATH}:${HOME}/Library/Python/3.9/bin"
+# javascript
+export NPM_PACKAGES="$HOME/.npm-packages"
+PATH="$NPM_PACKAGES/bin:$PATH"
+PATH="${PATH}:${HOME}/.npm-global/bin"
+
+# python
+PYTHON_LOC="${HOME}/.local/bin"
+PATH="${PATH}:${PYTHON_LOC}"
+PATH="${PATH}:${HOME}/Library/Python/3.9/bin"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/federico.mengozzi/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/federico.mengozzi/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/federico.mengozzi/opt/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/federico.mengozzi/opt/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+PATH="$PATH:/usr/local/opt/llvm/bin:/usr/local/opt/binutils/bin"
+export $PATH
+
+export IP_TOKEN="4c202ad50e5741"
+export FM=${HOME}
+export VIMRC=${HOME}/.config/nvim/init.vim
 

@@ -46,6 +46,12 @@ endif
 set undodir=~/.nvim/undo-dir  " use undodir
 set undofile
 
+let mapleader = ";"
+
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+endif
+
 " ----------------- PLUGINS START ------------------
 call plug#begin('~/.config/nvim/autoload/plugged')
 " syntax highlight
@@ -225,7 +231,7 @@ end
 
 -- https://github.com/nvim-treesitter/nvim-treesitter#modules
 require "nvim-treesitter.configs".setup {
-    ensure_installed = {"go", "cpp"},
+    ensure_installed = {"go", "cpp", "vim", "bash", "lua"},
     sync_install = false,
     indent = {
         enable = true
@@ -305,6 +311,7 @@ function! ToggleSpell()
         let g:showingSpell=0
    endif
 endfunction
+" option + s
 map ß :call ToggleSpell()<CR>
 
 let s:toggle_theme_default = 1
@@ -317,7 +324,8 @@ function! ToggleTheme()
         let s:toggle_theme_default = 1
     endif
 endfunction
-map † :call ToggleTheme()<CR>
+" option + t
+noremap † :call ToggleTheme()<CR>
 
 function! CommitOnWeb()
     let l:path = expand("%:h")
@@ -337,16 +345,15 @@ endfunction
 noremap <silent><leader>cu :call CommitOnWeb()<CR>
 " ---------------- FUNCS CONFIG END ----------------
 
-let mapleader = ";"
 " quick escape with jk
 inoremap jk <Esc>
 tnoremap jk <C-\><C-n>
 
-" copy curost buffer path and line to clipboard
+" copy cursor buffer path and line to clipboard
 noremap <silent><leader>fp :let @+=expand("%") . ':' . line(".")<CR>
 
-nmap <Leader>ss :<C-u>SessionSave<CR>
-nmap <Leader>sl :<C-u>SessionLoad<CR>
+nmap <leader>ss :<C-u>SessionSave<CR>
+nmap <leader>sl :<C-u>SessionLoad<CR>
 
 " ---------- [ Autocommands ] ----------
 " delete empty space from the end of lines on every save

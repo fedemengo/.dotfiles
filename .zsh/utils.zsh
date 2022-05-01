@@ -48,6 +48,8 @@ setopt EXTENDED_HISTORY  # record command start time
   # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
   # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 
+eval "$(atuin init zsh)"
+
 #zsh-vim-mode
 VIM_MODE_VICMD_KEY="jk"
 
@@ -161,7 +163,7 @@ bindkey "^i" expand-or-complete-prefix
 bindkey "^I" tab_list
 bindkey "^[[Z" reverse-menu-complete
 
-# disable on macOS 
+# disable on macOS
 # bindkey "^p" pacman-util
 # bindkey "^y" yay-util
 
@@ -234,3 +236,4 @@ alias zrc='vim $HOME/.dotfiles/.zshrc'
 alias zd='vim $HOME/.dotfiles/.zsh'
 
 alias k='kubectl'
+alias kx='kubectx'
