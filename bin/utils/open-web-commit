@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+LOG_FILE=/tmp/dotfiles.open-web-commit.logs
+
 #git@github.com:org/repo.git
 #ssh://git@github.com/org/repo
 #https://gitlab.com/org/repo.git
@@ -22,16 +24,17 @@ parse_remote() {
 get_url() {
     local remote="$1"
     local commit="$2"
+    local file_path="$3"
     local remote_url
 
     case $remote in
         *gitlab*)
             remote_url="https://$remote/-/commit/$commit"
-            echo $remote_url > $HOME/gitlaburl
             ;;
         *github*)
             remote_url="https://$remote/commit/$commit"
-            echo $remote_url > $HOME/githuburl
+            # todo: test if possible to open a specific file in a commit view
+            #remote_url="https://$remote/commit/${commit}${file_path}"
             ;;
     esac
 
@@ -42,20 +45,21 @@ file_path="$1"
 file_name="$2"
 file_line="$3"
 
-if ! git -C "$file_path" status >/dev/null 2>&1
-then
+if ! git -C "$file_path" status >/dev/null 2>&1; then
     #echo "$file_path is not a git repository"
     exit 1
 fi
 
+repo_path=$(git -C "$file_path" rev-parse --show-toplevel)
+full_path=$(realpath $PWD/$file_path)
+relative_file_path="${full_path##$repo_path}/$file_name"
+
 commit=$(git -C "$file_path" blame "$file_name" -L $file_line,$file_line -l | cut -d' ' -f1)
 
-if [ "$commit" == "00000000" ]
-then
+if [[ "$commit" == "" || "$commit" == "00000000"* ]]; then
     #echo "$file_path/$file_line:$file_line was never committed to a git repository"
     exit 2
-elif [ "${commit:0:1}" == "^" ]
-then
+elif [[ "${commit:0:1}" == "^" ]]; then
     commit=${commit:1:${#commit}}
 fi
 
@@ -63,7 +67,7 @@ remote=$(git -C "$file_path" remote -v | grep push | tr \\t ' ' | tr -s ' ' | cu
 
 clean_remote=$(parse_remote "$remote")
 
-url=$(get_url "$clean_remote" "$commit")
+url=$(get_url "$clean_remote" "$commit" "$relative_file_path")
 
 $BROWSER "$url"
 

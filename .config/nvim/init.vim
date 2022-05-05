@@ -360,7 +360,7 @@ function! CommitOnWeb()
     let l:err = v:shell_error
     redraw
     if l:err == 1
-        echo l:path . " is not a git directory"
+        echo l:path . " is not a git repository"
     elseif l:err == 2
         echo l:path . "/" . l:file . ":" . l:line . " was never commited"
     else
