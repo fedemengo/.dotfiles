@@ -212,6 +212,7 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 
 lsp_conf = require("lspconfig")
+-- https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig/server_configurations
 local servers = { "gopls", "clangd", "vimls", "bashls" }
 for _, lsp in pairs(servers) do
     lsp_conf[lsp].setup {
@@ -222,13 +223,39 @@ for _, lsp in pairs(servers) do
             vim.keymap.set("n", "[d", vim.diagnostic.goto_next, {buffer = 0})
             vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, {buffer = 0})
         end,
-        capabilities = capabilities
+        capabilities = capabilities,
     }
 end
 
+--[[
+local custom_lsp_attach = function(_, bufnr)
+    print('LSP attached')
+    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+end
+
+lsp_conf.yamlls.setup {
+    settings = {
+        yaml = {
+            schemaStore = {
+                url = "https://www.schemastore.org/api/json/catalog.json",
+                enable = true,
+            },
+            schemas = {
+                kubernetes = "/*.yaml",
+            },
+            schemaDownload = {
+                enable = true
+            },
+            validate = true,
+        },
+    },
+    on_attach = custom_lsp_attach
+}
+--]]
+
 -- https://github.com/nvim-treesitter/nvim-treesitter#modules
 require "nvim-treesitter.configs".setup {
-    ensure_installed = {"go", "cpp", "vim", "bash", "lua"},
+    ensure_installed = {"go", "cpp", "vim", "bash", "lua", "yaml" },
     sync_install = false,
     indent = {
         enable = true
@@ -351,8 +378,9 @@ tnoremap jk <C-\><C-n>
 " copy cursor buffer path and line to clipboard
 noremap <silent><leader>fp :let @+=expand("%") . ':' . line(".")<CR>
 
-nmap <leader>ss :<C-u>SessionSave<CR>
-nmap <leader>sl :<C-u>SessionLoad<CR>
+" this is so fucking broken
+"nmap <leader>ss :<C-u>SessionSave<CR>
+"nmap <leader>sl :<C-u>SessionLoad<CR>
 
 " ---------- [ Autocommands ] ----------
 " delete empty space from the end of lines on every save
@@ -405,10 +433,10 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 " useless resizing i will never use
-noremap <silent> <C-r>h :vertical resize +5<CR>
-noremap <silent> <C-r>l :vertical resize -5<CR>
-noremap <silent> <C-r>j :resize +5<CR>
-noremap <silent> <C-r>k :resize -5<CR>
+"noremap <silent> <C-r>h :vertical resize +5<CR>
+"noremap <silent> <C-r>l :vertical resize -5<CR>
+"noremap <silent> <C-r>j :resize +5<CR>
+"noremap <silent> <C-r>k :resize -5<CR>
 
 " Go to the start and end of the line easier
 noremap H ^
@@ -463,7 +491,7 @@ nnoremap <silent>gr           <cmd>lua require('telescope.builtin').lsp_referenc
 nnoremap <silent>gi           <cmd>lua require('telescope.builtin').lsp_implementations()<CR>
 nnoremap <silent>ge           <cmd>lua require('telescope.builtin').diagnostics()<CR>
 
-nnoremap <silent><leader>rn   <cmd>lua vim.lsp.buf.rename()<CR>
+nnoremap <silent><leader>cw   <cmd>lua vim.lsp.buf.rename()<CR>
 nnoremap <silent><leader>ca   <cmd>lua vim.lsp.buf.code_action()<CR>
 xmap     <silent><leader>ca   <cmd>lua vim.lsp.buf.range_code_action()<CR>
 
