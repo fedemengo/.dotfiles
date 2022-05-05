@@ -1,0 +1,50 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Federico Mengozzi
+	email = 19249682+fedemengo@users.noreply.github.com
+[alias]
+	co = checkout
+	d = difftool
+	hub = !hub
+	pr = !hub pr show
+	pad = add --patch
+
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
+
+[merge]
+	tool = vimdiff3
+	conflictstyle = diff3
+[mergetool]
+	path = nvim
+[mergetool "vimdiff"]
+	path = nvim
+[diff]
+	tool = vimdiff3
+	colorMoved = default
+[difftool "vimdiff3"]
+	path = nvim
+[mergetool "vimdiff3"]
+	path = nvim
+[core]
+	editor = nvim
+	pager = less
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[interactive]
+	#diffFilter = delta --color-only --features=interactive
+[delta]
+	navigate = true
+	side-by-side = true
+	features = decorations
+[delta "decorations"]
+    commit-decoration-style = blue ol
+    commit-style = raw
+    file-style = omit
+    hunk-header-decoration-style = blue box
+    hunk-header-file-style = red
+    hunk-header-line-number-style = "#067a00"
+    hunk-header-style = file line-number syntax
