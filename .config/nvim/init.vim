@@ -71,6 +71,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 " go
     Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " lsp magic
+    Plug 'williamboman/nvim-lsp-installer'
     Plug 'neovim/nvim-lspconfig'
     Plug 'prabirshrestha/vim-lsp'
     Plug 'mattn/vim-lsp-settings'
@@ -165,12 +166,17 @@ cmp.setup({
             require('luasnip').lsp_expand(args.body)
         end,
     },
+    window = {
+      completion = cmp.config.window.bordered(),
+      -- documentation = cmp.config.window.bordered(),
+    },
     mapping = {
-        ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item()),
-        ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item()),
+        ['<C-q>']     = cmp.mapping.scroll_docs(4),
+        ['<C-n>']     = cmp.mapping.select_next_item(),
+        ['<C-p>']     = cmp.mapping.select_prev_item(),
+        ["<C-e>"]     = cmp.mapping.abort(),
+        ["<C-y>"]     = cmp.mapping.confirm({select = false}),
         ["<C-Space>"] = cmp.mapping.complete(),
-        ["<C-e>"] = cmp.mapping.abort(),
-        ["<CR>"] = cmp.mapping.confirm({select = true}), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     },
     sources = {
         {name = "nvim_lsp"},
@@ -202,8 +208,8 @@ cmp.setup.cmdline("/", {
 cmp.setup.cmdline(":", {
     mapping = cmp.mapping.preset.cmdline(),
     sources = {
-        {name = "path"},
         {name = "cmdline"},
+        {name = "path"},
     }
 })
 
@@ -213,7 +219,19 @@ capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 
 lsp_conf = require("lspconfig")
 -- https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig/server_configurations
-local servers = { "gopls", "clangd", "vimls", "bashls" }
+local servers = { "gopls", "clangd", "vimls", "bashls", "dockerls", "sumneko_lua" }
+require("nvim-lsp-installer").setup({
+    ensure_installed = servers,
+    automatic_installation = true,
+    ui = {
+        icons = {
+            server_installed = "✓",
+            server_pending = "➜",
+            server_uninstalled = "✗"
+        }
+    }
+})
+
 for _, lsp in pairs(servers) do
     lsp_conf[lsp].setup {
         on_attach = function(client, bufrn)
@@ -255,7 +273,7 @@ lsp_conf.yamlls.setup {
 
 -- https://github.com/nvim-treesitter/nvim-treesitter#modules
 require "nvim-treesitter.configs".setup {
-    ensure_installed = {"go", "cpp", "vim", "bash", "lua", "yaml" },
+    ensure_installed = {"go", "cpp", "vim", "bash", "lua", "yaml", "dockerfile"},
     sync_install = false,
     indent = {
         enable = true
@@ -489,6 +507,10 @@ nnoremap <silent>fb           <cmd>lua require('telescope.builtin').buffers()<CR
 nnoremap <silent>fc           <cmd>lua require('telescope.builtin').command_history()<CR>
 nnoremap <silent>gr           <cmd>lua require('telescope.builtin').lsp_references()<CR>
 nnoremap <silent>gi           <cmd>lua require('telescope.builtin').lsp_implementations()<CR>
+nnoremap <silent>gc           <cmd>lua require('telescope.builtin').git_commits()<CR>
+nnoremap <silent>gs           <cmd>lua require('telescope.builtin').git_status()<CR>
+nnoremap <silent>gS           <cmd>lua require('telescope.builtin').git_stash()<CR>
+
 nnoremap <silent>ge           <cmd>lua require('telescope.builtin').diagnostics()<CR>
 
 nnoremap <silent><leader>cw   <cmd>lua vim.lsp.buf.rename()<CR>
