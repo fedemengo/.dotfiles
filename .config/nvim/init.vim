@@ -118,6 +118,7 @@ let NERDTreeShowHidden = 1
 " ---------------- LUA CONFIG START ----------------
 lua <<EOF
 -- https://github.com/nvim-telescope/telescope-fzf-native.nvim#telescope-setup-and-configuration
+local action_state = require("telescope.actions.state")
 require('telescope').setup {
     defaults = {
         layout_strategy = 'vertical',
@@ -132,13 +133,19 @@ require('telescope').setup {
             mappings = {
                 -- not working - HELP
                 n = {
-                    ["cd"] = function(prompt_bufnr)
-                        local selection = require("telescope.actions.state")
-                        print(vim.inspect(selection))
-                        --local dir = vim.fn.fnamemodify(selection.path, ":p:h")
+                    ["cd"] = function(prompt_bufnr, map)
+                        --local dir = vim.fn.fnamemodify(action_state.path, ":p:h")
+                        --local line = action_state.get_current_line()
+                        --if line ~= "" then
+                        --    local dir = vim.fn.fnamemodify(line, ":p:h")
+                        --    local val = vim.fn.input("cd to '" .. dir .. "' ? [y/n] ")
+                        --    if val == "y" or val == "Y" then
+                        --        -- Depending on what you want put `cd`, `lcd`, `tcd`
+                        --        vim.cmd(string.format("silent lcd %s", dir))
+                        --    end
+                        --end
+                        --vim.cmd("echo ''")
                         --require("telescope.actions").close(prompt_bufnr)
-                        -- Depending on what you want put `cd`, `lcd`, `tcd`
-                        --vim.cmd(string.format("silent lcd %s", dir))
                     end
                 }
             }
