@@ -10,3 +10,6 @@ pics/
 .vim/.netrwhist
 
 .config/polybar/info
+
+autoload/
+spell/

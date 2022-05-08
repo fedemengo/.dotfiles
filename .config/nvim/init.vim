@@ -11,8 +11,10 @@ set wildmode=longest,list,full
 set wildmenu
 set grepprg=grep\ -nH\ $*
 set number
+set autoread
 set autoindent
 set autowrite
+set autochdir
 set showmode
 set showcmd
 set ruler
@@ -125,26 +127,24 @@ require('telescope').setup {
         layout_config = {
             width = 0.95,
             height = 0.95,
-            preview_height = 0.7,
+            preview_height = 0.68,
         },
     },
     pickers = {
         find_files = {
             mappings = {
-                -- not working - HELP
                 n = {
                     ["cd"] = function(prompt_bufnr, map)
-                        --local dir = vim.fn.fnamemodify(action_state.path, ":p:h")
-                        --local line = action_state.get_current_line()
-                        --if line ~= "" then
-                        --    local dir = vim.fn.fnamemodify(line, ":p:h")
-                        --    local val = vim.fn.input("cd to '" .. dir .. "' ? [y/n] ")
-                        --    if val == "y" or val == "Y" then
-                        --        -- Depending on what you want put `cd`, `lcd`, `tcd`
-                        --        vim.cmd(string.format("silent lcd %s", dir))
-                        --    end
-                        --end
-                        --vim.cmd("echo ''")
+                        local line = action_state.get_current_line()
+                        if line ~= "" then
+                            local dir = vim.fn.fnamemodify(line, ":p:h")
+                            local val = vim.fn.input("cd to '" .. dir .. "' ? [y/n]")
+                            if val == "y" or val == "Y" then
+                                -- Depending on what you want put `cd`, `lcd`, `tcd`
+                                vim.cmd(string.format("lcd %s", dir))
+                            end
+                        end
+                        vim.cmd("echo ''")
                         --require("telescope.actions").close(prompt_bufnr)
                     end
                 }
@@ -215,8 +215,8 @@ cmp.setup.cmdline("/", {
 cmp.setup.cmdline(":", {
     mapping = cmp.mapping.preset.cmdline(),
     sources = {
-        {name = "cmdline"},
         {name = "path"},
+        {name = "cmdline"},
     }
 })
 
@@ -425,8 +425,7 @@ autocmd! BufWritePost $HOME/.dotfiles/.config/nvim/init.vim source $VIMRC | echo
 
 map <leader>vrc :tabe $VIMRC<CR>
 
-command! -nargs=1 PR G pr <args>
-nnoremap <silent><leader>gb :G blame<CR>
+nnoremap <silent><leader>b :G blame<CR>
 nnoremap <silent>∫ :ToggleBlameLine<CR>
 map <leader><leader> <Plug>(easymotion-prefix)
 
@@ -438,7 +437,7 @@ cnoremap <C-b> <C-Left>
 
 cabbrev tb tabnew
 nnoremap <C-n> :tabnew<CR>:Dashboard<CR>
-nnoremap ˜ :tabnew<CR>
+nnoremap ˜     :tabnew<CR>
 nnoremap <C-s> :vsplit<CR>
 
 " move between tags, mac sheit

@@ -228,8 +228,9 @@ alias g='git'
 alias rename='perl-rename'
 alias h='history -t "%d.%m.%y-%H:%M:%S"'
 
-alias n='nvim'
 alias vim='/usr/local/bin/nvim'
+alias n='nvim'
+alias v='nvim'
 
 alias vrc='vim $HOME/.nvimrc'
 alias zrc='vim $HOME/.dotfiles/.zshrc'
@@ -237,3 +238,4 @@ alias zd='vim $HOME/.dotfiles/.zsh'
 
 alias k='kubectl'
 alias kx='kubectx'
+alias ks='kubens'

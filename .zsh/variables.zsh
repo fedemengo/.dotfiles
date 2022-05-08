@@ -5,14 +5,14 @@ export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 #export BROWSER=/usr/bin/firefox
 export BROWSER=open
 export ZSH=$HOME/.oh-my-zsh
-export LESS="--tabs=4 --no-init --LONG-PROMPT --ignore-case --quit-if-one-screen --RAW-CONTROL-CHARS"
+export LESS="--tabs=4 --no-init --LONG-PROMPT --ignore-case --quit-if-one-screen --RAW-CONTROL-CHARS -r"
 export PAGER=$LESS
 export LS_COLORS="di=38;5;38:ex=38;5;82"
 
-PATH=$PATH:$HOME/bin:/usr/local/bin
-PATH=$PATH:$HOME/.app/MatLab/bin
-PATH=$PATH:$HOME/.dotfiles/bin
-PATH=$PATH:$HOME/.dotfiles/bin/utils
+PATH="$PATH:$HOME/bin:/usr/local/bin:/usr/bin"
+PATH="$PATH:$HOME/.app/MatLab/bin"
+PATH="$PATH:$HOME/.dotfiles/bin"
+PATH="$PATH:$HOME/.dotfiles/bin/utils"
 
 export LANG="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF-8"
@@ -43,6 +43,7 @@ PATH="$PATH:$GOPATH/bin:$GOROOT/bin"
 ### Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 #export PATH="$PATH:$HOME/.rvm/bin:${HOME}/.gem/ruby/2.7.0/bin"
 export GEM_HOME="$HOME/.gem"
+PATH="$PATH:$GEM_HOME/bin"
 
 # java
 export JAVA_HOME="${HOME}/.jdk/jdk-11.0.4"
