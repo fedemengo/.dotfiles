@@ -1,0 +1,3 @@
+[submodule ".config/nvim/deps/papercolor-theme"]
+	path = .config/nvim/deps/papercolor-theme
+	url = git@github.com:NLKNguyen/papercolor-theme.git
