@@ -89,7 +89,8 @@ call plug#begin('~/.config/nvim/autoload/plugged')
 " misc
     Plug 'nvim-lualine/lualine.nvim'
     Plug 'kyazdani42/nvim-web-devicons'
-    Plug 'glepnir/dashboard-nvim'
+    Plug 'mhinz/vim-startify'
+    Plug 'junegunn/vim-peekaboo'
 " probably useless
     " learn vim
     Plug 'ThePrimeagen/vim-be-good'
@@ -112,9 +113,8 @@ let g:loaded_ruby_provider = 0
 let g:loaded_node_provider = 0
 let g:loaded_perl_provider = 0
 let g:go_def_mapping_enabled = 0
-let g:dashboard_default_executive = 'telescope'
-let g:dashboard_custom_header = ['','','','','','','','','','','']
 let NERDTreeShowHidden = 1
+let g:startify_bookmarks = systemlist("cut -sd' ' -f 2- ~/.NERDTreeBookmarks")
 " --------------- GLOBAL CONFIG END ----------------
 
 " ---------------- LUA CONFIG START ----------------
@@ -245,8 +245,8 @@ for _, lsp in pairs(servers) do
             vim.keymap.set("n", "K", vim.lsp.buf.hover, {buffer = 0})
             vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer = 0})
             vim.keymap.set("n", "gT", vim.lsp.buf.type_definition, {buffer = 0})
-            vim.keymap.set("n", "[d", vim.diagnostic.goto_next, {buffer = 0})
-            vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, {buffer = 0})
+            vim.keymap.set("n", "]d", vim.diagnostic.goto_next, {buffer = 0})
+            vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, {buffer = 0})
         end,
         capabilities = capabilities,
     }
@@ -394,6 +394,45 @@ function! CommitOnWeb()
 endfunction
 noremap <silent><leader>cu :call CommitOnWeb()<CR>
 endif
+
+function! s:gitModified()
+    let files = systemlist('git ls-files -m 2>/dev/null')
+    return map(files, "{'line': v:val, 'path': v:val}")
+endfunction
+
+" same as above, but show untracked files, honouring .gitignore
+function! s:gitUntracked()
+    let files = systemlist('git ls-files -o --exclude-standard 2>/dev/null')
+    return map(files, "{'line': v:val, 'path': v:val}")
+endfunction
+
+let g:startify_lists = [
+    \ { 'type': 'files',     'header': ['   MRU']            },
+    \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+    \ { 'type': 'sessions',  'header': ['   Sessions']       },
+    \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+    \ { 'type': function('s:gitModified'),  'header': ['   git modified']},
+    \ { 'type': function('s:gitUntracked'), 'header': ['   git untracked']},
+    \ { 'type': 'commands',  'header': ['   Commands']       },
+    \ ]
+
+" https://github.com/junegunn/vim-peekaboo/issues/68
+function! CreateCenteredFloatingWindow() abort
+    if(!has('nvim'))
+        split
+        new
+    else
+        let width = float2nr(&columns * 0.7)
+        let height = float2nr(&lines * 0.7)
+        let top = ((&lines - height) / 2) - 1
+        let left = (&columns - width) / 2
+        let opts = {'relative': 'editor', 'row': top, 'col': left, 'width': width, 'height': height, 'style': 'minimal'}
+        let s:buf = nvim_create_buf(v:false, v:true)
+        call nvim_open_win(s:buf, v:true, opts)
+    endif
+endfunction
+
+let g:peekaboo_window="call CreateCenteredFloatingWindow()"
 " ---------------- FUNCS CONFIG END ----------------
 
 " quick escape with jk
@@ -425,9 +464,12 @@ autocmd! BufWritePost $HOME/.dotfiles/.config/nvim/init.vim source $VIMRC | echo
 
 map <leader>vrc :tabe $VIMRC<CR>
 
+" lcd to file's directory
+"nnoremap <leader>cd :lcd %:p:h<CR>
+
 nnoremap <silent><leader>b :G blame<CR>
 nnoremap <silent>∫ :ToggleBlameLine<CR>
-map <leader><leader> <Plug>(easymotion-prefix)
+map s <Plug>(easymotion-prefix)
 
 " command line
 cnoremap <C-a> <C-b>
@@ -436,9 +478,11 @@ cnoremap <C-w> <C-Right>
 cnoremap <C-b> <C-Left>
 
 cabbrev tb tabnew
-nnoremap <C-n> :tabnew<CR>:Dashboard<CR>
+nnoremap <C-n> :tabnew<CR>:Startify<CR>
+nnoremap <C-m> :tabe %<CR>
 nnoremap ˜     :tabnew<CR>
 nnoremap <C-s> :vsplit<CR>
+nnoremap <C-g> :echo expand('%:p')<CR>
 
 " move between tags, mac sheit
 nnoremap ¡ 1gt
