@@ -7,3 +7,6 @@
 [submodule ".dotfiles-sysdig"]
 	path = .dotfiles-sysdig
 	url = git@github.com:fedemengo/.dotfiles-sysdig.git
+[submodule ".dotfiles-secret"]
+	path = .dotfiles-secret
+	url = git@github.com:fedemengo/.dotfiles-secret.git
