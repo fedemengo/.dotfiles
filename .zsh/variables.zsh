@@ -34,6 +34,7 @@ export GO111MODULE=on
 export GOPATH="${HOME}/.go"
 #export GOROOT="/usr/lib/go"
 export GOROOT="/usr/local/go"
+export GOPROXY=direct
 PATH="$PATH:$GOPATH/bin:$GOROOT/bin"
 
 # ruby
@@ -79,7 +80,8 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-PATH="$PATH:/usr/local/opt/llvm/bin:/usr/local/opt/binutils/bin"
+PATH="${PATH}:/usr/local/opt/llvm/bin:/usr/local/opt/binutils/bin"
+PATH="${PATH}:${HOME}/.google-cloud-sdk/bin"
 export $PATH
 
 export IP_TOKEN="4c202ad50e5741"

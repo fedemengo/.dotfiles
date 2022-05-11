@@ -4,3 +4,6 @@
 [submodule "sysdig"]
 	path = sysdig
 	url = git@github.com:fedemengo/dotfiles-sysdig.git
+[submodule ".dotfiles-sysdig"]
+	path = .dotfiles-sysdig
+	url = git@github.com:fedemengo/.dotfiles-sysdig.git
