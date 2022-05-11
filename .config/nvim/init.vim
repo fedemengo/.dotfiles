@@ -42,10 +42,11 @@ set foldexpr=nvim_treesitter#foldexpr()
 set nofoldenable
 filetype plugin indent on
 
-if !isdirectory($HOME.'/.nvim/undo-dir')
-    call mkdir($HOME.'/.nvim/undo-dir', 'p')
+let undodir_path = $HOME.'/.nvim/undo-dir'
+if !isdirectory(undodir_path)
+    call mkdir(expand(undodir_path), 'p')
 endif
-set undodir=~/.nvim/undo-dir  " use undodir
+set undodir=undodir_path
 set undofile
 
 let mapleader = ";"
