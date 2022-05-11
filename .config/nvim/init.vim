@@ -469,6 +469,7 @@ map <leader>vrc :tabe $VIMRC<CR>
 "nnoremap <leader>cd :lcd %:p:h<CR>
 
 nnoremap <silent><leader>b :G blame<CR>
+" option+b
 nnoremap <silent>∫ :ToggleBlameLine<CR>
 map s <Plug>(easymotion-prefix)
 
@@ -479,9 +480,8 @@ cnoremap <C-w> <C-Right>
 cnoremap <C-b> <C-Left>
 
 cabbrev tb tabnew
-nnoremap <C-n> :tabnew<CR>:Startify<CR>
-nnoremap <C-m> :tabe %<CR>
-nnoremap ˜     :tabnew<CR>
+nnoremap <C-b> :tabnew <CR>:Startify<CR>
+nnoremap <C-n> :tabe %<CR>
 nnoremap <C-s> :vsplit<CR>
 nnoremap <C-g> :echo expand('%:p')<CR>
 
