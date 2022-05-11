@@ -1,3 +1,6 @@
 [submodule ".config/nvim/deps/papercolor-theme"]
 	path = .config/nvim/deps/papercolor-theme
 	url = git@github.com:NLKNguyen/papercolor-theme.git
+[submodule "sysdig"]
+	path = sysdig
+	url = git@github.com:fedemengo/dotfiles-sysdig.git
