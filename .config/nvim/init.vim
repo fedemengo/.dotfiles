@@ -44,9 +44,9 @@ filetype plugin indent on
 
 let undodir_path = $HOME.'/.nvim/undo-dir'
 if !isdirectory(undodir_path)
-    call mkdir(expand(undodir_path), 'p')
+    call mkdir(undodir_path, 'p')
 endif
-set undodir=undodir_path
+let &undodir=undodir_path
 set undofile
 
 let mapleader = ";"
