@@ -1,5 +1,9 @@
 # base default config
-source .dotfiles/.dotfiles-secret/.zshrc
+if [[ -f ~/.dotfiles/.dotfiles-secret/.secret-zshrc ]]; then
+  source ~/.dotfiles/.dotfiles-secret/.secret-zshrc
+else
+  echo "secret zsh not found"
+fi
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -23,7 +27,7 @@ source $MYZSH/utils.zsh 2>/dev/null
 source $MYZSH/functions.zsh 2>/dev/null
 
 # work dotfiles
-source $SYSDIG_DOTF/.zshrc 2>/dev/null
+source $SYSDIG_DOTF/.sysdig-zshrc 2>/dev/null
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh

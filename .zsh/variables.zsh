@@ -84,7 +84,5 @@ PATH="${PATH}:/usr/local/opt/llvm/bin:/usr/local/opt/binutils/bin"
 PATH="${PATH}:${HOME}/.google-cloud-sdk/bin"
 export $PATH
 
-export IP_TOKEN="4c202ad50e5741"
-export FM=${HOME}
 export VIMRC=${HOME}/.config/nvim/init.vim
 
