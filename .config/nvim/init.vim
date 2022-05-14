@@ -114,7 +114,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'rbong/vim-flog'
     Plug 'tpope/vim-rhubarb'
     Plug 'rhysd/conflict-marker.vim'
-    Plug 'fedemengo/nvim-blame-line'
+    Plug 'fedemengo/nvim-blame-line', { 'branch': 'dev' }
     "probably cool if I learn how to use
     Plug 'wbthomason/packer.nvim'
     " dude
@@ -522,6 +522,8 @@ noremap <silent><leader>fp :let @+=expand("%:p") . ':' . line(".")<CR>
 " ---------- [ Autocommands ] ----------
 " delete empty space from the end of lines on every save
 autocmd BufWritePre * :%s/\s\+$//e
+
+autocmd InsertLeave * update
 
 " Automatic toggling between 'hybrid' and absolute line numbers
 augroup numbertoggle
