@@ -1,8 +1,6 @@
 " note: weird charactes are generally Option + SYMBOL (on macOs)
 " when moving to linux those mapping should be replaced with Alt
 
-colorscheme PaperColor
-set background=dark
 
 " search subdirs
 set path+=**
@@ -14,7 +12,7 @@ set number
 set autoread
 set autoindent
 set autowrite
-set autochdir
+"set autochdir breaks tree sitter
 set showmode
 set showcmd
 set ruler
@@ -52,10 +50,26 @@ set undofile
 let mapleader = ";"
 
 if has("autocmd")
-  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+    au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 endif
 
 " ----------------- PLUGINS START ------------------
+" Bootstrap Plug
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.config/nvim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $VIMRC
+endif
+unlet data_dir
+
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \|    PlugInstall --sync | source $VIMRC
+  \| else
+"  \|    PlugClean | bd
+  \|    echom "plugins are synced"
+  \| endif
+
 call plug#begin('~/.config/nvim/autoload/plugged')
 " syntax highlight
     Plug 'sheerun/vim-polyglot'
@@ -99,14 +113,19 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'tpope/vim-fugitive'
     Plug 'rbong/vim-flog'
     Plug 'tpope/vim-rhubarb'
-    Plug 'tveskag/nvim-blame-line'
+    Plug 'rhysd/conflict-marker.vim'
+    Plug 'fedemengo/nvim-blame-line'
     "probably cool if I learn how to use
     Plug 'wbthomason/packer.nvim'
     " dude
     Plug 'easymotion/vim-easymotion'
+    Plug 'morhetz/gruvbox'
 call plug#end()
 " ------------------ PLUGINS END -------------------
 
+colorscheme PaperColor
+"colorscheme gruvbox
+set background=dark
 " -------------- GLOBAL CONFIG START ---------------
 let g:go_fmt_command = "goimports"
 let g:tagbar_width = 50
@@ -116,6 +135,15 @@ let g:loaded_perl_provider = 0
 let g:go_def_mapping_enabled = 0
 let NERDTreeShowHidden = 1
 let g:startify_bookmarks = systemlist("cut -sd' ' -f 2- ~/.NERDTreeBookmarks")
+
+let g:conflict_marker_highlight_group = 'Error'
+let g:conflict_marker_begin = '^<<<<<<< .*$'
+let g:conflict_marker_end   = '^>>>>>>> .*$'
+
+highlight ConflictMarkerBegin ctermbg=34
+highlight ConflictMarkerOurs ctermbg=22
+highlight ConflictMarkerTheirs ctermbg=23
+highlight ConflictMarkerEnd ctermbg=39
 " --------------- GLOBAL CONFIG END ----------------
 
 " ---------------- LUA CONFIG START ----------------
@@ -245,7 +273,7 @@ for _, lsp in pairs(servers) do
         on_attach = function(client, bufrn)
             vim.keymap.set("n", "K", vim.lsp.buf.hover, {buffer = 0})
             vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer = 0})
-            vim.keymap.set("n", "gT", vim.lsp.buf.type_definition, {buffer = 0})
+            vim.keymap.set("n", "td", vim.lsp.buf.type_definition, {buffer = 0})
             vim.keymap.set("n", "]d", vim.diagnostic.goto_next, {buffer = 0})
             vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, {buffer = 0})
         end,
@@ -408,10 +436,10 @@ function! s:gitUntracked()
 endfunction
 
 let g:startify_lists = [
+    \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+    \ { 'type': 'sessions',  'header': ['   Sessions']       },
     \ { 'type': 'files',     'header': ['   MRU']            },
     \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
-    \ { 'type': 'sessions',  'header': ['   Sessions']       },
-    \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
     \ { 'type': function('s:gitModified'),  'header': ['   git modified']},
     \ { 'type': function('s:gitUntracked'), 'header': ['   git untracked']},
     \ { 'type': 'commands',  'header': ['   Commands']       },
@@ -434,6 +462,50 @@ function! CreateCenteredFloatingWindow() abort
 endfunction
 
 let g:peekaboo_window="call CreateCenteredFloatingWindow()"
+
+if exists("+showtabline")
+    function! NumberedTabLine()
+        let s = ''
+        let wn = ''
+        let t = tabpagenr()
+        let i = 1
+        while i <= tabpagenr('$')
+            let buflist = tabpagebuflist(i)
+            let winnr = tabpagewinnr(i)
+            let s .= '%' . i . 'T'
+            let s .= (i == t ? '%1*' : '%2*')
+            let s .= ' '
+            let wn = tabpagewinnr(i,'$')
+
+            let s .= '%#TabNum#'
+            let s .= i . ':'
+            " let s .= '%*'
+            let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
+            let bufnr = buflist[winnr - 1]
+            let file = bufname(bufnr)
+            let buftype = getbufvar(bufnr, 'buftype')
+            if buftype == 'nofile'
+                if file =~ '\/.'
+                    let file = substitute(file, '.*\/\ze.', '', '')
+                endif
+            else
+                let file = fnamemodify(file, ':p:t')
+            endif
+            if file == ''
+                let file = '[No Name]'
+            endif
+            let s .= ' ' . file . ' '
+            let i = i + 1
+        endwhile
+        let s .= '%T%#TabLineFill#%='
+        let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
+        return s
+    endfunction
+    set stal=2
+    set tabline=%!NumberedTabLine()
+    set showtabline=1
+    highlight link TabNum Special
+endif
 " ---------------- FUNCS CONFIG END ----------------
 
 " quick escape with jk
@@ -441,7 +513,7 @@ inoremap jk <ESC>
 tnoremap jk <C-\><C-n>
 
 " copy cursor buffer path and line to clipboard
-noremap <silent><leader>fp :let @+=expand("%") . ':' . line(".")<CR>
+noremap <silent><leader>fp :let @+=expand("%:p") . ':' . line(".")<CR>
 
 " this is so fucking broken
 "nmap <leader>ss :<C-u>SessionSave<CR>
@@ -466,12 +538,15 @@ autocmd! BufWritePost $HOME/.dotfiles/.config/nvim/init.vim source $VIMRC | echo
 map <leader>vrc :tabe $VIMRC<CR>
 
 " lcd to file's directory
-"nnoremap <leader>cd :lcd %:p:h<CR>
+nnoremap <leader>cd :lcd %:p:h<CR>
 
 nnoremap <silent><leader>b :G blame<CR>
 " option+b
 nnoremap <silent>∫ :ToggleBlameLine<CR>
 map s <Plug>(easymotion-prefix)
+
+" option+h
+map ˙ :noh<CR>
 
 " command line
 cnoremap <C-a> <C-b>
@@ -482,6 +557,9 @@ cnoremap <C-b> <C-Left>
 cabbrev tb tabnew
 nnoremap <C-b> :tabnew <CR>:Startify<CR>
 nnoremap <C-n> :tabe %<CR>
+noremap <leader>h :tabmove -1<CR>
+noremap <leader>l :tabmove +1<CR>
+
 nnoremap <C-s> :vsplit<CR>
 nnoremap <C-g> :echo expand('%:p')<CR>
 
@@ -502,8 +580,8 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 " useless resizing i will never use
-"noremap <silent> <C-r>h :vertical resize +5<CR>
-"noremap <silent> <C-r>l :vertical resize -5<CR>
+noremap <silent> <C-r>h :vertical resize +5<CR>
+noremap <silent> <C-r>l :vertical resize -5<CR>
 "noremap <silent> <C-r>j :resize +5<CR>
 "noremap <silent> <C-r>k :resize -5<CR>
 
