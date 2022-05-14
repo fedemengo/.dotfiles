@@ -38,12 +38,14 @@ set noswapfile
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 set nofoldenable
+set timeoutlen=200 "timeout len used by which-key
 filetype plugin indent on
 
 let undodir_path = $HOME.'/.nvim/undo-dir'
 if !isdirectory(undodir_path)
     call mkdir(undodir_path, 'p')
 endif
+
 let &undodir=undodir_path
 set undofile
 
@@ -106,6 +108,8 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'kyazdani42/nvim-web-devicons'
     Plug 'mhinz/vim-startify'
     Plug 'junegunn/vim-peekaboo'
+    Plug 'kevinhwang91/nvim-hlslens'
+    Plug 'folke/which-key.nvim'
 " probably useless
     " learn vim
     Plug 'ThePrimeagen/vim-be-good'
@@ -114,7 +118,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'rbong/vim-flog'
     Plug 'tpope/vim-rhubarb'
     Plug 'rhysd/conflict-marker.vim'
-    Plug 'fedemengo/nvim-blame-line', { 'branch': 'dev' }
+    Plug 'fedemengo/nvim-blame-line'
     "probably cool if I learn how to use
     Plug 'wbthomason/packer.nvim'
     " dude
@@ -148,6 +152,9 @@ highlight ConflictMarkerEnd ctermbg=39
 
 " ---------------- LUA CONFIG START ----------------
 lua <<EOF
+-- https://github.com/folke/which-key.nvim
+require("which-key").setup {}
+
 -- https://github.com/nvim-telescope/telescope-fzf-native.nvim#telescope-setup-and-configuration
 local action_state = require("telescope.actions.state")
 require('telescope').setup {
@@ -537,12 +544,12 @@ autocmd! BufWritePost $VIMRC source $VIMRC | echom "config sourced"
 autocmd! BufWritePost $HOME/.dotfiles/.config/nvim/init.vim source $VIMRC | echom "config sourced"
 " ---------- [ Autocommands ] ----------
 
-map <leader>vrc :tabe $VIMRC<CR>
+map <leader>cf :tabe $VIMRC<CR>
 
 " lcd to file's directory
 nnoremap <leader>cd :lcd %:p:h<CR>
 
-nnoremap <silent><leader>b :G blame<CR>
+nnoremap <silent><leader>b :Git blame<CR>
 " option+b
 nnoremap <silent>∫ :ToggleBlameLine<CR>
 map s <Plug>(easymotion-prefix)
@@ -562,7 +569,8 @@ nnoremap <C-n> :tabe %<CR>
 noremap <leader>h :tabmove -1<CR>
 noremap <leader>l :tabmove +1<CR>
 
-nnoremap <C-s> :vsplit<CR>
+nnoremap <leader>v :vsplit<CR>
+nnoremap <leader>s :split<CR>
 nnoremap <C-g> :echo expand('%:p')<CR>
 
 " move between tags, mac sheit
@@ -582,10 +590,10 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 " useless resizing i will never use
-noremap <silent> <C-r>h :vertical resize +5<CR>
-noremap <silent> <C-r>l :vertical resize -5<CR>
-"noremap <silent> <C-r>j :resize +5<CR>
-"noremap <silent> <C-r>k :resize -5<CR>
+noremap <silent> <leader>rh :vertical resize +5<CR>
+noremap <silent> <leader>rl :vertical resize -5<CR>
+noremap <silent> <leader>rj :resize +5<CR>
+noremap <silent> <leader>rk :resize -5<CR>
 
 " Go to the start and end of the line easier
 noremap H ^
@@ -654,7 +662,7 @@ autocmd BufRead "$GOPATH/src/*/*.go" :GoGuruScope ...
 " vim-go, run test
 autocmd BufEnter *.go nmap <leader>t  <Plug>(go-test)
 autocmd BufEnter *.go nmap <leader>tt <Plug>(go-test-func)
-autocmd BufEnter *.go nmap <leader>tc  <Plug>(go-coverage-toggle)
+autocmd BufEnter *.go nmap <leader>tc <Plug>(go-coverage-toggle)
 
 " utils
 vnoremap <leader>e64 c<C-r>=system('base64', @")<CR><ESC>
