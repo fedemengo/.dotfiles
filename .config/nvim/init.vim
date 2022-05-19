@@ -1,7 +1,6 @@
 " note: weird charactes are generally Option + SYMBOL (on macOs)
 " when moving to linux those mapping should be replaced with Alt
 
-
 " search subdirs
 set path+=**
 " command line autocompletion
@@ -29,7 +28,6 @@ set expandtab
 set tabstop=4
 set shiftwidth=4
 set linebreak
-set list
 set spell spelllang=en_us
 set spellcapcheck=
 set splitbelow splitright
@@ -109,6 +107,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'mhinz/vim-startify'
     Plug 'junegunn/vim-peekaboo'
     Plug 'kevinhwang91/nvim-hlslens'
+    Plug 'jdhao/better-escape.vim'
     Plug 'folke/which-key.nvim'
 " probably useless
     " learn vim
@@ -118,7 +117,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'rbong/vim-flog'
     Plug 'tpope/vim-rhubarb'
     Plug 'rhysd/conflict-marker.vim'
-    Plug 'fedemengo/nvim-blame-line'
+    Plug 'fedemengo/nvim-blame-line', { 'branch': 'dev' }
     "probably cool if I learn how to use
     Plug 'wbthomason/packer.nvim'
     " dude
@@ -139,6 +138,11 @@ let g:loaded_perl_provider = 0
 let g:go_def_mapping_enabled = 0
 let NERDTreeShowHidden = 1
 let g:startify_bookmarks = systemlist("cut -sd' ' -f 2- ~/.NERDTreeBookmarks")
+let g:startify_session_sort = 1
+"let g:startify_bookmarks = systemlist("awk 'NF {print $2 \" \" NR-1}' ~/.NERDTreeBookmarks")
+let g:better_escape_shortcut = 'jk'
+let g:better_escape_interval = 200
+let g:blameLineVerbose = 0
 
 let g:conflict_marker_highlight_group = 'Error'
 let g:conflict_marker_begin = '^<<<<<<< .*$'
@@ -199,6 +203,8 @@ require('telescope').setup {
 require('telescope').load_extension('fzf')
 
 vim.opt.completeopt={"menu", "menuone", "noselect", "noinsert"}
+vim.opt.listchars = {tab = '▸ ', space = '⋅', eol = '↵'}
+vim.opt.list = true
 -- https://github.com/hrsh7th/nvim-cmp#setup
 local cmp = require("cmp")
 local lspkind = require("lspkind")
@@ -530,7 +536,7 @@ noremap <silent><leader>fp :let @+=expand("%:p") . ':' . line(".")<CR>
 " delete empty space from the end of lines on every save
 autocmd BufWritePre * :%s/\s\+$//e
 
-autocmd InsertLeave * update
+autocmd InsertLeave * if &readonly == 0 && filereadable(bufname('%')) | silent! update | endif
 
 " Automatic toggling between 'hybrid' and absolute line numbers
 augroup numbertoggle
@@ -544,10 +550,12 @@ autocmd! BufWritePost $VIMRC source $VIMRC | echom "config sourced"
 autocmd! BufWritePost $HOME/.dotfiles/.config/nvim/init.vim source $VIMRC | echom "config sourced"
 " ---------- [ Autocommands ] ----------
 
+nnoremap <leader>fq :qa<CR>
 map <leader>cf :tabe $VIMRC<CR>
 
 " lcd to file's directory
-nnoremap <leader>cd :lcd %:p:h<CR>
+nnoremap <leader>cd :lcd %:p:h<CR>: echo "cwd is now ".expand('%:p:h')<CR>
+"nnoremap <leader>cd :lcd substitute(expand('%:p:h')a, 'NERD_tree_3', '', ''))<CR>: echo "cwd is now ".expand('%:p:h')<CR>
 
 nnoremap <silent><leader>b :Git blame<CR>
 " option+b
@@ -565,7 +573,8 @@ cnoremap <C-b> <C-Left>
 
 cabbrev tb tabnew
 nnoremap <C-b> :tabnew <CR>:Startify<CR>
-nnoremap <C-n> :tabe %<CR>
+" open new file at current line in new tab
+nnoremap <C-n> mt :tabe %<CR>'t
 noremap <leader>h :tabmove -1<CR>
 noremap <leader>l :tabmove +1<CR>
 
@@ -573,7 +582,7 @@ nnoremap <leader>v :vsplit<CR>
 nnoremap <leader>s :split<CR>
 nnoremap <C-g> :echo expand('%:p')<CR>
 
-" move between tags, mac sheit
+" move between tabs, mac sheit
 nnoremap ¡ 1gt
 nnoremap ™ 2gt
 nnoremap £ 3gt
