@@ -1,6 +1,6 @@
 # base default config
 if [[ -f ~/.dotfiles/.dotfiles-secret/.secret-zshrc ]]; then
-  source ~/.dotfiles/.dotfiles-secret/.secret-zshrc
+  SECRET_DOTF=".dotfiles/.dotfiles-secret" source ~/.dotfiles/.dotfiles-secret/.secret-zshrc
 else
   echo "secret zsh not found"
 fi

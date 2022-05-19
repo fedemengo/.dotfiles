@@ -82,6 +82,8 @@ unset __conda_setup
 
 PATH="${PATH}:/usr/local/opt/llvm/bin:/usr/local/opt/binutils/bin"
 PATH="${PATH}:${HOME}/.google-cloud-sdk/bin"
+PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
 export PATH
 
 export VIMRC=${HOME}/.dotfiles/.config/nvim/init.vim
