@@ -37,6 +37,7 @@ set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 set nofoldenable
 set timeoutlen=200 "timeout len used by which-key
+set updatetime=200
 filetype plugin indent on
 
 let undodir_path = $HOME.'/.nvim/undo-dir'
@@ -80,6 +81,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'nvim-lua/plenary.nvim'
     Plug 'numkil/ag.nvim'
     Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+    Plug 'nvim-telescope/telescope-live-grep-raw.nvim'
 " navigation and co
     Plug 'preservim/tagbar'
     Plug 'preservim/nerdtree'
@@ -92,14 +94,12 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'neovim/nvim-lspconfig'
     Plug 'prabirshrestha/vim-lsp'
     Plug 'mattn/vim-lsp-settings'
-    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'hrsh7th/nvim-cmp'
     Plug 'hrsh7th/cmp-buffer'
     Plug 'hrsh7th/cmp-path'
     Plug 'hrsh7th/cmp-cmdline'
-    Plug 'hrsh7th/nvim-cmp'
+    Plug 'hrsh7th/cmp-nvim-lsp'
     Plug 'hrsh7th/vim-vsnip'
-    Plug 'hrsh7th/vim-vsnip-integ'
-    Plug 'L3MON4D3/LuaSnip'
     Plug 'onsails/lspkind-nvim'         " symbols inside autocomplete menu options
 " misc
     Plug 'nvim-lualine/lualine.nvim'
@@ -117,7 +117,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'rbong/vim-flog'
     Plug 'tpope/vim-rhubarb'
     Plug 'rhysd/conflict-marker.vim'
-    Plug 'fedemengo/nvim-blame-line', { 'branch': 'dev' }
+    Plug 'lewis6991/gitsigns.nvim'
     "probably cool if I learn how to use
     Plug 'wbthomason/packer.nvim'
     " dude
@@ -129,8 +129,13 @@ call plug#end()
 colorscheme PaperColor
 "colorscheme gruvbox
 set background=dark
+"set background=light
 " -------------- GLOBAL CONFIG START ---------------
 let g:go_fmt_command = "goimports"
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
+let g:go_gopls_enabled = 0
+
 let g:tagbar_width = 50
 let g:loaded_ruby_provider = 0
 let g:loaded_node_provider = 0
@@ -156,18 +161,48 @@ highlight ConflictMarkerEnd ctermbg=39
 
 " ---------------- LUA CONFIG START ----------------
 lua <<EOF
+require('gitsigns').setup({
+    signs = {
+        add          = {hl = 'GitSignsAdd'   , text = '+', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
+        change       = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+        delete       = {hl = 'GitSignsDelete', text = '-', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+        topdelete    = {hl = 'GitSignsDelete', text = '-', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+        changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+    },
+    current_line_blame = false,
+    current_line_blame_formatter = '<author> | <author_time:%a %d/%m/%y %X> | <summary>',
+    current_line_blame_opts = {
+        virt_text = true,
+        virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
+        delay = 100,
+        ignore_whitespace = false,
+    }
+})
 -- https://github.com/folke/which-key.nvim
-require("which-key").setup {}
+require("which-key").setup({})
 
 -- https://github.com/nvim-telescope/telescope-fzf-native.nvim#telescope-setup-and-configuration
 local action_state = require("telescope.actions.state")
-require('telescope').setup {
+local telescope = require('telescope')
+telescope.load_extension('live_grep_raw')
+telescope.load_extension('fzf')
+telescope.setup({
     defaults = {
         layout_strategy = 'vertical',
         layout_config = {
             width = 0.95,
             height = 0.95,
             preview_height = 0.68,
+        },
+        file_ignore_patterns = {
+          '.git/', 'node_modules/', '.npm/', '*[Cc]ache/', '*-cache*',
+          '*.tags*', '*.gemtags*', '*.csv', '*.tsv', '*.tmp*',
+          '*.old', '*.plist', '*.jpg', '*.jpeg', '*.png',
+          '*.tar.gz', '*.tar', '*.zip', '*.class', '*.pdb', '*.dll',
+          '*.dat', '*.mca', '__pycache__', '.mozilla/', '.electron/',
+          '.vpython-root/', '.gradle/', '.nuget/', '.cargo/',
+          'yay/', '.local/share/Trash/',
+          '.local/share/nvim/swap/', 'code%-other/'
         },
     },
     pickers = {
@@ -197,10 +232,12 @@ require('telescope').setup {
             override_generic_sorter = true,  -- override the generic sorter
             override_file_sorter = true,     -- override the file sorter
             case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+        },
+        live_grep_raw = {
+          auto_quoting = false, -- enable/disable auto-quoting
         }
     }
-}
-require('telescope').load_extension('fzf')
+})
 
 vim.opt.completeopt={"menu", "menuone", "noselect", "noinsert"}
 vim.opt.listchars = {tab = '▸ ', space = '⋅', eol = '↵'}
@@ -217,10 +254,11 @@ cmp.setup({
     },
     window = {
       completion = cmp.config.window.bordered(),
-      -- documentation = cmp.config.window.bordered(),
+      documentation = cmp.config.window.bordered(),
     },
     mapping = {
         ['<C-q>']     = cmp.mapping.scroll_docs(4),
+        ['<C-w>']     = cmp.mapping.scroll_docs(-4),
         ['<C-n>']     = cmp.mapping.select_next_item(),
         ['<C-p>']     = cmp.mapping.select_prev_item(),
         ["<C-e>"]     = cmp.mapping.abort(),
@@ -229,7 +267,6 @@ cmp.setup({
     },
     sources = {
         {name = "nvim_lsp"},
-        {name = "nvim_lua"},
         {name = "path"},
         {name = "luasnip"},
         {name = "buffer", keyword_legth = 3 },
@@ -240,6 +277,12 @@ cmp.setup({
     },
     formatting = {
         format = lspkind.cmp_format({
+            menu = {
+                buffer = '[buf]',
+                nvim_lsp = '[LSP]',
+                path = '[path]',
+                luasnip = '[snip]',
+            },
             mode = 'symbol_text',
             maxwidth = 50,
         }),
@@ -266,8 +309,18 @@ cmp.setup.cmdline(":", {
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 
+function on_attach(client, bufrn)
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, {buffer = bufrn})
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer = bufnr})
+    vim.keymap.set("n", "td", vim.lsp.buf.type_definition, {buffer = bufnr})
+    vim.keymap.set("n", "]d", vim.diagnostic.goto_next, {buffer = bufnr})
+    vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, {buffer = bufnr})
+end
+
 lsp_conf = require("lspconfig")
+lsp_util = require("lspconfig/util")
 -- https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig/server_configurations
+--local servers = {}
 local servers = { "gopls", "clangd", "vimls", "bashls", "dockerls", "sumneko_lua" }
 require("nvim-lsp-installer").setup({
     ensure_installed = servers,
@@ -282,16 +335,44 @@ require("nvim-lsp-installer").setup({
 })
 
 for _, lsp in pairs(servers) do
-    lsp_conf[lsp].setup {
-        on_attach = function(client, bufrn)
-            vim.keymap.set("n", "K", vim.lsp.buf.hover, {buffer = 0})
-            vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer = 0})
-            vim.keymap.set("n", "td", vim.lsp.buf.type_definition, {buffer = 0})
-            vim.keymap.set("n", "]d", vim.diagnostic.goto_next, {buffer = 0})
-            vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, {buffer = 0})
-        end,
+    if lsp == "gopls" then
+        lsp_conf.gopls.setup({
+            cmd = {"gopls", "serve"},
+            filetypes = {"go", "gomod"},
+            root_dir = lsp_util.root_pattern("go.work", "go.mod", ".git"),
+            settings = {
+                gopls = {
+                    usePlaceholders = true,
+                    buildFlags =  {"-tags=integration"},
+                    gofumpt = true,
+                    experimentalPostfixCompletions = true,
+                    analyses = {
+                        nilness = true,
+                        unusedparams = true,
+                        unusedwrite = true,
+                        useany = true,
+                        fillstruct = false,
+                    },
+                    codelenses = {
+                        gc_details = true,
+                        generate = true,
+                        test = true,
+                     },
+                     staticcheck = true,
+                     usePlaceholders = true,
+                     experimentalUseInvalidMetadata = true,
+                },
+            },
+            on_attach = on_attach,
+            capabilities = capabilities,
+            autostart = true,
+        })
+    else
+        lsp_conf[lsp].setup({
+        on_attach = on_attach,
         capabilities = capabilities,
-    }
+    })
+    end
 end
 
 --[[
@@ -337,12 +418,13 @@ require "nvim-treesitter.configs".setup {
 require('neoscroll').setup({
     -- Set any options as needed
 })
-local t = {}
-t['<C-u>'] = {'scroll', {'-vim.wo.scroll', 'true', '250'}}
-t['<C-d>'] = {'scroll', { 'vim.wo.scroll', 'true', '250'}}
-t['<C-y>'] = {'scroll', {'-0.10', 'false', '100'}}
-t['<C-e>'] = {'scroll', { '0.10', 'false', '100'}}
-require('neoscroll.config').set_mappings(t)
+
+require('neoscroll.config').set_mappings({
+    ['<C-u>'] = {'scroll', {'-vim.wo.scroll', 'true', '250'}},
+    ['<C-d>'] = {'scroll', { 'vim.wo.scroll', 'true', '250'}},
+    ['<C-y>'] = {'scroll', {'-0.10', 'false', '100'}},
+    ['<C-e>'] = {'scroll', { '0.10', 'false', '100'}},
+})
 
 require('lualine').setup {
   options = {
@@ -519,6 +601,23 @@ if exists("+showtabline")
     set showtabline=1
     highlight link TabNum Special
 endif
+
+let g:reopenbuf = expand('%:p')
+function! ReopenLastTabLeave()
+  let g:lastbuf = expand('%:p')
+  let g:lasttabcount = tabpagenr('$')
+endfunction
+
+function! ReopenLastTabEnter()
+  if tabpagenr('$') < g:lasttabcount
+    let g:reopenbuf = g:lastbuf
+  endif
+endfunction
+
+function! ReopenLastTab()
+  tabnew
+  execute 'buffer' . g:reopenbuf
+endfunction
 " ---------------- FUNCS CONFIG END ----------------
 
 " quick escape with jk
@@ -559,7 +658,9 @@ nnoremap <leader>cd :lcd %:p:h<CR>: echo "cwd is now ".expand('%:p:h')<CR>
 
 nnoremap <silent><leader>b :Git blame<CR>
 " option+b
-nnoremap <silent>∫ :ToggleBlameLine<CR>
+nnoremap <silent>∫ :Gitsigns toggle_current_line_blame<CR>
+nnoremap <silent><leader>gs :Gitsigns toggle_signs<CR>
+
 map s <Plug>(easymotion-prefix)
 
 " option+h
@@ -574,9 +675,17 @@ cnoremap <C-b> <C-Left>
 cabbrev tb tabnew
 nnoremap <C-b> :tabnew <CR>:Startify<CR>
 " open new file at current line in new tab
-nnoremap <C-n> mt :tabe %<CR>'t
+nnoremap <C-n> mt :tabe %<CR>`t
 noremap <leader>h :tabmove -1<CR>
 noremap <leader>l :tabmove +1<CR>
+
+" tab restore
+augroup ReopenLastTab
+  autocmd!
+  autocmd TabLeave * call ReopenLastTabLeave()
+  autocmd TabEnter * call ReopenLastTabEnter()
+augroup END
+nnoremap <leader>tr :call ReopenLastTab()<CR>
 
 nnoremap <leader>v :vsplit<CR>
 nnoremap <leader>s :split<CR>
@@ -648,8 +757,10 @@ noremap <leader>nn :NERDTreeToggle<CR>
 
 nnoremap <silent>gh           <cmd>lua require('telescope.builtin').help_tags()<CR>
 
+"nnoremap <silent>ff           <cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy())<CR>
 nnoremap <silent>ff           <cmd>lua require('telescope.builtin').find_files()<CR>
 nnoremap <silent>fg           <cmd>lua require('telescope.builtin').live_grep()<CR>
+nnoremap <silent>fz           <cmd>lua require('telescope.builtin').grep_string({shorten_path = true, only_sort_text = true, search = ''})<CR>
 nnoremap <silent>fs           <cmd>lua require('telescope.builtin').grep_string()<CR>
 nnoremap <silent>fb           <cmd>lua require('telescope.builtin').buffers()<CR>
 nnoremap <silent>fc           <cmd>lua require('telescope.builtin').command_history()<CR>
@@ -659,7 +770,11 @@ nnoremap <silent>gc           <cmd>lua require('telescope.builtin').git_commits(
 nnoremap <silent>gs           <cmd>lua require('telescope.builtin').git_status()<CR>
 nnoremap <silent>gS           <cmd>lua require('telescope.builtin').git_stash()<CR>
 
-nnoremap <silent>ge           <cmd>lua require('telescope.builtin').diagnostics()<CR>
+nnoremap <silent>fe           <cmd>lua require('telescope.builtin').diagnostics()<CR>
+
+nnoremap <silent>,pd :LspPeekDefinition<CR>
+nnoremap <silent>,pi :LspPeekImplementation<CR>
+nnoremap <silent>,pt :LspPeekTypeDefinition<CR>
 
 nnoremap <silent><leader>cw   <cmd>lua vim.lsp.buf.rename()<CR>
 nnoremap <silent><leader>ca   <cmd>lua vim.lsp.buf.code_action()<CR>
@@ -673,9 +788,10 @@ autocmd BufEnter *.go nmap <leader>t  <Plug>(go-test)
 autocmd BufEnter *.go nmap <leader>tt <Plug>(go-test-func)
 autocmd BufEnter *.go nmap <leader>tc <Plug>(go-coverage-toggle)
 
-" utils
+" ## UTILS
 vnoremap <leader>e64 c<C-r>=system('base64', @")<CR><ESC>
 vnoremap <leader>d64 c<C-r>=system('base64 --decode', @")<CR><ESC>
+
 " allow gf to open non-existent files
 map gf :edit <cfile><CR>
 " reselect visual selection after indenting
