@@ -1,6 +1,6 @@
 # base default config
 if [[ -f ~/.dotfiles/.dotfiles-secret/.secret-zshrc ]]; then
-  SECRET_DOTF=".dotfiles/.dotfiles-secret" source ~/.dotfiles/.dotfiles-secret/.secret-zshrc
+  SECRET_DOTF="~/.dotfiles/.dotfiles-secret" source ~/.dotfiles/.dotfiles-secret/.secret-zshrc
 else
   echo "secret zsh not found"
 fi
@@ -21,18 +21,19 @@ SYSDIG_DOTF=$DOTF/.dotfiles-sysdig
 # enviromental variables
 source $MYZSH/variables.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
 # theme configuration
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh. and replace file
 source $MYZSH/pl10k.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
-#source $MYZSH/blox.zsh 2>$LOG_FILE
 # aliases, keybinds, plugins
 source $MYZSH/utils.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
 # helper functions
 source $MYZSH/functions.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
+# helper functions
+source $MYZSH/atuin.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
 
 # work dotfiles
 source $SYSDIG_DOTF/.sysdig-zshrc 2>>$ZSH_SOURCING_LOG_FILE >&2
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
-
-#[[ -n $TMUX ]] && export TERM="xterm-256color"
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
 

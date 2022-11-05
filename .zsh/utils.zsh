@@ -48,76 +48,48 @@ setopt EXTENDED_HISTORY  # record command start time
   # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
   # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 
-eval "$(atuin init zsh)"
+eval "$(jump shell)"
+
+# eval "$(conda init zsh)"
 
 #zsh-vim-mode
 VIM_MODE_VICMD_KEY="jk"
 
 plugins=(
-  web-search
   encode64
-  catimg
   docker
   docker-compose
   kubectl
   kubectx
   zsh-autosuggestions
   zsh-vim-mode
+  zsh-fzf-history-search
 )
 
+export ZSH_FZF_HISTORY_SEARCH_DATES_IN_SEARCH=1
+
 source $ZSH/oh-my-zsh.sh
+#source $ZSH/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+#zstyle ':autocomplete:*' default-context history-incremental-search-backward
 
-HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
-if [ -f "$HB_CNF_HANDLER" ]; then
-	source "$HB_CNF_HANDLER";
-fi
+export PATH="/Users/federico.mengozzi/.rbenv/shims:${PATH}"
+export RBENV_SHELL=zsh
+source '/usr/local/Cellar/rbenv/1.2.0/libexec/../completions/rbenv.zsh'
 
-function tab_list {
-    if [[ $#BUFFER == 0 ]]; then
-        BUFFER="ls "
-        CURSOR=3
-        zle list-choices
-        zle backward-kill-word
-    else
-        zle expand-or-complete
-    fi
-}
+#command rbenv rehash 2>/dev/null
+rbenv() {
+  local command
+  command="${1:-}"
+  if [ "$#" -gt 0 ]; then
+    shift
+  fi
 
-function forward-kill-word {
-    zle forward-word
-    zle backward-kill-word
-}
-
-function pacman-util {
-	com="sudo pacman -S"
-	BUFFER="${com}${BUFFER}"
-	CURSOR=${#BUFFER}
-}
-
-function yay-util {
-	com="yay -S"
-	BUFFER="${com}${BUFFER}"
-	CURSOR=${#BUFFER}
-}
-
-function sudo-util {
-	com="sudo "
-	BUFFER="${com}${BUFFER}"
-	CURSOR=${#BUFFER}
-}
-
-function redo-sudo {
-    #cmd=$(history | tail -1 | cut -d' ' -f4-)
-	cmd=$(cat ~/.zsh_history | tail -1 | cut -d';' -f2)
-	BUFFER="sudo ${cmd}"
-	CURSOR=${#BUFFER}
-	#sudo $cmd
-}
-
-function home {
-	data="${HOME:=/home/fedemengo}"
-	BUFFER="${BUFFER}${data}/"
-	CURSOR=${#BUFFER}
+  case "$command" in
+  rehash|shell)
+    eval "$(rbenv "sh-$command" "$@")";;
+  *)
+    command rbenv "$command" "$@";;
+  esac
 }
 
 zle -N tab_list
@@ -156,7 +128,7 @@ bindkey "^ " forward-char
 # bindkey "^d" forward-kill-word
 bindkey "^w" backward-kill-word
 bindkey "^u" backward-kill-line
-bindkey "^R" history-incremental-pattern-search-backward
+#bindkey "^R" history-incremental-pattern-search-backward
 bindkey "^[k" up-history
 bindkey "^[j" down-history
 bindkey "^i" expand-or-complete-prefix
@@ -218,6 +190,7 @@ alias 8='cd -8'
 alias 9='cd -9'
 
 alias gst='git status'
+alias gs='git status'
 alias p3='python3'
 
 alias gut='git'
@@ -231,11 +204,16 @@ alias h='history -t "%d.%m.%y-%H:%M:%S"'
 alias vim='/usr/local/bin/nvim'
 alias n='nvim'
 alias v='nvim'
+alias vi='nvim'
 
 alias vrc='vim $HOME/.nvimrc'
 alias zrc='vim $HOME/.dotfiles/.zshrc'
 alias zd='vim $HOME/.dotfiles/.zsh'
 
+alias z='zoxide'
+
 alias k='kubectl'
 alias kx='kubectx'
 alias ks='kubens'
+alias kgp='k get pods --all-namespaces'
+alias gimg='rg -i image: -A5'

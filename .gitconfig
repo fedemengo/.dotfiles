@@ -3,6 +3,8 @@
 	name = Federico Mengozzi
 	email = 19249682+fedemengo@users.noreply.github.com
 [alias]
+	wl = worktree list
+	l = log --pretty=oneline -n 20 --graph --abbrev-commit
 	co = checkout
 	d = difftool
 	hub = !hub
@@ -29,6 +31,7 @@
 [core]
 	editor = nvim
 	pager = less
+	excludesfile = /Users/federico.mengozzi/.gitignore
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
@@ -48,3 +51,7 @@
     hunk-header-file-style = red
     hunk-header-line-number-style = "#067a00"
     hunk-header-style = file line-number syntax
+[init]
+	defaultBranch = main
+[url "git@github.com:"]
+	insteadOf = https://github.com/

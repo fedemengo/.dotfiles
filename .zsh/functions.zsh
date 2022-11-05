@@ -1,6 +1,6 @@
 
 function colors256() {
-    for code ({000..255}) 
+    for code ({000..255})
         print -P -- "$code: %F{$code} color%f"
 }
 
@@ -76,7 +76,7 @@ function disconnect_VPN() {
 }
 
 if [ -n "$commands[kubectl]" ]; then
-    source <(kubectl completion zsh)
+    #source <(kubectl completion zsh)
 fi
 
 # if no socket, init agent
@@ -107,21 +107,6 @@ function ex() {
   fi
 }
 
-function i() {
-    if [[ "$#" -ne "1" ]]; then
-		echo "Usage i EXT"
-		echo ""
-		echo "Example: i mp3"
-		return 1;
-	fi
-	ext="$1"
-	for f in *.${ext}; do 
-		d=$(mediainfo $f | grep -m 1 Duration | cut -d':' -f2 | tr -s ' ');
-		echo $f $d; 
-	done
-
-}
-
 function mc() {
 	name="${1%%.*}"
 	mcs $1 && mono "${name}.exe"
@@ -132,8 +117,8 @@ function dns() {
 }
 
 function vpns() {
-	for conf in ${HOME}/.torguard/torguard-PRO/*; 
-	do 
+	for conf in ${HOME}/.torguard/torguard-PRO/*;
+	do
 		echo $conf | sed "s|$HOME/.torguard/torguard-PRO/TorGuard.||;s|.ovpn||g"
 	done
 }
@@ -143,7 +128,7 @@ function stop_prune() {
 	docker container prune
 }
 
-function z() {
+function zat() {
 	zathura "$@" 2>/dev/null 1>&2 & disown
 }
 
@@ -155,8 +140,52 @@ function jog() {
     grep -v "jog" ~/.zsh_history_ext | grep -a --color=never "${PWD}   " | cut -f1 -d"|" | tail | fzf
 }
 
-if [ -n "$commands[todo.sh]" ]; then
-    title=$(todo.sh ls | tail -n 1)
-    todos=$(todo.sh ls | head -n $(($(todo.sh ls | wc -l)-2)) | sort)
-    #echo "$(tput setaf 197)$title $(tput sgr0)\n$todos\n"
-fi
+function tab_list {
+    if [[ $#BUFFER == 0 ]]; then
+        BUFFER="ls "
+        CURSOR=3
+        zle list-choices
+        zle backward-kill-word
+    else
+        zle expand-or-complete
+    fi
+}
+
+function forward-kill-word {
+    zle forward-word
+    zle backward-kill-word
+}
+
+function pacman-util {
+	com="sudo pacman -S"
+	BUFFER="${com}${BUFFER}"
+	CURSOR=${#BUFFER}
+}
+
+function yay-util {
+	com="yay -S"
+	BUFFER="${com}${BUFFER}"
+	CURSOR=${#BUFFER}
+}
+
+function sudo-util {
+	com="sudo "
+	BUFFER="${com}${BUFFER}"
+	CURSOR=${#BUFFER}
+}
+
+function redo-sudo {
+    #cmd=$(history | tail -1 | cut -d' ' -f4-)
+	cmd=$(cat ~/.zsh_history | tail -1 | cut -d';' -f2)
+	BUFFER="sudo ${cmd}"
+	CURSOR=${#BUFFER}
+	#sudo $cmd
+}
+
+function home {
+	data="${HOME:=/home/fedemengo}"
+	BUFFER="${BUFFER}${data}/"
+	CURSOR=${#BUFFER}
+}
+
+
