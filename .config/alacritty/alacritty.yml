@@ -23,9 +23,9 @@ window:
 
   # Spread additional padding evenly around the terminal content.
   dynamic_padding: true
-  decorations: none
+  decorations: transparent
   startup_mode: Fullscreen
-  opacity: 1
+  opacity: 0.7
 
 scrolling:
   # maximum number of lines in the scrollback buffer. Specifying '0' will
@@ -106,7 +106,7 @@ colors:
   normal:
     black:   '#000000'
     red:     '#c82829'
-    green:   '#46d246'
+    green:   '#4CBB17'
     yellow:  '#ffff00'
     blue:    '#0000ff'
     magenta: '#ff00ff'
@@ -116,7 +116,7 @@ colors:
   bright:
     black:   '#777777'
     red:     '#ff3333'
-    green:   '#7fff00'
+    green:   '#AAFF00'
     yellow:  '#ffd700'
     blue:    '#1e90ff'
     magenta: '#ee82ee'
@@ -258,7 +258,7 @@ key_bindings:
   - { key: V,        mods: Command,       action: Paste                        }
   - { key: C,        mods: Command,       action: Copy                         }
   - { key: Q,        mods: Command,       action: Quit                         }
-  - { key: N,        mods: Command,       action: SpawnNewInstance             }
+  - { key: N,        mods: Command,       action: CreateNewWindow             }
   - { key: Return,   mods: Command,       action: ToggleFullscreen             }
 
   - { key: Home,                          chars: "\x1bOH",   mode: AppCursor   }
