@@ -52,9 +52,6 @@ eval "$(jump shell)"
 
 # eval "$(conda init zsh)"
 
-#zsh-vim-mode
-VIM_MODE_VICMD_KEY="jk"
-
 plugins=(
   encode64
   docker
@@ -62,7 +59,6 @@ plugins=(
   kubectl
   kubectx
   zsh-autosuggestions
-  zsh-vim-mode
   zsh-fzf-history-search
 )
 
@@ -72,9 +68,8 @@ source $ZSH/oh-my-zsh.sh
 #source $ZSH/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 #zstyle ':autocomplete:*' default-context history-incremental-search-backward
 
-export PATH="/Users/federico.mengozzi/.rbenv/shims:${PATH}"
+export PATH="${HOME}/.rbenv/shims:${PATH}"
 export RBENV_SHELL=zsh
-source '/usr/local/Cellar/rbenv/1.2.0/libexec/../completions/rbenv.zsh'
 
 #command rbenv rehash 2>/dev/null
 rbenv() {
@@ -94,11 +89,10 @@ rbenv() {
 
 zle -N tab_list
 zle -N forward-kill-word
-zle -N pacman-util
-zle -N yay-util
 zle -N sudo-util
 zle -N redo-sudo
 zle -N home
+
 # History
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
@@ -120,12 +114,11 @@ setopt pushd_minus              # Reference stack entries with "-".
 
 bindkey "^a" beginning-of-line
 bindkey "^e" end-of-line
-bindkey "^f" forward-word
+bindkey "^g" forward-word
 bindkey "^b" backward-word
 bindkey "^k" kill-line
 bindkey "^y" accept-and-hold
-bindkey "^ " forward-char
-# bindkey "^d" forward-kill-word
+bindkey "^d" forward-kill-word
 bindkey "^w" backward-kill-word
 bindkey "^u" backward-kill-line
 #bindkey "^R" history-incremental-pattern-search-backward
@@ -134,18 +127,15 @@ bindkey "^[j" down-history
 bindkey "^i" expand-or-complete-prefix
 bindkey "^I" tab_list
 bindkey "^[[Z" reverse-menu-complete
-
-# disable on macOS
-# bindkey "^p" pacman-util
-# bindkey "^y" yay-util
+bindkey "^ " autosuggest-accept
 
 bindkey "^s" sudo-util
-bindkey "^w" redo-sudo
 bindkey "^h" home
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*' insert-tab false
 zstyle ':completion:*' rehash true
+
 # case-insensitive (all), partial-word and then substring completion
 zstyle ":completion:*" matcher-list "m:{a-zA-Z}={A-Za-z}" "r:|[._-]=* r:|=*" "l:|=* r:|=*"
 zstyle ":completion:*:default" list-colors ${(s.:.)LS_COLORS}
@@ -158,9 +148,9 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
 alias md='mkdir -p'
-#alias l="ls -ls --block-size=M"
-alias l="ls -oh -X --group-directories-first"
-alias ll='ls -oah -X --group-directories-first'
+
+alias l='gls -oh -X --group-directories-first --color=always'
+alias ll='gls -oah -X --group-directories-first --color=always'
 alias pi='ssh pi@192.168.178.100 2>/dev/null'
 alias pi3='ssh pi@192.168.178.101 2>/dev/null'
 alias ubu='ssh fedemengo@192.168.178.121'
@@ -191,17 +181,17 @@ alias 9='cd -9'
 
 alias gst='git status'
 alias gs='git status'
-alias p3='python3'
-
 alias gut='git'
 alias got='git'
 alias gi='git'
 alias g='git'
 
+alias p3='python3'
+
 alias rename='perl-rename'
 alias h='history -t "%d.%m.%y-%H:%M:%S"'
 
-alias vim='/usr/local/bin/nvim'
+alias vim='nvim'
 alias n='nvim'
 alias v='nvim'
 alias vi='nvim'

@@ -30,12 +30,18 @@ export LC_MEASUREMENT="en_US.UTF-8"
 export LC_IDENTIFICATION="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 
+# homebrew
+export HOMEBREW_PREFIX="/opt/homebrew"
+export HOMEBREW_CELLAR="/opt/homebrew/Cellar"
+export HOMEBREW_REPOSITORY="/opt/homebrew"
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}"
+export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:"
+export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
+
 # go
 #export GO111MODULE=on
 export GOPATH="${HOME}/.go"
-#export GOROOT="/usr/lib/go"
-#export GOROOT="/usr/local/go"
-export GOROOT="/usr/local/opt/go/libexec" #brew
+export GOROOT="/usr/local/go"
 #export GOPROXY="https://proxy.golang.org,direct"
 #export GOPROXY="direct"
 #export GOPRIVATE="github.com/draios"
@@ -86,5 +92,5 @@ PATH="$PATH:$HOME/.rvm/bin"
 
 export PATH
 
-export VIMRC=${HOME}/.dotfiles/.config/nvim/init.vim
+export VIMRC=${HOME}/.dotfiles/.config/nvim/
 

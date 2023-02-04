@@ -45,8 +45,10 @@ file_path="$1"
 file_name="$2"
 file_line="$3"
 
+echo "called with $file_path $file_name $file_line" >> $LOG_FILE
+
 if ! git -C "$file_path" status >/dev/null 2>&1; then
-    #echo "$file_path is not a git repository"
+    echo "$file_path is not a git repository" >> $LOG_FILE
     exit 1
 fi
 
