@@ -5,54 +5,54 @@
 set path+=**
 " command line autocompletion
 set wildmode=longest,list,full
-set wildmenu
+"done set wildmenu
 set grepprg=grep\ -nH\ $*
-set number
-set autoread
-set autoindent
-set autowrite
+"done set number
+"done set autoread
+"done set autoindent
+"done set autowrite
 "set autochdir breaks tree sitter
-set showmode
-set showcmd
-set ruler
+"done set showmode
+"done set showcmd
+"done set ruler
 set shortmess=atI
-set title
-set cursorline
-set ignorecase
-set smartcase
-set hlsearch
-set incsearch
-set scrolloff=15
+"done set title
+"done set cursorline
+"done set ignorecase
+"done set smartcase
+"done set hlsearch
+"done set incsearch
+"done set scrolloff=15
 set backspace=indent,eol,start
-set expandtab
-set tabstop=4
-set shiftwidth=4
+"done set expandtab
+"done set tabstop=4
+"done set shiftwidth=4
 set linebreak
-set spell spelllang=en_us
+"done set spell spelllang=en_us
 set spellcapcheck=
-set splitbelow splitright
+"done set splitbelow splitright
 set noerrorbells
-set noswapfile
+"done set noswapfile
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 set nofoldenable
-set timeoutlen=200 "timeout len used by which-key
-set updatetime=200
+"done set timeoutlen=200 "timeout len used by which-key
+"done set updatetime=200
 filetype plugin indent on
 
-let undodir_path = $HOME.'/.nvim/undo-dir'
-if !isdirectory(undodir_path)
-    call mkdir(undodir_path, 'p')
-endif
+"done let undodir_path = $HOME.'/.nvim/undo-dir'
+"done if !isdirectory(undodir_path)
+"done     call mkdir(undodir_path, 'p')
+"done endif
+"done 
+"done let &undodir=undodir_path
+"done set undofile
 
-let &undodir=undodir_path
-set undofile
+"done let mapleader = ";"
 
-let mapleader = ";"
-
-if has("autocmd")
-    au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
-endif
+"done if has("autocmd")
+"done     autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+"done endif
 
 " ----------------- PLUGINS START ------------------
 " Bootstrap Plug
@@ -64,13 +64,13 @@ endif
 unlet data_dir
 
 " Run PlugInstall if there are missing plugins
-autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-  \|    PlugInstall --sync | source $VIMRC
-  \| else
-"  \|    PlugClean | bd
-  \|    echom "plugins are synced"
-  \| endif
-
+"disalble autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+"disalble   \|    PlugInstall --sync | source $VIMRC
+"disalble   \| else
+"disalble "  \|    PlugClean | bd
+"disalble   \|    echom "plugins are synced"
+"disalble   \| endif
+"disalble 
 call plug#begin('~/.config/nvim/autoload/plugged')
 " syntax highlight
     Plug 'sheerun/vim-polyglot'
