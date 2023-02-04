@@ -7,3 +7,6 @@
 [submodule ".dotfiles-secret"]
 	path = .dotfiles-secret
 	url = git@github.com:fedemengo/.dotfiles-secret.git
+[submodule ".config/nvim"]
+	path = .config/nvim
+	url = git@github.com:fedemengo/nvim.git
