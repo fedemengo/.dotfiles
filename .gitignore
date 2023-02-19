@@ -10,6 +10,7 @@ pics/
 .vim/.netrwhist
 
 .config/polybar/info
+.config/tmux/plugins/
 
 autoload/
 spell/
