@@ -11,9 +11,6 @@
 	pr = !hub pr show
 	pad = add --patch
 
-[url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
-
 [merge]
 	tool = vimdiff3
 	conflictstyle = diff3

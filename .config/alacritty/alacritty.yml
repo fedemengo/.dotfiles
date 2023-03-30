@@ -25,7 +25,7 @@ window:
   dynamic_padding: true
   decorations: transparent
   startup_mode: Fullscreen
-  opacity: 0.7
+  opacity: 1
 
 scrolling:
   # maximum number of lines in the scrollback buffer. Specifying '0' will

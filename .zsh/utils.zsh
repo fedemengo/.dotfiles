@@ -151,6 +151,7 @@ alias md='mkdir -p'
 
 alias l='gls -oh -X --group-directories-first --color=always'
 alias ll='gls -oah -X --group-directories-first --color=always'
+alias lld='gls -ld -X --group-directories-first --color=always */'
 alias pi='ssh pi@192.168.178.100 2>/dev/null'
 alias pi3='ssh pi@192.168.178.101 2>/dev/null'
 alias ubu='ssh fedemengo@192.168.178.121'
