@@ -188,4 +188,8 @@ function home {
 	CURSOR=${#BUFFER}
 }
 
+function get_pod {
+    kubectl get pods | rg "$1" | head -1 | tr -s "" | cut -d' ' -f1
+}
+
 

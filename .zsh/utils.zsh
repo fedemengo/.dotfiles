@@ -187,6 +187,13 @@ alias got='git'
 alias gi='git'
 alias g='git'
 
+alias push='git push'
+alias pull='git pull'
+alias pad='git pad'
+alias com='git commit -m'
+alias gff='git diff'
+alias co='git checkout'
+
 alias p3='python3'
 
 alias rename='perl-rename'
