@@ -1,4 +1,4 @@
-# Manjaro dotfiles
+# dotfiles
 
 ## TODO
 
