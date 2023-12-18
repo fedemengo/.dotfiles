@@ -76,7 +76,10 @@ function disconnect_VPN() {
 }
 
 if [ -n "$commands[kubectl]" ]; then
-    #source <(kubectl completion zsh)
+    source <(kubectl completion zsh)
+    alias k=kubectl
+    alias kubectl=kubecolor
+    compdef kubecolor=kubectl
 fi
 
 # if no socket, init agent
@@ -190,6 +193,18 @@ function home {
 
 function get_pod {
     kubectl get pods | rg "$1" | head -1 | tr -s "" | cut -d' ' -f1
+}
+
+function pod_env {
+    POD=$(get_pod $1)
+    echo "retrieving env from pod $POD"
+    kubectl exec -it $POD -- env
+}
+
+function pod_env_prefix {
+    POD=$(get_pod $1)
+    echo "retrieving env from pod $POD"
+    kubectl exec -it $POD -- env | rg "$2"
 }
 
 

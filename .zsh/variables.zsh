@@ -62,9 +62,9 @@ PATH="$PATH:$GOPATH/bin:$GOROOT/bin"
 #eval "$(rbenv init - zsh)"
 
 # java
-export JAVA_HOME="${HOME}/.jdk/jdk-11.0.4"
+export JAVA_HOME="/usr/local/opt/openjdk@20/"
 export JDK_HOME="${JAVA_HOME}"
-export JRE_HOME="${JAVA_HOME}/jre"
+export JRE_HOME="/usr/local/opt/openjdk/bin:$PATH"
 PATH="${PATH}:${JAVA_HOME}/bin"
 
 # rust

@@ -210,8 +210,14 @@ alias zd='vim $HOME/.dotfiles/.zsh'
 
 alias z='zoxide'
 
-alias k='kubectl'
+alias k='kubecolor --force-colors'
+alias kr='kubecolor'
 alias kx='kubectx'
 alias ks='kubens'
 alias kgp='k get pods --all-namespaces'
 alias gimg='rg -i image: -A5'
+
+alias dockerps='docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Command}}\t{{.Status}}\t{{.Ports}}"'
+alias dockermall='docker rm -f $(docker ps -a -q)'
+alias dockercmds='docker ps --no-trunc --format "table {{.Names}}\t{{.Command}}\t{{.Status}}"'
+
