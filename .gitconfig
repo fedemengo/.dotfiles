@@ -52,3 +52,9 @@
 	defaultBranch = main
 [url "git@github.com:"]
 	insteadOf = https://github.com/
+[http]
+	version = HTTP/2
+[gpg]
+	format = ssh
+[commit]
+	gpgSign = true
