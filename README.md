@@ -52,14 +52,17 @@ Some stuff to install
 
 ## Shell
 
-<details>
-<summary><b>Configuration</b></summary>
+Install
+- zsh
+- [ohmyzsh](https://github.com/ohmyzsh/ohmyzsh)
+    - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
+    - [powerlevel10k](https://github.com/romkatv/powerlevel10k)
 
-Install **zsh** (and also **Oh-My-Zsh**), **vim**, **terminator/termite** if necessary, then
+Configure
+- `ln -s .dotfiles/.zshrc ~/.zshrc`
+- `ln -s .dotfiles/.config ~/.config`
+- `ln -s .dotfiles/.gitconfig ~/.gitconfig`
 
-- `cp -r .vim ~/.vim/`
-- `ln -s .vimrc ~/.vimrc`
-- `ln -s .zshrc ~/.zshrc`
 
 ### Binaries
 
