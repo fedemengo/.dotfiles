@@ -1,8 +1,6 @@
 # base default config
 if [[ -f ~/.dotfiles/.dotfiles-secret/.secret-zshrc ]]; then
   SECRET_DOTF="~/.dotfiles/.dotfiles-secret" source ~/.dotfiles/.dotfiles-secret/.secret-zshrc
-else
-  echo "secret zsh not found"
 fi
 
 export ZSH_SOURCING_LOG_FILE="/tmp/zshrc-sourcing.log"
@@ -16,7 +14,6 @@ fi
 
 DOTF=$HOME/.dotfiles
 MYZSH=$DOTF/.zsh
-SYSDIG_DOTF=$DOTF/.dotfiles-sysdig
 
 # enviromental variables
 source $MYZSH/variables.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
@@ -30,9 +27,6 @@ source $MYZSH/utils.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
 source $MYZSH/functions.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
 # helper functions
 source $MYZSH/atuin.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
-
-# work dotfiles
-source $SYSDIG_DOTF/.sysdig-zshrc 2>>$ZSH_SOURCING_LOG_FILE >&2
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"

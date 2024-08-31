@@ -68,7 +68,7 @@ source $ZSH/oh-my-zsh.sh
 #source $ZSH/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 #zstyle ':autocomplete:*' default-context history-incremental-search-backward
 
-export PATH="${HOME}/.rbenv/shims:${PATH}"
+export PATH="${PATH}:${HOME}/.rbenv/shims"
 export RBENV_SHELL=zsh
 
 #command rbenv rehash 2>/dev/null
