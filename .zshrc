@@ -1,3 +1,10 @@
+OS=$(uname -s)
+if [ "$OS" = "Darwin" ]; then
+    export HOME=/Users/fedemengo
+elif [ "$OS" = "Linux" ]; then
+    export HOME=/home/fedemengo
+fi
+
 # base default config
 if [[ -f ~/.dotfiles/.dotfiles-secret/.secret-zshrc ]]; then
   SECRET_DOTF="~/.dotfiles/.dotfiles-secret" source ~/.dotfiles/.dotfiles-secret/.secret-zshrc
@@ -13,7 +20,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 DOTF=$HOME/.dotfiles
-MYZSH=$DOTF/.zsh
+MYZSH="$DOTF"/.zsh
 
 # enviromental variables
 source $MYZSH/variables.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
