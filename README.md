@@ -250,6 +250,25 @@ echo "# Mute volume
 <details>
 <summary><b>Configuration</b></summary>
 
+
+- Download the theme from the git repository. If it is a Github repo, you can download it by clicking the big green "Code" button and click "Download.zip"
+- Open about:config
+- A dialog will warn you, but ignore t, just doit. Press the "I accept the risk!" button.
+- Search for these and enable each of them:
+    - `toolkit.legacyUserProfileCustomizations.stylesheets`
+    - `layers.acceleration.force-enabled`
+    - `gfx.webrender.all`
+    - `gfx.webrender.enabled`
+    - `layout.css.backdrop-filter.enabled`
+    - `svg.context-properties.content.enabled`
+- Go to your Firefox profile:
+    - Linux - `$HOME/.mozilla/firefox/XXXXXXX.default-XXXXXX/`
+    - Windows 10 - `C:Users<USERNAME>AppDataRoamingMozillaFirefoxProfilesXXXXXXX.default-XXXXXX`
+    - macOS - `Users/<USERNAME>/Library/Application Support/Firefox/Profiles/XXXXXXX.default-XXXXXXX`
+- Create a folder and name it chrome, then assuming that you already have cloned this repo, just copy the theme to chrome folder.
+- Restart Firefox
+
+
 - Edit `about:config`
   - `layout.css.devPixelsPerPx` to `1.4`
   - `toolkit.legacyUserProfileCustomizations.stylesheets` to `true`

@@ -1,49 +1,81 @@
-@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+/* to remove elements you can use keybinds with, uncomment the line below */
+/* @import "powerUser.css"; */
 
-/* about:config > toolkit.legacyUserProfileCustomizations.stylesheets > true */
-/* about:config > layout.css.devPixelsPerPx > 1.3 */
+/* changed tabs */
 
-
-:root,
-toolbox,
-menupopup,
-menu {
-    font-size: 20px !important;
-	/* background-color: black !important; */
+.titlebar-spacer{
+  display: none;
 }
 
-toolbar {
-	background-color: black !important;
+.titlebar-buttonbox-container{
+  margin-right: 4px !important;
 }
 
-vbox.tab-background[selected="true"] {
-	background-color: #00ff00 !important;
-	color: black !important;
-	background-image: none !important;
+#tabbrowser-tabs{
+  padding: 3px !important;
+  margin-left: 2px !important;
+  margin-right: 2px !important;
 }
 
-vbox.tab-background:not([selected="true"]) {
-	background-color: #333333 !important;
-	color: white !important;
-	background-image: none !important;
+:root {
+  --tab-min-height: 20px !important;
+  --tab-max-height: 20px !important;
 }
 
-vbox.tab-label-container > label:not([selected="true"]) {
-	color: white !important;
+.tab-close-button{
+  height: 15px !important;
+  width: 15px !important;
+  padding: 2px !important;
 }
 
-vbox.tab-label-container > label[selected="true"] {
-	color: black !important;
+.tab-throbber-tabslist, .tab-throbber, .tab-icon-pending, .tab-icon-image, .tab-sharing-icon-overlay, .tab-icon-overlay {
+    height: 14px !important;
+    width: 14px !important;
 }
 
-hbox[selected="true"] > image.tab-close-button {
-	background-color: #333333 !important;
-	padding-inline-start: 2 !important;
-	width: 24px !important;
+.tab-background:-moz-lwtheme-brighttext{
+  background-color: rgba( 66, 65, 76, 0.4) !important;
 }
 
-/*
-.tabbrowser-tab {
-    font-size: 17px !important;
+.tabbrowser-tab:-moz-lwtheme-brighttext:hover > .tab-stack > .tab-background{
+  background-color: rgba( 66, 65, 76, 0.7) !important;
 }
-*/
+
+.tabbrowser-tab:hover > .tab-stack > .tab-background{
+  background-color: rgba( 255, 255, 255, 0.4) !important;
+}
+
+
+/* navbar size */
+#urlbar-input {
+  height: 15px !important;
+}
+
+#urlbar{
+  min-height: 23px !important;
+}
+
+.toolbarbutton-badge {
+  /* min-width: 10px !important; */
+}
+#nav-bar > .toolbarbutton-1{
+  padding: 0px !important;
+}
+
+.urlbar-page-action{
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.notification-anchor-icon{
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+/* bookmarks size */
+
+.bookmark-item{
+  padding-top: 1px !important;
+  padding-bottom: 1px !important;
+}
+

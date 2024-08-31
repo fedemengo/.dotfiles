@@ -4,8 +4,8 @@ __*
 *.crt
 pics/
 
-.mozilla
-!.mozilla/firefox/fedemengo.default/chrome/
+.mozilla/*
+!.mozilla/firefox/fedemengo.default/chrome/*
 
 .vim/.netrwhist
 
