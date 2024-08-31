@@ -2,6 +2,7 @@
 [user]
 	name = Federico Mengozzi
 	email = 19249682+fedemengo@users.noreply.github.com
+	signingKey = ~/.ssh/github_signing.pub
 [alias]
 	wl = worktree list
 	l = log --pretty=oneline -n 20 --graph --abbrev-commit
