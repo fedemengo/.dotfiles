@@ -40,16 +40,13 @@ elif [[ $ARCH == "arm" ]]; then
 fi
 
 # go
-#export GO111MODULE=on
 export GOPATH="${HOME}/.go"
 export GOROOT="/usr/local/go"
-#export GOPROXY="https://proxy.golang.org,direct"
-#export GOPROXY="direct"
-#export GOPRIVATE="github.com/draios"
-#export GOPRIVATE=""
-#export GONOPROXY=""
-#export GONOSUMDB=""
-PATH="$PATH:$GOPATH/bin:$GOROOT/bin"
+# sudo chown fedemengo /usr/local/go/bin/
+export GOBIN=$GOROOT/bin
+export GOPROXY="direct"
+export GOSUMDB="sum.golang.org"
+PATH="$PATH:$GOPATH/bin:$GOBIN"
 
 # ruby
 #export RUBYOPT="-W:no-deprecated"
