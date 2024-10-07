@@ -1,3 +1,4 @@
+OS=$(uname -s)
 ARCH=$(uname -p)
 
 export QT_QPA_PLATFORMTHEME="qt5ct"
@@ -33,10 +34,14 @@ export LC_IDENTIFICATION="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 
 # homebrew
-if [[ $ARCH == "i386" ]]; then
-    eval "$(/usr/local/bin/brew shellenv)"
-elif [[ $ARCH == "arm" ]]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+if [[ "$OS" == "Darwin" ]]; then
+    if [[ "$ARCH" == "i386" ]]; then
+        eval "$(/usr/local/bin/brew shellenv)"
+    elif [[ "$ARCH" == "arm" ]]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
+elif [[ "$OS" == "Linux" ]]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
 # go
