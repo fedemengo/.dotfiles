@@ -94,6 +94,18 @@ PATH="$PATH:$HOME/.rvm/bin"
 #[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 export PATH
-
 export VIMRC=${HOME}/.dotfiles/.config/nvim/
+
+# this is a piece of trash that prefix its own config to PATH
+# so tools like python are resolved within them - kmn
+echo "setting up free surfer"
+ORIGINAL_PATH=$PATH
+export FREESURFER_HOME=/Applications/freesurfer/7.4.1
+source "$FREESURFER_HOME/SetUpFreeSurfer.sh"
+PATH=$ORIGINAL_PATH:$PATH
+echo "done with free surfer"
+
+export DIPY_HOME="${HOME}/.dipy"
+
+export NILEARN_DATA="${HOME}/.nilearn/data"
 
