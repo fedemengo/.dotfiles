@@ -47,7 +47,7 @@ print_events = false
 render_timer = false
 
 [font]
-size = 12
+size = 14
 
 [font.bold]
 family = "SauceCodePro Nerd Font Mono"

@@ -105,6 +105,16 @@ source "$FREESURFER_HOME/SetUpFreeSurfer.sh"
 PATH=$ORIGINAL_PATH:$PATH
 echo "done with free surfer"
 
+# setup fsl
+# FSL Setup
+FSLDIR="$HOME/.fsl"
+PATH=${FSLDIR}/share/fsl/bin:${PATH}
+export FSLDIR PATH
+. ${FSLDIR}/etc/fslconf/fsl.sh
+## Added by SimNIBS
+SIMNIBS_BIN="$HOME/Applications/SimNIBS-4.1/bin"
+export PATH=${PATH}:${SIMNIBS_BIN}
+
 export DIPY_HOME="${HOME}/.dipy"
 
 export NILEARN_DATA="${HOME}/.nilearn/data"
