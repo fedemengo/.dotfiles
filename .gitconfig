@@ -28,7 +28,8 @@
 [core]
 	editor = nvim
 	pager = less
-	excludesfile = /Users/federico.mengozzi/.gitignore
+	excludesfile = /Users/fedemengo/.gitignore
+	hooksPath = /Users/fedemengo/.git/hooks
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
