@@ -1,15 +1,15 @@
 #!/bin/bash
 
 MB=1048576  # 1024 * 1024
-maxsize=$((50 * MB))
+maxsize=$((75 * MB))
 
 # Check all files being committed
 git diff --cached --name-only | while read file; do
     # Skip deleted files
     if [ -f "$file" ]; then
         filesize=$(stat -f%z "$file")
-        filesize_pretty=$(echo $filesize | numfmt --to=iec-i)
         if [ "$filesize" -gt $maxsize ]; then
+            filesize_pretty=$(echo $filesize | numfmt --to=iec-i)
             maxsize_pretty=$(echo $maxsize | numfmt --to=iec-i)
             echo "File '$file' is too large ($filesize_pretty vs $maxsize_pretty limit)"
             exit 1

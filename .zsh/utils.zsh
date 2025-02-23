@@ -144,6 +144,13 @@ zstyle ":completion:*:default" list-colors ${(s.:.)LS_COLORS}
 ############################## ALIASES ######################################
 #############################################################################
 
+if [ "$OS" = "Darwin" ]; then
+    MATLAB_PATH=$(ls -d /Applications/MATLAB*.app 2>/dev/null | head -1)
+    if [ -n "$MATLAB_PATH" ]; then
+        alias matlab="$MATLAB_PATH/bin/matlab -nodesktop -nojvm"
+    fi
+fi
+
 alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
@@ -160,7 +167,7 @@ alias pifs3='rclone mount --daemon pi3::STORAGE/ /mnt/hdd'
 #alias pifs3='sshfs -o allow_other pi@192.168.178.101:/mnt/hdd/ /mnt/hdd'
 alias upifs='fusermount -u /mnt/hdd'
 alias df='df -h'                          # human-readable sizes
-alias du='du -h --max-depth=1'
+alias du='du -h'
 alias free='free -m'                      # show sizes in MB
 alias diff='colordiff'
 

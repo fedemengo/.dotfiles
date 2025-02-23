@@ -1,4 +1,6 @@
-OS=$(uname -s)
+export OS=$(uname -s)
+export ARCH=$(uname -p)
+
 if [ "$OS" = "Darwin" ]; then
     export HOME=/Users/fedemengo
 elif [ "$OS" = "Linux" ]; then

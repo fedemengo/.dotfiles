@@ -844,6 +844,10 @@ ZSH_THEME=powerlevel10k/powerlevel10k
   # typeset -g POWERLEVEL9K_TASKWARRIOR_VISUAL_IDENTIFIER_EXPANSION='⭐'
 
   ##################################[ context: user@hostname ]##################################
+  function prompt_my_hostname() {
+    p10k segment -t "$(hostname -s)"
+  }
+
   # Context color when running with privileges.
   typeset -g POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=178
   # Context color in SSH without privileges.
