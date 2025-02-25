@@ -2,9 +2,9 @@ export OS=$(uname -s)
 export ARCH=$(uname -p)
 
 if [ "$OS" = "Darwin" ]; then
-    export HOME=/Users/fedemengo
+    export HOME=/Users/$(whoami)
 elif [ "$OS" = "Linux" ]; then
-    export HOME=/home/fedemengo
+    export HOME=/home/$(whoami)
 fi
 
 # base default config
@@ -34,8 +34,11 @@ source $MYZSH/pl10k.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
 source $MYZSH/utils.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
 # helper functions
 source $MYZSH/functions.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
-# helper functions
-source $MYZSH/atuin.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
+
+if command -v atuin &> /dev/null; then
+    # helper functions
+    source $MYZSH/atuin.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
+fi
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
