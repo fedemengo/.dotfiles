@@ -83,9 +83,19 @@ if [ -n "$commands[kubectl]" ]; then
 fi
 
 # if no socket, init agent
-if [ -z ${SSH_AUTH_SOCK} ]; then
-    eval `ssh-agent -s` &> /dev/null
-	find ${HOME}/.ssh/ -not -name "*.pub" -type f | xargs ssh-add &> /dev/null
+if [ -z "$SSH_AUTH_SOCK" ]; then
+    AGENT_FILE="$HOME/.ssh-agent"
+    if [ -f "$AGENT_FILE" ]; then
+        source "$AGENT_FILE" > /dev/null
+        if ! ps -p $SSH_AGENT_PID > /dev/null; then
+            ssh-agent -s > "$AGENT_FILE" & disown
+            source "$AGENT_FILE"
+        fi
+    else
+        ssh-agent -s > "$AGENT_FILE" & disown
+        source "$AGENT_FILE"
+    fi
+    find $HOME/.ssh/ -not -name "*.pub" -type f | xargs ssh-add >> $ZSH_SOURCING_LOG_FILE
 fi
 
 # # ex - archive extractor # usage: ex <file>
