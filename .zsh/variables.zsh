@@ -25,6 +25,7 @@ PATH="$PATH:$HOME/bin:/usr/local/bin:/usr/bin"
 PATH="$PATH:$HOME/.app/MatLab/bin"
 PATH="$PATH:$HOME/.dotfiles/bin"
 PATH="$PATH:$HOME/.dotfiles/bin/utils"
+PATH="$PATH:$HOME/.dotfiles/bin/tmux"
 PATH="$PATH:$HOME/.roswell/bin/"
 
 export LANG="en_US.UTF-8"
@@ -60,7 +61,7 @@ PATH="$PATH:$GOPATH/bin:$GOBIN"
 #export GEM_HOME="$HOME/.gem"
 #PATH="$PATH:$GEM_HOME/bin"
 
-#eval "$(rbenv init - zsh)"
+eval "$(rbenv init - zsh)"
 
 # java
 export JAVA_HOME="/usr/local/opt/openjdk@20/"
@@ -127,4 +128,6 @@ export PATH=${PATH}:${SIMNIBS_BIN}
 export DIPY_HOME="${HOME}/.dipy"
 
 export NILEARN_DATA="${HOME}/.nilearn/data"
+
+
 
