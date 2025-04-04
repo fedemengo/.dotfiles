@@ -1,3 +1,14 @@
+# homebrew
+if [[ "$OS" == "Darwin" ]]; then
+    if [[ "$ARCH" == "i386" ]]; then
+        eval "$(/usr/local/bin/brew shellenv)"
+    elif [[ "$ARCH" == "arm" ]]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
+elif [[ "$OS" == "Linux" ]]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
 export QT_QPA_PLATFORMTHEME="qt5ct"
 export EDITOR="$(which nvim)"
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
@@ -8,6 +19,7 @@ export ZSH=$HOME/.oh-my-zsh
 export LESS_OPT="--tabs=4 --no-init --LONG-PROMPT --ignore-case --quit-if-one-screen --RAW-CONTROL-CHARS -r"
 export PAGER="less"
 export LS_COLORS="di=38;5;38:ex=38;5;82"
+export SHELL=$(which zsh)
 
 PATH="$PATH:$HOME/bin:/usr/local/bin:/usr/bin"
 PATH="$PATH:$HOME/.app/MatLab/bin"
@@ -29,17 +41,6 @@ export LC_TELEPHONE="en_US.UTF-8"
 export LC_MEASUREMENT="en_US.UTF-8"
 export LC_IDENTIFICATION="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
-
-# homebrew
-if [[ "$OS" == "Darwin" ]]; then
-    if [[ "$ARCH" == "i386" ]]; then
-        eval "$(/usr/local/bin/brew shellenv)"
-    elif [[ "$ARCH" == "arm" ]]; then
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-    fi
-elif [[ "$OS" == "Linux" ]]; then
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-fi
 
 # go
 export GOPATH="${HOME}/.go"
@@ -81,6 +82,17 @@ PATH="${PATH}:${PYTHON_LOC}"
 PATH="${PATH}:${HOME}/Library/Python/3.9/bin"
 
 . "$HOME/.cargo/env" 2>/dev/null
+
+# check if anaconda is installed
+if [[ -d "/usr/local/anaconda3" ]]; then
+    export CONDA_HOME="/usr/local/anaconda3"
+    export PATH="${CONDA_HOME}/bin:${PATH}"
+    export CONDA_DEFAULT_ENV="base"
+    export CONDA_PREFIX="${CONDA_HOME}"
+    export CONDA_PROMPT_MODIFIER="(${CONDA_DEFAULT_ENV}) "
+    export CONDA_PYTHON_EXE="${CONDA_HOME}/bin/python"
+    export CONDA_SHLVL=1
+fi
 
 PATH="${PATH}:/usr/local/opt/llvm/bin:/usr/local/opt/binutils/bin"
 PATH="${PATH}:${HOME}/.google-cloud-sdk/bin"
