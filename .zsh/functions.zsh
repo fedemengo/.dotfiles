@@ -88,14 +88,17 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
     if [ -f "$AGENT_FILE" ]; then
         source "$AGENT_FILE" > /dev/null
         if ! ps -p $SSH_AGENT_PID > /dev/null; then
-            ssh-agent -s > "$AGENT_FILE" & disown
+            ssh-agent -s > "$AGENT_FILE" & disown | xargs -I {} echo "SSH agent started with PID: {}" >> $ZSH_SOURCING_LOG_FILE
             source "$AGENT_FILE"
         fi
     else
-        ssh-agent -s > "$AGENT_FILE" & disown
+        ssh-agent -s > "$AGENT_FILE" & disown | xargs -I {} echo "SSH agent started with PID: {}" >> $ZSH_SOURCING_LOG_FILE
         source "$AGENT_FILE"
     fi
-    find $HOME/.ssh/ -not -name "*.pub" -type f | xargs ssh-add >> $ZSH_SOURCING_LOG_FILE
+    find $HOME/.ssh/ -not -name "*.pub" -type f \
+        -not -name config \
+        -not -name known_hosts \
+        -not -name authorized_keys | xargs ssh-add >> $ZSH_SOURCING_LOG_FILE
 fi
 
 # # ex - archive extractor # usage: ex <file>

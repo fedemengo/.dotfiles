@@ -7,12 +7,17 @@ elif [ "$OS" = "Linux" ]; then
     export HOME=/home/$(whoami)
 fi
 
+# if ZSH_VERBOSE_LOG is set, set log file else log to /dev/null
+if [[ -n "$ZSH_VERBOSE_LOG" ]]; then
+    export ZSH_SOURCING_LOG_FILE="/tmp/zshrc-sourcing.log"
+else
+    export ZSH_SOURCING_LOG_FILE="/dev/null"
+fi
+
 # base default config
 if [[ -f ~/.dotfiles/.dotfiles-secret/.secret-zshrc ]]; then
   SECRET_DOTF="~/.dotfiles/.dotfiles-secret" source ~/.dotfiles/.dotfiles-secret/.secret-zshrc
 fi
-
-export ZSH_SOURCING_LOG_FILE="/tmp/zshrc-sourcing.log"
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -34,6 +39,8 @@ source $MYZSH/pl10k.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
 source $MYZSH/utils.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
 # helper functions
 source $MYZSH/functions.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
+
+source $MYZSH/conda.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
 
 if command -v atuin &> /dev/null; then
     # helper functions
