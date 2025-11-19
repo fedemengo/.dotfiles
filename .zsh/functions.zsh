@@ -82,24 +82,41 @@ if [ -n "$commands[kubectl]" ]; then
     compdef kubecolor=kubectl
 fi
 
-# if no socket, init agent
-if [ -z "$SSH_AUTH_SOCK" ]; then
-    AGENT_FILE="$HOME/.ssh-agent"
-    if [ -f "$AGENT_FILE" ]; then
-        source "$AGENT_FILE" > /dev/null
-        if ! ps -p $SSH_AGENT_PID > /dev/null; then
-            ssh-agent -s > "$AGENT_FILE" & disown | xargs -I {} echo "SSH agent started with PID: {}" >> $ZSH_SOURCING_LOG_FILE
-            source "$AGENT_FILE"
-        fi
-    else
-        ssh-agent -s > "$AGENT_FILE" & disown | xargs -I {} echo "SSH agent started with PID: {}" >> $ZSH_SOURCING_LOG_FILE
-        source "$AGENT_FILE"
-    fi
-    find $HOME/.ssh/ -not -name "*.pub" -type f \
-        -not -name config \
-        -not -name known_hosts \
-        -not -name authorized_keys | xargs ssh-add >> $ZSH_SOURCING_LOG_FILE
+# # if no socket, init agent
+# if [ -z "$SSH_AUTH_SOCK" ]; then
+#     AGENT_FILE="$HOME/.ssh-agent"
+#     if [ -f "$AGENT_FILE" ]; then
+#         source "$AGENT_FILE" > /dev/null
+#         if ! ps -p $SSH_AGENT_PID > /dev/null; then
+#             ssh-agent -s > "$AGENT_FILE" & disown | xargs -I {} echo "SSH agent started with PID: {}" >> $ZSH_SOURCING_LOG_FILE
+#             source "$AGENT_FILE"
+#         fi
+#     else
+#         ssh-agent -s > "$AGENT_FILE" & disown | xargs -I {} echo "SSH agent started with PID: {}" >> $ZSH_SOURCING_LOG_FILE
+#         source "$AGENT_FILE"
+#     fi
+#     find $HOME/.ssh/ -not -name "*.pub" -type f \
+#         -not -name config \
+#         -not -name known_hosts \
+#         -not -name authorized_keys | xargs ssh-add >> $ZSH_SOURCING_LOG_FILE
+# fi
+
+sock="$HOME/.ssh/agent.sock"
+# Only create agent if the stable socket doesn't exist
+if [ ! -S "$sock" ]; then
+    eval "$(ssh-agent -s)" > /dev/null
+    ln -sf "$SSH_AUTH_SOCK" "$sock"
+
+    # auto-add all private keys, just once
+    find "$HOME/.ssh" -type f \
+        -not -name "*.pub" \
+        -not -name "config" \
+        -not -name "known_hosts" \
+        -not -name "authorized_keys" \
+        | xargs ssh-add >/dev/null 2>&1
 fi
+export SSH_AUTH_SOCK="$sock"
+
 
 # # ex - archive extractor # usage: ex <file>
 function ex() {
