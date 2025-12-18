@@ -95,6 +95,20 @@ if [[ -d "/usr/local/anaconda3" ]]; then
     export CONDA_SHLVL=1
 fi
 
+# micromamba minimal init
+if [[ -x "$HOME/.local/bin/micromamba" ]]; then
+    export MAMBA_EXE="$HOME/.local/bin/micromamba"
+    export MAMBA_ROOT_PREFIX="$HOME/micromamba"
+    # add micromamba binary + env bins to PATH
+    export PATH="$HOME/.local/bin:${MAMBA_ROOT_PREFIX}/bin:$PATH"
+    # optional defaults (remove if you don’t want automatic base info)
+    export MAMBA_DEFAULT_ENV="base"
+    export MAMBA_PREFIX="${MAMBA_ROOT_PREFIX}/envs/${MAMBA_DEFAULT_ENV}"
+    export MAMBA_SHLVL=1
+    export MAMBA_PROMPT_MODIFIER="(${MAMBA_DEFAULT_ENV}) "
+fi
+
+
 PATH="${PATH}:/usr/local/opt/llvm/bin:/usr/local/opt/binutils/bin"
 PATH="${PATH}:${HOME}/.google-cloud-sdk/bin"
 PATH="${PATH}:${KREW_ROOT:-$HOME/.krew}/bin"
