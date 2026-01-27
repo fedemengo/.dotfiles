@@ -62,6 +62,7 @@ PATH="$PATH:$GOPATH/bin:$GOBIN"
 #PATH="$PATH:$GEM_HOME/bin"
 
 eval "$(rbenv init - zsh)"
+export PATH="$HOME/.rbenv/bin:$PATH"
 
 # java
 export JAVA_HOME="/usr/local/opt/openjdk@20/"
