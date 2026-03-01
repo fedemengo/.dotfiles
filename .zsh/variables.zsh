@@ -109,6 +109,17 @@ if [[ -x "$HOME/.local/bin/micromamba" ]]; then
     export MAMBA_PROMPT_MODIFIER="(${MAMBA_DEFAULT_ENV}) "
 fi
 
+# nvm guarded init
+export NVM_DIR="$HOME/.nvm"
+if [[ -s "$NVM_DIR/nvm.sh" ]]; then
+    # load nvm
+    source "$NVM_DIR/nvm.sh"
+
+    # optional: load bash completion (works in zsh too)
+    if [[ -s "$NVM_DIR/bash_completion" ]]; then
+        source "$NVM_DIR/bash_completion"
+    fi
+fi
 
 PATH="${PATH}:/usr/local/opt/llvm/bin:/usr/local/opt/binutils/bin"
 PATH="${PATH}:${HOME}/.google-cloud-sdk/bin"
