@@ -144,5 +144,5 @@ export DIPY_HOME="${HOME}/.dipy"
 
 export NILEARN_DATA="${HOME}/.nilearn/data"
 
-
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
