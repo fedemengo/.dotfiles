@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env sh
 
 ssh_connections=$(who | grep -c "pts")
 no_suspend_file="/etc/no-suspend"

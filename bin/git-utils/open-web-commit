@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 LOG_FILE=/tmp/dotfiles.open-web-commit.logs
 
