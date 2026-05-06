@@ -130,7 +130,6 @@ bindkey "^[[Z" reverse-menu-complete
 bindkey "^ " autosuggest-accept
 
 bindkey "^s" sudo-util
-bindkey "^h" home
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*' insert-tab false
@@ -234,4 +233,3 @@ alias gimg='rg -i image: -A5'
 alias dockerps='docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Command}}\t{{.Status}}\t{{.Ports}}"'
 alias dockermall='docker rm -f $(docker ps -a -q)'
 alias dockercmds='docker ps --no-trunc --format "table {{.Names}}\t{{.Command}}\t{{.Status}}"'
-

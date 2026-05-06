@@ -102,12 +102,13 @@ fi
 # fi
 
 sock="$HOME/.ssh/agent.sock"
-# Only create agent if the stable socket doesn't exist
-if [ ! -S "$sock" ]; then
+# If SSH forwarded a real agent, update the stable symlink to point at it
+if [[ -S "$SSH_AUTH_SOCK" && "$SSH_AUTH_SOCK" != "$sock" ]]; then
+    ln -sf "$SSH_AUTH_SOCK" "$sock"
+elif [ ! -S "$sock" ]; then
+    # No forwarded agent and no existing socket — start a local one
     eval "$(ssh-agent -s)" > /dev/null
     ln -sf "$SSH_AUTH_SOCK" "$sock"
-
-    # auto-add all private keys, just once
     find "$HOME/.ssh" -type f \
         -not -name "*.pub" \
         -not -name "config" \
