@@ -22,7 +22,6 @@ export LS_COLORS="di=38;5;38:ex=38;5;82"
 export SHELL=$(which zsh)
 
 PATH="$PATH:$HOME/bin:/usr/local/bin:/usr/bin"
-PATH="$PATH:$HOME/.app/MatLab/bin"
 PATH="$PATH:$HOME/.dotfiles/bin"
 PATH="$PATH:$HOME/.dotfiles/bin/utils"
 PATH="$PATH:$HOME/.dotfiles/bin/tmux"
@@ -63,6 +62,11 @@ PATH="$PATH:$GOPATH/bin:$GOBIN"
 
 eval "$(rbenv init - zsh)"
 export PATH="$HOME/.rbenv/bin:$PATH"
+
+if [ "$OS" = "Darwin" ]; then
+    MATLAB_INSTALL_PATH=$(ls -d /Applications/MATLAB*.app 2>/dev/null | head -1)
+    export MATLAB_PATH="$MATLAB_INSTALL_PATH"
+fi
 
 # java
 export JAVA_HOME="/usr/local/opt/openjdk@20/"

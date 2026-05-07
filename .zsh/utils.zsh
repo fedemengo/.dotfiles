@@ -143,11 +143,8 @@ zstyle ":completion:*:default" list-colors ${(s.:.)LS_COLORS}
 ############################## ALIASES ######################################
 #############################################################################
 
-if [ "$OS" = "Darwin" ]; then
-    MATLAB_PATH=$(ls -d /Applications/MATLAB*.app 2>/dev/null | head -1)
-    if [ -n "$MATLAB_PATH" ]; then
-        alias matlab="$MATLAB_PATH/bin/matlab -nodesktop -nosplash"
-    fi
+if [ -n "$MATLAB_PATH" ]; then
+    alias matlab="$MATLAB_PATH/bin/matlab -nodesktop -nosplash"
 fi
 
 alias cp='cp -i'
