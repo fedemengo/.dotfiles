@@ -42,6 +42,8 @@ source $MYZSH/functions.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
 
 source $MYZSH/conda.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
 
+source $MYZSH/local.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
+
 if command -v atuin &> /dev/null; then
     # helper functions
     source $MYZSH/atuin.zsh 2>>$ZSH_SOURCING_LOG_FILE >&2
