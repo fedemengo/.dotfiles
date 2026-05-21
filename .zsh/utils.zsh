@@ -94,6 +94,20 @@ zle -N sudo-util
 zle -N redo-sudo
 zle -N home
 
+# Vi mode
+bindkey -v
+export KEYTIMEOUT=20
+
+function zle-keymap-select {
+    case ${KEYMAP} in
+        vicmd)      echo -ne '\e[1 q' ;;
+        viins|main) echo -ne '\e[5 q' ;;
+    esac
+}
+zle -N zle-keymap-select
+function zle-line-init { echo -ne '\e[5 q'; }
+zle -N zle-line-init
+
 # History
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
@@ -113,25 +127,20 @@ setopt hist_save_no_dups        # Omit older commands in favor of newer ones.
 setopt pushd_ignore_dups        # Dont push copies of the same dir on stack.
 setopt pushd_minus              # Reference stack entries with "-".
 
-bindkey "^a" beginning-of-line
-bindkey "^e" end-of-line
-bindkey "^g" forward-word
-bindkey "^b" backward-word
-bindkey "^k" kill-line
-bindkey "^y" accept-and-hold
-bindkey "^d" forward-kill-word
-bindkey "^w" backward-kill-word
-bindkey "^u" backward-kill-line
-#bindkey "^R" history-incremental-pattern-search-backward
-bindkey "^[k" up-history
-bindkey "^[j" down-history
-bindkey "^i" expand-or-complete-prefix
-bindkey "^I" tab_list
-bindkey "^[[Z" reverse-menu-complete
-bindkey "^ " autosuggest-accept
+# Insert mode bindings
+bindkey -M viins 'jk' vi-cmd-mode
+bindkey -M viins "^y" autosuggest-accept
+bindkey -M viins "^ " autosuggest-accept
+bindkey -M viins "^[k" up-history
+bindkey -M viins "^[j" down-history
+bindkey -M viins "^i" expand-or-complete-prefix
+bindkey -M viins "^I" tab_list
+bindkey -M viins "^[[Z" reverse-menu-complete
+bindkey -M viins "^s" sudo-util
 
-bindkey "^s" sudo-util
-bindkey "^h" backward-kill-word
+# Normal mode bindings
+bindkey -M vicmd "j" down-history
+bindkey -M vicmd "k" up-history
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*' insert-tab false
