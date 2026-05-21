@@ -1,0 +1,13 @@
+[theme]
+name = "papercolor"
+
+[colors]
+Base       = "dimgray"
+Important  = "steelblue"
+Guidance   = "darkcyan"
+Annotation = "darkgray"
+AlertInfo  = "cadetblue"
+AlertWarn  = "chocolate"
+AlertError = "firebrick"
+Muted      = "gray"
+Title      = "cadetblue"

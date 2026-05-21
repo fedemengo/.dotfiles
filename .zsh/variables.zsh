@@ -1,3 +1,5 @@
+typeset -U PATH path
+
 # homebrew
 if [[ "$OS" == "Darwin" ]]; then
     if [[ "$ARCH" == "i386" ]]; then
@@ -116,6 +118,9 @@ if [[ -x "$HOME/.local/bin/micromamba" ]]; then
     export MAMBA_SHLVL=1
     export MAMBA_PROMPT_MODIFIER="(${MAMBA_DEFAULT_ENV}) "
 fi
+
+# ghcup guarded init
+[[ -f "$HOME/.ghcup/env" ]] && source "$HOME/.ghcup/env"
 
 # nvm guarded init
 export NVM_DIR="$HOME/.nvm"
