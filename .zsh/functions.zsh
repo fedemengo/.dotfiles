@@ -1,4 +1,15 @@
 
+function open() {
+    if [[ "$OS" == "Darwin" ]]; then
+        command open "$@"
+    elif command -v xdg-open >/dev/null 2>&1; then
+        xdg-open "$@"
+    else
+        echo "open: no suitable opener found (tried open, xdg-open)" >&2
+        return 1
+    fi
+}
+
 function colors256() {
     for code ({000..255})
         print -P -- "$code: %F{$code} color%f"

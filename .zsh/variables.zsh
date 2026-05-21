@@ -6,15 +6,16 @@ if [[ "$OS" == "Darwin" ]]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
     fi
 elif [[ "$OS" == "Linux" ]]; then
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    if [[ -x "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    fi
 fi
 
 export QT_QPA_PLATFORMTHEME="qt5ct"
 export EDITOR="$(which nvim)"
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 # fix "xdg-open fork-bomb" export your preferred browser from here
-#export BROWSER=/usr/bin/firefox
-export BROWSER=open
+export BROWSER=/usr/bin/firefox
 export ZSH=$HOME/.oh-my-zsh
 export LESS_OPT="--tabs=4 --no-init --LONG-PROMPT --ignore-case --quit-if-one-screen --RAW-CONTROL-CHARS -r"
 export PAGER="less"
@@ -60,8 +61,11 @@ PATH="$PATH:$GOPATH/bin:$GOBIN"
 #export GEM_HOME="$HOME/.gem"
 #PATH="$PATH:$GEM_HOME/bin"
 
-eval "$(rbenv init - zsh)"
-export PATH="$HOME/.rbenv/bin:$PATH"
+# rbenv guarded init
+if [[ -x "$HOME/.rbenv/bin/rbenv" ]] || command -v rbenv >/dev/null 2>&1; then
+    export PATH="$HOME/.rbenv/bin:$PATH"
+    eval "$(rbenv init - zsh)"
+fi
 
 if [ "$OS" = "Darwin" ]; then
     MATLAB_INSTALL_PATH=$(ls -d /Applications/MATLAB*.app 2>/dev/null | head -1)
@@ -141,7 +145,9 @@ export VIMRC=${HOME}/.dotfiles/.config/nvim/
 echo "setting up free surfer"
 ORIGINAL_PATH=$PATH
 export FREESURFER_HOME=/Applications/freesurfer/7.4.1
-source "$FREESURFER_HOME/SetUpFreeSurfer.sh"
+if [[ -f "$FREESURFER_HOME/SetUpFreeSurfer.sh" ]]; then
+    source "$FREESURFER_HOME/SetUpFreeSurfer.sh"
+fi
 PATH=$ORIGINAL_PATH:$PATH
 echo "done with free surfer"
 
@@ -150,7 +156,9 @@ echo "done with free surfer"
 FSLDIR="$HOME/.fsl"
 PATH=${FSLDIR}/share/fsl/bin:${PATH}
 export FSLDIR PATH
-. ${FSLDIR}/etc/fslconf/fsl.sh
+if [[ -f "${FSLDIR}/etc/fslconf/fsl.sh" ]]; then
+    . "${FSLDIR}/etc/fslconf/fsl.sh"
+fi
 ## Added by SimNIBS
 SIMNIBS_BIN="$HOME/Applications/SimNIBS-4.1/bin"
 export PATH=${PATH}:${SIMNIBS_BIN}
@@ -161,3 +169,5 @@ export NILEARN_DATA="${HOME}/.nilearn/data"
 
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
+# terraform and terragrunt
+export PATH="$HOME/.tgenv/bin:$HOME/.tfenv/bin:$PATH"

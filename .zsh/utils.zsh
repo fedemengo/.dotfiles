@@ -48,7 +48,9 @@ setopt EXTENDED_HISTORY  # record command start time
   # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
   # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 
-eval "$(jump shell)"
+if command -v jump >/dev/null 2>&1; then
+  eval "$(jump shell)"
+fi
 
 # eval "$(conda init zsh)"
 
@@ -59,8 +61,12 @@ plugins=(
   kubectl
   kubectx
   zsh-autosuggestions
-  zsh-fzf-history-search
+  aws
 )
+
+if [[ -d "$ZSH/custom/plugins/zsh-fzf-history-search" || -d "$ZSH/plugins/zsh-fzf-history-search" ]]; then
+  plugins+=(zsh-fzf-history-search)
+fi
 
 export ZSH_FZF_HISTORY_SEARCH_DATES_IN_SEARCH=1
 
@@ -68,24 +74,19 @@ source $ZSH/oh-my-zsh.sh
 #source $ZSH/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 #zstyle ':autocomplete:*' default-context history-incremental-search-backward
 
-export PATH="${PATH}:${HOME}/.rbenv/shims"
-export RBENV_SHELL=zsh
+if command -v rbenv >/dev/null 2>&1; then
+  export PATH="${PATH}:${HOME}/.rbenv/shims"
+  export RBENV_SHELL=zsh
+fi
 
-#command rbenv rehash 2>/dev/null
-rbenv() {
-  local command
-  command="${1:-}"
-  if [ "$#" -gt 0 ]; then
-    shift
-  fi
-
-  case "$command" in
-  rehash|shell)
-    eval "$(rbenv "sh-$command" "$@")";;
-  *)
-    command rbenv "$command" "$@";;
-  esac
+nvim() {
+if [[ -n $NVIM ]]; then
+  nvim --server "$NVIM" --remote "$@"
+else
+  command nvim "$@"
+fi
 }
+
 
 zle -N tab_list
 zle -N forward-kill-word
@@ -130,6 +131,7 @@ bindkey "^[[Z" reverse-menu-complete
 bindkey "^ " autosuggest-accept
 
 bindkey "^s" sudo-util
+bindkey "^h" backward-kill-word
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*' insert-tab false
