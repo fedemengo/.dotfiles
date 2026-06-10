@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+import sys, textwrap
+
+max_w = 60
+args = sys.argv[1:]
+i = 0
+while i < len(args):
+    if args[i] == "-W" and i + 1 < len(args):
+        max_w = int(args[i + 1]); i += 2
+    elif args[i].startswith("-W"):
+        max_w = int(args[i][2:]); i += 1
+    else:
+        i += 1
+
+text = sys.stdin.read().strip()
+if not text:
+    sys.exit(0)
+
+lines = []
+for para in text.split("\n"):
+    wrapped = textwrap.wrap(para, max_w) if para.strip() else [""]
+    lines.extend(wrapped)
+
+while lines and not lines[0]:  lines.pop(0)
+while lines and not lines[-1]: lines.pop()
+if not lines: sys.exit(0)
+
+width = max(len(l) for l in lines)
+n     = len(lines)
+bar   = " " + "-" * (width + 2)
+
+print(bar)
+for i, l in enumerate(lines):
+    pad = " " * (width - len(l))
+    if   n == 1:   p, s = "< ", " >"
+    elif i == 0:   p, s = "/ ", " \\"
+    elif i == n-1: p, s = "\\ ", " /"
+    else:          p, s = "| ", " |"
+    print(p + l + pad + s)
+print(bar)
+
+bk = "\\"
+for l in [
+    "             " + bk + "    _________",
+    "              " + bk + "  /_  ___   " + bk,
+    "                /@ " + bk + "/@  " + bk + "   " + bk,
+    "                " + bk + "__/" + bk + "___/   /",
+    "                 " + bk + "_" + bk + "/______/",
+    "                 /     /" + bk * 5,
+    "                |     |" + bk * 6,
+    "                 " + bk + "      " + bk * 6,
+    "                  " + bk + "______/" + bk * 4,
+    "            _______ ||_||_______",
+    "           (______(((_(((______(@)",
+]:
+    print(l)
