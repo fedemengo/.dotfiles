@@ -12,14 +12,31 @@ while i < len(args):
     else:
         i += 1
 
-text = sys.stdin.read().strip()
+text = "\n".join(l for l in sys.stdin.read().splitlines() if l.strip() != "%").strip()
 if not text:
     sys.exit(0)
 
+paragraphs, current = [], []
+for line in text.split("\n"):
+    stripped = line.strip()
+    if stripped:
+        if line[0] == "\t" and current:
+            paragraphs.append(" ".join(current))
+            paragraphs.append("")
+            current = []
+        current.append(stripped)
+    else:
+        if current:
+            paragraphs.append(" ".join(current))
+            current = []
+        if not paragraphs or paragraphs[-1] != "":
+            paragraphs.append("")
+if current:
+    paragraphs.append(" ".join(current))
+
 lines = []
-for para in text.split("\n"):
-    wrapped = textwrap.wrap(para, max_w) if para.strip() else [""]
-    lines.extend(wrapped)
+for para in paragraphs:
+    lines.extend(textwrap.wrap(para, max_w) if para else [""])
 
 while lines and not lines[0]:  lines.pop(0)
 while lines and not lines[-1]: lines.pop()
@@ -41,9 +58,9 @@ print(bar)
 
 bk = "\\"
 for l in [
-    "             " + bk + "    _________",
+    "             " + bk + "    _^_____^_",
     "              " + bk + "  /_  ___   " + bk,
-    "                /@ " + bk + "/@  " + bk + "   " + bk,
+    "                / @" + bk + "/ @ " + bk + "   " + bk,
     "                " + bk + "__/" + bk + "___/   /",
     "                 " + bk + "_" + bk + "/______/",
     "                 /     /" + bk * 5,
