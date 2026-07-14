@@ -48,7 +48,7 @@ ZSH_THEME=powerlevel10k/powerlevel10k
   typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
     # =========================[ Line #1 ]=========================
     status                  # exit code of the last command
-    command_execution_time  # duration of the last command
+    command_execution_time_ms  # duration of the last command in milliseconds
     background_jobs         # presence of background jobs
     direnv                  # direnv status (https://direnv.net/)
     asdf                    # asdf version manager (https://github.com/asdf-vm/asdf)
@@ -546,6 +546,13 @@ ZSH_THEME=powerlevel10k/powerlevel10k
   typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_VISUAL_IDENTIFIER_EXPANSION=
   # Custom prefix.
   # typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_PREFIX='%ftook '
+
+  # Display the duration of every command as an integer number of milliseconds.
+  function prompt_command_execution_time_ms() {
+    (( $+P9K_COMMAND_DURATION_SECONDS )) || return
+    local -i duration_ms=$((P9K_COMMAND_DURATION_SECONDS * 1000 + 0.5))
+    p10k segment -f 101 -t "${duration_ms}ms"
+  }
 
   #######################[ background_jobs: presence of background jobs ]#######################
   # Don't show the number of background jobs.
