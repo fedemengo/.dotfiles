@@ -550,8 +550,28 @@ ZSH_THEME=powerlevel10k/powerlevel10k
   # Display the duration of every command as an integer number of milliseconds.
   function prompt_command_execution_time_ms() {
     (( $+P9K_COMMAND_DURATION_SECONDS )) || return
-    local -i duration_ms=$((P9K_COMMAND_DURATION_SECONDS * 1000 + 0.5))
-    p10k segment -f 101 -t "${duration_ms}ms"
+    local -F duration=$P9K_COMMAND_DURATION_SECONDS
+    local text
+    if (( duration < 10 )); then
+      local -i duration_ms=$(( duration * 1000 + 0.5 ))
+      text="${duration_ms}ms"
+    else
+      local -i d=$(( duration ))
+      local -i days=$(( d / 86400 ))
+      local -i hours=$(( (d % 86400) / 3600 ))
+      local -i mins=$(( (d % 3600) / 60 ))
+      local -i secs=$(( d % 60 ))
+      if (( days > 0 )); then
+        text="${days}d ${hours}h ${mins}m ${secs}s"
+      elif (( hours > 0 )); then
+        text="${hours}h ${mins}m ${secs}s"
+      elif (( mins > 0 )); then
+        text="${mins}m ${secs}s"
+      else
+        text="${secs}s"
+      fi
+    fi
+    p10k segment -f 101 -t "$text"
   }
 
   #######################[ background_jobs: presence of background jobs ]#######################
