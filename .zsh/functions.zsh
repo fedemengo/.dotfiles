@@ -16,7 +16,7 @@ function colors256() {
 }
 
 
-function info_VPN() {
+function myip() {
     json=$(curl -u ${IP_TOKEN}: ipinfo.io -H 'Cache-Control: no-cache' 2>/dev/null)
     IP=$(echo ${json} | jq ".ip")
     LOC=$(echo ${json} | jq ".city")
@@ -32,66 +32,6 @@ function info_VPN() {
         return 1;
     fi
 }
-
-# Before connecting to vpn, change DNS resulution
-# - In file /etc/resolv.conf add 1.1.1.1 and google's 8.8.8.8
-# - Make the file inmutable with "sudo chattr +i /etc/resolv.conf"
-# Done
-
-function connect_VPN() {
-    PID=$(pgrep openvpn)
-    if [ -n "$PID" ]; then
-        echo "VPN already connected PID $PID"
-        return 1
-    else
-        # Get sudo access
-        sudo ls &>/dev/null
-        echo "Current location"
-        IP=$(curl -u ${IP_TOKEN}: ipinfo.io -H 'Cache-Control: no-cache' 2>/dev/null | jq ".ip")
-        info_VPN
-        echo ""
-        echo "Connecting to VPN.."
-        sudo openvpn --daemon --config ${HOME}/.torguard/torguard-PRO/TorGuard.USA-${VPN_LOCATION}.ovpn --cd ${HOME}/.torguard
-        if [[ "$?" -eq "0" ]]; then
-            echo "Checking connection.."
-            sleep 1;
-            info_VPN ${IP}
-            while [[ "$?" -eq "1" ]]; do
-                echo "Checking connection.."
-                sleep 1;
-                info_VPN ${IP}
-            done
-            echo "Connection established"
-            echo ""
-            info_VPN
-        else
-            RET=$?
-            echo "Impossible to connect to VPN"
-            return ${RET}
-        fi
-    fi
-}
-
-function disconnect_VPN() {
-    PID=$(pgrep openvpn)
-    if [ -z "$PID" ]; then
-        echo "No active VPN connections"
-        return 1
-    else
-        echo "Closing connection..."
-        for ps in `pgrep openvpn`;
-        do
-            sudo kill -9 ${ps}
-        done
-    fi
-}
-
-if [ -n "$commands[kubectl]" ]; then
-    source <(kubectl completion zsh)
-    alias k=kubectl
-    alias kubectl=kubecolor
-    compdef kubecolor=kubectl
-fi
 
 # # if no socket, init agent
 # if [ -z "$SSH_AUTH_SOCK" ]; then
@@ -152,22 +92,6 @@ function ex() {
   fi
 }
 
-function mc() {
-	name="${1%%.*}"
-	mcs $1 && mono "${name}.exe"
-}
-
-function dns() {
-	sudo chattr -i /etc/resolv.conf && sudo vim /etc/resolv.conf && sudo chattr +i /etc/resolv.conf
-}
-
-function vpns() {
-	for conf in ${HOME}/.torguard/torguard-PRO/*;
-	do
-		echo $conf | sed "s|$HOME/.torguard/torguard-PRO/TorGuard.||;s|.ovpn||g"
-	done
-}
-
 function stop_prune() {
 	docker container stop $(docker container ps -aq)
 	docker container prune
@@ -225,12 +149,6 @@ function redo-sudo {
 	BUFFER="sudo ${cmd}"
 	CURSOR=${#BUFFER}
 	#sudo $cmd
-}
-
-function home {
-	data="${HOME:=/home/fedemengo}"
-	BUFFER="${BUFFER}${data}/"
-	CURSOR=${#BUFFER}
 }
 
 function get_pod {

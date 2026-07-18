@@ -173,15 +173,6 @@ alias l="${LS_CMD} -oh -X --group-directories-first --color=always"
 alias ll="${LS_CMD} -oah -X --group-directories-first --color=always"
 alias lld="${LS_CMD} -ld -X --group-directories-first --color=always */"
 
-alias pi='ssh pi@192.168.178.100 2>/dev/null'
-alias pi3='ssh pi@192.168.178.101 2>/dev/null'
-alias ubu='ssh fedemengo@192.168.178.121'
-alias pifs='sshfs -o allow_other pi@192.168.178.100:/mnt/hdd/ /mnt/hdd'
-alias pifs3='rclone mount --daemon pi3::STORAGE/ /mnt/hdd'
-#alias pifs3='sshfs -o allow_other pi@192.168.178.101:/mnt/hdd/ /mnt/hdd'
-alias upifs='fusermount -u /mnt/hdd'
-alias df='df -h'                          # human-readable sizes
-alias du='du -h'
 alias free='free -m'                      # show sizes in MB
 alias diff='colordiff'
 

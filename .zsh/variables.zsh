@@ -48,7 +48,6 @@ export LC_ALL="en_US.UTF-8"
 # go
 export GOPATH="${HOME}/.go"
 export GOROOT="/usr/local/go"
-# sudo chown fedemengo /usr/local/go/bin/
 export GOBIN=$GOROOT/bin
 export GOPROXY="direct"
 export GOSUMDB="sum.golang.org"
