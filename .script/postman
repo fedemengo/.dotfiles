@@ -1,9 +1,0 @@
-#!/bin/sh -e
-
-${HOME}/.app/Postman/Postman &>/dev/null & disown
-
-#for j in `jobs | sed -n "/postman/s/.*\[\([[:digit:]]\+\)\].*/\1/p"`; 
-#do 
-#    disown "%${j}"; 
-#done
-
