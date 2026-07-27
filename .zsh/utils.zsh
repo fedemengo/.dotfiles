@@ -232,3 +232,7 @@ alias gimg='rg -i image: -A5'
 alias dockerps='docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Command}}\t{{.Status}}\t{{.Ports}}"'
 alias dockermall='docker rm -f $(docker ps -a -q)'
 alias dockercmds='docker ps --no-trunc --format "table {{.Names}}\t{{.Command}}\t{{.Status}}"'
+
+alias tn='tmux new -s'
+alias ta='tmux attach -t'
+alias tls='tmux ls'
