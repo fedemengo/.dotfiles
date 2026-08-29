@@ -46,3 +46,5 @@ if [[ -f "$HOME/.atuin/bin/env" ]]; then
     source "$HOME/.atuin/bin/env"
     eval "$(atuin init zsh)"
 fi
+
+export PATH="$HOME/.local/bin:$PATH"
