@@ -5,6 +5,9 @@ updates:
     directory: /
     schedule:
       interval: daily
+    # opt out of the default 3-day cooldown; bump to latest nvim right away
+    cooldown:
+      default-days: 0
     allow:
       - dependency-name: ".config/nvim"
     commit-message:
