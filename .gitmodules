@@ -9,4 +9,4 @@
 	url = git@github.com:fedemengo/.dotfiles-secret.git
 [submodule ".config/nvim"]
 	path = .config/nvim
-	url = git@github.com:fedemengo/nvim.git
+	url = https://github.com/fedemengo/nvim.git
