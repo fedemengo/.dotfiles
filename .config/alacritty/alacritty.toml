@@ -767,3 +767,15 @@ y = 0
 live_config_reload = true
 
 [terminal]
+
+# Ctrl-Tab as a distinct key for tmux (CSI u encoding). Alacritty does not
+# implement xterm modifyOtherKeys, which is what tmux requests.
+[[keyboard.bindings]]
+chars = "\u001B[9;5u"
+key = "Tab"
+mods = "Control"
+
+[[keyboard.bindings]]
+chars = "\u001B[9;6u"
+key = "Tab"
+mods = "Control|Shift"
