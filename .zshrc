@@ -51,5 +51,5 @@ if [[ -d "/home/linuxbrew/.linuxbrew/bin" ]]; then
     PATH="$PATH:/home/linuxbrew/.linuxbrew/bin"
 fi
 
-PATH="$PATH:$HOME/.local/bin"
+PATH="$HOME/.local/bin:$PATH"
 export PATH
