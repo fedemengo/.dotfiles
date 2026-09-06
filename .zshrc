@@ -47,4 +47,9 @@ if [[ -f "$HOME/.atuin/bin/env" ]]; then
     eval "$(atuin init zsh)"
 fi
 
-export PATH="$HOME/.local/bin:$PATH"
+if [[ -d "/home/linuxbrew/.linuxbrew/bin" ]]; then
+    PATH="$PATH:/home/linuxbrew/.linuxbrew/bin"
+fi
+
+PATH="$PATH:$HOME/.local/bin"
+export PATH
