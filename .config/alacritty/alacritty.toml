@@ -779,3 +779,9 @@ mods = "Control"
 chars = "\u001B[9;6u"
 key = "Tab"
 mods = "Control|Shift"
+
+# Ctrl-` as a distinct key for tmmx's one-handed nav prefix (CSI u encoding).
+[[keyboard.bindings]]
+chars = "\u001B[96;5u"
+key = "`"
+mods = "Control"
